@@ -211,49 +211,49 @@ const CARDS=[
  {id:'ecofin',n:'ECOFIN',s:'ECOFIN',g:'E',d:'Consejo de ministros de economía y hacienda de todos los estados miembros, junto a los comisarios competentes en los temas de cada sesión.'},
  {id:'eurogrupo',n:'Eurogrupo',s:'Euro-grupo',g:'E',d:'Órgano consultivo informal de los ministros de economía y hacienda de la UEM. Se reúne una vez al mes para coordinar las políticas económicas de los países de la zona euro.'}
 ];
-const CATS=[['amb','Ámbito'],['nom','Nombre y sede'],['fun','Funciones'],['val','Mercado de valores'],['eur','Europa y euro']];
+const CATS=[['nom','Nombre'],['dat','Fechas, sedes y cifras'],['quien','Quién lo forma'],['fun','Funciones'],['val','Mercado de valores']];
 const QS=[
- {c:'amb',q:'¿Es un organismo internacional (ni español ni de la UE)?',y:'fmi bm bid berd bpi ocde basilea g20',n:'El sistema financiero se organiza en organismos internacionales, nacionales y europeos.'},
- {c:'amb',q:'¿Forma parte del sistema financiero español?',y:'bde cnmv dgsfp av sgc eafi scr iic broker dealer',n:'En España hay tres supervisores: Banco de España, CNMV y Dirección General de Seguros y Fondos de Pensiones.'},
- {c:'amb',q:'¿Es una institución o grupo de la Unión Europea?',y:'bce sebc eurosis bei ecofin eurogrupo',n:'El Sistema Monetario Europeo incluye BCE, SEBC, BEI, ECOFIN y Eurogrupo.'},
- {c:'amb',q:'¿Es una reunión o grupo de ministros o líderes más que una entidad con plantilla?',y:'g20 ecofin eurogrupo',n:'G20, ECOFIN y Eurogrupo son foros de coordinación de políticas económicas.'},
- {c:'nom',q:'¿Su nombre empieza por «Banco»?',y:'bm bid berd bpi bde bce bei',n:'Son bancos: el Banco Mundial, los bancos regionales, el BPI, el Banco de España, el BCE y el BEI.'},
- {c:'nom',q:'¿Su nombre completo incluye la palabra «Europeo»?',y:'berd bce sebc bei',n:'Cuidado: el BERD se llama «Europeo» pero es un banco regional de desarrollo del bloque internacional.'},
- {c:'nom',q:'¿Su nombre incluye la palabra «Desarrollo»?',y:'bid berd ocde',n:'Hay dos bancos regionales de desarrollo en el temario (BID y BERD) y la OCDE (Cooperación y Desarrollo Económico).'},
- {c:'nom',q:'¿Su nombre incluye la palabra «Reconstrucción»?',y:'berd',n:'Banco Europeo de Reconstrucción y Desarrollo (BERD). El Banco Mundial se llamó antes BIRF: Reconstrucción y Fomento.'},
- {c:'nom',q:'¿Tiene su sede en Washington?',y:'fmi bm',n:'FMI y Banco Mundial tienen sede en Washington y se crearon en 1944.'},
- {c:'nom',q:'¿Tiene su sede en Basilea?',y:'bpi basilea',n:'El Banco de Pagos Internacionales tiene su sede en Basilea, y el Comité de Basilea toma su nombre de la ciudad.'},
- {c:'nom',q:'¿Tiene su sede en Francfort o en Luxemburgo?',y:'bce bei',n:'El BCE está en Francfort (creado en 1998) y el BEI en Luxemburgo (propiedad de la UE desde 1958).'},
- {c:'fun',q:'¿Concede préstamos o créditos a países o proyectos?',y:'fmi bm bid berd bei',n:'Prestan el FMI, el Banco Mundial, los bancos regionales y el BEI.'},
- {c:'fun',q:'¿Funciona sin ánimo de lucro?',y:'bm bid berd',n:'El Banco Mundial y los bancos regionales de desarrollo son instituciones sin ánimo de lucro.'},
- {c:'fun',q:'¿Presta a países con desequilibrios en la Balanza de Pagos?',y:'fmi',n:'Es una de las funciones del FMI, que exige a cambio garantías de devolución y un programa para resolver el problema.'},
- {c:'fun',q:'¿Creó un activo de reserva internacional llamado DEG?',y:'fmi',n:'Los Derechos Especiales de Giro se valoran con una cesta de euro, dólar, libra, yen y renminbi.'},
- {c:'fun',q:'¿Es un organismo de las Naciones Unidas?',y:'bm',n:'El Banco Mundial es un organismo de la ONU, con socios que aportan cuotas distintas (EE. UU. el 17%, España el 2%).'},
- {c:'fun',q:'¿Sus miembros son países de una zona geográfica concreta?',y:'bid berd',n:'Es la nota de los bancos regionales de desarrollo: promueven el desarrollo de su propia zona.'},
- {c:'fun',q:'¿Se le llama «el banco de los bancos centrales»?',y:'bpi',n:'Es propiedad de unos 60 bancos centrales, está controlado por 6 y no rinde cuentas ante ningún gobierno.'},
- {c:'fun',q:'¿Emite recomendaciones de regulación contra el blanqueo de capitales y el riesgo de crédito?',y:'basilea',n:'Sus recomendaciones sirven de guía a las autoridades nacionales. El Banco de España es miembro desde 2001.'},
- {c:'fun',q:'¿Su misión es diseñar mejores políticas para una vida mejor?',y:'ocde',n:'La OCDE tiene 37 miembros y promueve prosperidad, igualdad, oportunidades y bienestar.'},
- {c:'fun',q:'¿Regula y supervisa a bancos, cajas y entidades de crédito?',y:'bde',n:'El Banco de España también gestiona la Central de Información de Riesgos y pone moneda en circulación.'},
- {c:'fun',q:'¿Supervisa a las aseguradoras y a los fondos de pensiones?',y:'dgsfp',n:'De la DGSFP dependen las empresas aseguradoras y los planes y fondos de pensiones.'},
- {c:'val',q:'¿Es la CNMV o depende de ella?',y:'cnmv av sgc eafi scr iic broker dealer',n:'La CNMV supervisa el mercado de valores y a las entidades que operan en él.'},
- {c:'val',q:'¿Es una empresa de servicios de inversión (ESI)?',y:'av sgc eafi broker dealer',n:'Las ESI prestan servicios de inversión a terceros: sociedades de valores, agencias, gestoras y EAFI.'},
- {c:'val',q:'¿Controla y supervisa el funcionamiento del mercado de valores?',y:'cnmv',n:'Distingue el mercado primario (primera colocación) del secundario (valores ya colocados).'},
- {c:'val',q:'¿Actúa por cuenta propia y asume el riesgo?',y:'dealer',n:'Esa es la diferencia con el broker, que es un comisionista y no asume riesgo.'},
- {c:'val',q:'¿Es un comisionista que no asume riesgo?',y:'broker',n:'El broker ejecuta órdenes de sus clientes; el dealer opera por cuenta propia.'},
- {c:'val',q:'¿Se le exige un capital mínimo de 300.000 €?',y:'av',n:'La agencia de valores gestiona carteras, asesora y administra los valores de sus clientes.'},
- {c:'val',q:'¿Es una S.A. especializada en la gestión individualizada de carteras?',y:'sgc',n:'La sociedad gestora de carteras necesita un capital mínimo de 100.000 €.'},
+ {c:'nom',q:'¿Su nombre empieza por la palabra «Banco»?',y:'bm bid berd bpi bde bce bei',n:'Empiezan por «Banco»: Banco Mundial, BID, BERD, BPI, Banco de España, BCE y BEI.'},
+ {c:'nom',q:'¿Su nombre contiene «Euro» o «Europeo»?',y:'berd bce sebc eurosis bei eurogrupo',n:'Ojo: el BERD se llama «Europeo» pero el temario lo estudia con los bancos regionales de desarrollo.'},
+ {c:'nom',q:'¿Su nombre contiene la palabra «Desarrollo»?',y:'bid berd ocde',n:'BID, BERD y la OCDE (Organización para la Cooperación y el Desarrollo Económico).'},
+ {c:'nom',q:'¿Su nombre es una «G» seguida de un número?',y:'g20',n:'El temario cita el G7, el G10 y el G20 entre los otros organismos oficiales.'},
+ {c:'nom',q:'¿Antes se llamaba BIRF (Banco Internacional de Reconstrucción y Fomento)?',y:'bm',n:'El Banco Mundial se llamaba antes BIRF, que hoy es una de las entidades de su grupo.'},
+ {c:'nom',q:'¿Su nombre contiene la palabra «Reconstrucción»?',y:'berd',n:'Banco Europeo de Reconstrucción y Desarrollo.'},
+ {c:'dat',q:'¿Se creó en 1944 con los acuerdos de Bretton Woods?',y:'fmi bm',n:'El FMI y el Banco Mundial nacen en 1944.'},
+ {c:'dat',q:'¿Tiene unos 190 países miembros?',y:'fmi',n:'El FMI tiene unos 190 miembros (189 en una de las versiones del temario).'},
+ {c:'dat',q:'¿Tiene 37 países miembros?',y:'ocde',n:'La OCDE tiene 37 miembros.'},
+ {c:'dat',q:'¿Su nombre o su sede están ligados a la ciudad de Basilea?',y:'bpi basilea',n:'El BPI tiene su sede en Basilea y el Comité de Supervisión Bancaria lleva el nombre de la ciudad.'},
+ {c:'dat',q:'¿Es propiedad de unos 60 bancos centrales?',y:'bpi',n:'El BPI es propiedad de unos 60 bancos centrales y está controlado por 6 de ellos.'},
+ {c:'dat',q:'¿Es el banco con sede en Francfort creado en 1998?',y:'bce',n:'El BCE se creó en 1998 y tiene su sede en Francfort.'},
+ {c:'dat',q:'¿Es el banco con sede en Luxemburgo, propiedad de la UE desde 1958?',y:'bei',n:'El Banco Europeo de Inversiones tiene su sede en Luxemburgo.'},
+ {c:'dat',q:'¿Su capital mínimo exigido es de 300.000 €?',y:'av',n:'La agencia de valores necesita un capital mínimo de 300.000 €.'},
+ {c:'dat',q:'¿Su capital mínimo exigido es de 100.000 €?',y:'sgc',n:'La sociedad gestora de carteras necesita un capital mínimo de 100.000 €.'},
+ {c:'quien',q:'¿Es una entidad del sistema financiero español?',y:'bde cnmv dgsfp av sgc eafi scr iic broker dealer',n:'El bloque nacional: los tres supervisores y las entidades que dependen de la CNMV.'},
+ {c:'quien',q:'¿Es uno de los tres supervisores españoles: Banco de España, CNMV o DGSFP?',y:'bde cnmv dgsfp',n:'Banco de España (banca), CNMV (mercado de valores) y DGSFP (seguros y pensiones).'},
+ {c:'quien',q:'¿Es un banco regional de desarrollo formado por países de una zona concreta?',y:'bid berd',n:'Los bancos regionales de desarrollo del temario son el BID, el Banco Asiático y el BERD.'},
+ {c:'quien',q:'¿Es un consejo u órgano de ministros de economía y hacienda de la UE?',y:'ecofin eurogrupo',n:'ECOFIN reúne a los de todos los estados miembros y el Eurogrupo a los de la zona euro.'},
+ {c:'quien',q:'¿Reúne a los ministros de TODOS los estados de la UE, con los comisarios del tema?',y:'ecofin',n:'Así es el ECOFIN. El Eurogrupo solo reúne a los ministros de la UEM.'},
+ {c:'quien',q:'¿Es un sistema formado por bancos centrales nacionales y el BCE?',y:'sebc eurosis',n:'El SEBC y su subgrupo, el Eurosistema.'},
+ {c:'quien',q:'¿Incluye a los bancos centrales de todos los países de la UE, usen o no el euro?',y:'sebc',n:'El SEBC reúne a todos. El Eurosistema, solo a los de la zona euro.'},
+ {c:'fun',q:'¿Presta a países con desequilibrios en su Balanza de Pagos?',y:'fmi',n:'El FMI exige garantía de devolución y un programa para solucionar el problema.'},
+ {c:'fun',q:'¿Creó los Derechos Especiales de Giro (DEG)?',y:'fmi',n:'El DEG es un activo de reserva internacional valorado con euro, dólar, libra, yen y renminbi.'},
+ {c:'fun',q:'¿Concede préstamos de infraestructuras, sectoriales, institucionales y de ajuste estructural?',y:'bm',n:'Son los cuatro tipos de préstamo del Banco Mundial.'},
+ {c:'fun',q:'¿Se le llama «el banco de los bancos centrales»?',y:'bpi',n:'El BPI gestiona reservas de divisas de bancos centrales y no rinde cuentas ante ningún gobierno.'},
+ {c:'fun',q:'¿Recomienda a los supervisores medidas contra el blanqueo de capitales y el riesgo de crédito?',y:'basilea',n:'El Comité de Basilea asesora en regulación financiera. El Banco de España es miembro desde 2001.'},
+ {c:'fun',q:'¿Su misión es «diseñar mejores políticas para una vida mejor»?',y:'ocde',n:'Es la misión de la OCDE.'},
+ {c:'fun',q:'¿Gestiona la Central de Información de Riesgos y pone moneda en circulación en España?',y:'bde',n:'Son funciones del Banco de España.'},
+ {c:'fun',q:'¿Supervisa a las aseguradoras y a los planes y fondos de pensiones?',y:'dgsfp',n:'Es la Dirección General de Seguros y Fondos de Pensiones.'},
+ {c:'fun',q:'¿Fija la política monetaria y autoriza la emisión de euros?',y:'bce',n:'El BCE, que además persigue una inflación inferior al 2%.'},
+ {c:'fun',q:'¿Concede préstamos de más de 25 millones € y apoya medidas contra el cambio climático?',y:'bei',n:'Es el BEI, que también impulsa crecimiento y empleo en Europa.'},
+ {c:'fun',q:'¿Se reúne una vez al mes como órgano consultivo informal?',y:'eurogrupo',n:'El Eurogrupo coordina las políticas económicas de la zona euro.'},
+ {c:'val',q:'¿Controla, supervisa y asesora sobre el mercado de valores?',y:'cnmv',n:'La CNMV vigila el mercado primario y el secundario.'},
+ {c:'val',q:'¿Depende de la CNMV?',y:'av sgc eafi scr iic broker dealer',n:'Dependen de la CNMV las ESI, las instituciones de inversión colectiva y las sociedades de capital riesgo.'},
+ {c:'val',q:'¿Es una empresa de servicios de inversión (ESI)?',y:'av sgc eafi broker dealer',n:'Son ESI las sociedades de valores (broker y dealer), las agencias de valores, las gestoras de carteras y las EAFI.'},
+ {c:'val',q:'¿Es una sociedad de valores?',y:'broker dealer',n:'Las sociedades de valores pueden actuar como broker o como dealer.'},
+ {c:'val',q:'¿Opera por cuenta propia y asume el riesgo?',y:'dealer',n:'El dealer asume riesgo. El broker es un comisionista y no lo asume.'},
  {c:'val',q:'¿Puede ser una persona física?',y:'eafi',n:'Las EAFI son personas físicas o jurídicas que asesoran en materia de inversiones.'},
- {c:'val',q:'¿Capta dinero de ahorradores para gestionar fondos de inversión?',y:'iic',n:'Las instituciones de inversión colectiva gestionan fondos de inversión mobiliaria e inmobiliaria.'},
- {c:'val',q:'¿Participa temporalmente en el capital de empresas que no cotizan en Bolsa?',y:'scr',n:'Las sociedades de capital riesgo invierten en empresas no financieras que no están en Bolsa.'},
- {c:'eur',q:'¿Su objetivo es la estabilidad de precios, con inflación inferior al 2%?',y:'bce sebc eurosis',n:'Es el objetivo central del BCE y del sistema de bancos centrales que lo rodea.'},
- {c:'eur',q:'¿Fija la política monetaria y autoriza la emisión de euros?',y:'bce',n:'El BCE también dirige las operaciones de cambio de divisas y cuida las reservas del SEBC.'},
- {c:'eur',q:'¿Está formado por bancos centrales nacionales más el BCE?',y:'sebc eurosis',n:'El SEBC reúne a todos los bancos centrales de la UE; el Eurosistema solo a los de la zona euro.'},
- {c:'eur',q:'¿Es un subgrupo del SEBC?',y:'eurosis',n:'El Eurosistema es un subgrupo del SEBC.'},
- {c:'eur',q:'¿Solo actúa en la zona euro?',y:'bce eurosis eurogrupo',n:'BCE, Eurosistema y Eurogrupo trabajan para los países que usan el euro.'},
- {c:'eur',q:'¿Participan todos los estados miembros de la UE?',y:'sebc ecofin',n:'En ECOFIN están los ministros de todos los estados miembros y en el SEBC sus bancos centrales.'},
- {c:'eur',q:'¿Se reúne una vez al mes como órgano consultivo informal?',y:'eurogrupo',n:'El Eurogrupo coordina las políticas económicas de la zona euro.'},
- {c:'eur',q:'¿Es el consejo de ministros de economía y hacienda de toda la UE?',y:'ecofin',n:'Asisten también los comisarios competentes en los temas de cada sesión.'},
- {c:'eur',q:'¿Impulsa el empleo y la lucha contra el cambio climático con préstamos en Europa?',y:'bei',n:'El BEI ofrece préstamos (más de 25 millones €), créditos a través de entidades y asesoramiento técnico.'}
+ {c:'val',q:'¿Gestiona fondos de inversión mobiliaria e inmobiliaria con dinero de ahorradores?',y:'iic',n:'Son las instituciones de inversión colectiva.'},
+ {c:'val',q:'¿Entra temporalmente en el capital de empresas no financieras que no cotizan en Bolsa?',y:'scr',n:'Es la sociedad de capital riesgo.'}
 ];
 QS.forEach((q,i)=>{q.id=i;q.y=q.y.split(' ');});
 const BY=Object.fromEntries(CARDS.map(c=>[c.id,c]));
@@ -334,7 +334,7 @@ function intro(){
 function startRound(i){
   const R=ROUNDS[i];
   const secret=R.pool[Math.floor(Math.random()*R.pool.length)];
-  Object.assign(S,{r:i,secret,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:'amb'});
+  Object.assign(S,{r:i,secret,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:'nom'});
   pips(i); setScore();
   view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">Ronda '+(i+1)+' de '+ROUNDS.length+'</p><h2>'+esc(R.t)+'</h2><p class="hint">'+esc(R.hint)+'</p></div>'
    +'<div class="cols"><div><div class="board" id="board">'+CARDS.map(c=>cardHtml(c)).join('')+'</div></div>'
