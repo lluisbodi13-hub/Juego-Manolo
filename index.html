@@ -154,14 +154,21 @@ p{margin:0}
 .sum li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px}
 .sum span:last-child{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 .row{display:flex;flex-wrap:wrap;gap:10px}
-.react{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:20;padding-inline:16px}
-.react span{font-family:var(--f-display);font-weight:800;font-size:clamp(1.6rem,5vw,3rem);text-align:center;text-wrap:balance;max-width:18ch;padding:18px 26px;border-radius:16px;border:3px solid var(--ink);background:var(--panel);box-shadow:0 12px 0 var(--ink)}
-.react.win span{color:var(--gold);border-color:var(--gold);box-shadow:0 12px 0 var(--gold)}
-.react.fail span{color:var(--bad);border-color:var(--bad);box-shadow:0 12px 0 var(--bad)}
-.react.on.win span{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
-.react.on.fail span{animation:shake .6s}
-@keyframes pop{0%{transform:scale(.3) rotate(-8deg)}100%{transform:scale(1) rotate(0)}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-14px) rotate(-3deg)}40%{transform:translateX(12px) rotate(2deg)}60%{transform:translateX(-8px)}80%{transform:translateX(5px)}}
+.react{position:fixed;inset:0;display:grid;place-items:center;z-index:20;padding-inline:16px;cursor:pointer}
+.react.win{background:repeating-conic-gradient(from 0deg at 50% 50%, color-mix(in srgb,var(--gold) 32%,transparent) 0 10deg, transparent 10deg 20deg)}
+.react.shout,.react.laugh{background:color-mix(in srgb,var(--bad) 22%,transparent)}
+.react .box{display:grid;gap:8px;justify-items:center;text-align:center;max-width:min(92vw,40rem);padding:20px 26px;border-radius:16px;border:3px solid var(--ink);background:var(--panel);box-shadow:0 12px 0 var(--ink)}
+.react small{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;padding:.2rem .7rem;border-radius:99px;color:var(--paper);background:var(--ink)}
+.react span{font-family:var(--f-display);font-weight:800;font-size:clamp(1.5rem,4.6vw,2.8rem);line-height:1.12;text-wrap:balance}
+.react em{font-style:normal;font-family:var(--f-mono);font-size:.7rem;color:var(--ink-2)}
+.react.win .box{border-color:var(--gold);box-shadow:0 12px 0 var(--gold)} .react.win span{color:var(--gold)} .react.win small{background:var(--gold)}
+.react.shout .box,.react.laugh .box{border-color:var(--bad);box-shadow:0 12px 0 var(--bad)} .react.shout span,.react.laugh span{color:var(--bad)} .react.shout small,.react.laugh small{background:var(--bad)}
+.react.on.win .box{animation:pop .6s cubic-bezier(.2,1.6,.4,1)}
+.react.on.shout .box{animation:shake .45s 3}
+.react.on.laugh .box{animation:wobble .5s 3}
+@keyframes pop{0%{transform:scale(.2) rotate(-12deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes shake{0%,100%{transform:translate(0,0) scale(1.03)}20%{transform:translate(-16px,4px) rotate(-3deg)}40%{transform:translate(14px,-4px) rotate(3deg)}60%{transform:translate(-10px,2px)}80%{transform:translate(8px,-2px)}}
+@keyframes wobble{0%,100%{transform:rotate(0) scale(1)}25%{transform:rotate(-4deg) scale(1.04,.96)}75%{transform:rotate(4deg) scale(.96,1.04)}}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:19}
 .snd{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:.15rem .7rem;font-family:var(--f-mono);font-size:.75rem}
 .cool{display:grid;gap:6px;font-family:var(--f-mono);font-size:.8rem;color:var(--ink-2)}
@@ -169,7 +176,7 @@ p{margin:0}
 .cool .bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s linear}
 .cool.ready{color:var(--ok)}
 .qs.wait .qb:not(.y):not(.n){opacity:.5}
-@media (prefers-reduced-motion:reduce){.react.on span{animation:none}}
+@media (prefers-reduced-motion:reduce){.react.on .box{animation:none}}
 .toast{font-family:var(--f-mono);font-size:.8rem;color:var(--ok);min-height:1.2rem}
 
 @media (max-width:900px){
@@ -338,7 +345,7 @@ function ac(){
   if(!soundOn) return null;
   try{
     if(!AC){const C=window.AudioContext||window.webkitAudioContext; if(!C) return null;
-      AC=new C(); const comp=AC.createDynamicsCompressor(); master=AC.createGain(); master.gain.value=.7; master.connect(comp); comp.connect(AC.destination);}
+      AC=new C(); const comp=AC.createDynamicsCompressor(); master=AC.createGain(); master.gain.value=.75; master.connect(comp); comp.connect(AC.destination);}
     if(AC.state==='suspended') AC.resume();
     return AC;
   }catch(e){return null;}
@@ -350,8 +357,10 @@ function tone(t,f,d,o){
   if(o.vib){const l=a.createOscillator(), lg=a.createGain(); l.frequency.value=o.vr||6; lg.gain.value=o.vib; l.connect(lg); lg.connect(os.frequency); l.start(t); l.stop(t+d+.05);}
   g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+at);
   g.gain.setValueAtTime(v,t+Math.max(at,d*.75)); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  let out=g;
   if(o.lp){const fl=a.createBiquadFilter(); fl.type='lowpass'; fl.frequency.value=o.lp; os.connect(fl); fl.connect(g);} else os.connect(g);
-  g.connect(master); os.start(t); os.stop(t+d+.05);
+  if(o.dist){const w=a.createWaveShaper(); w.curve=curve(); g.connect(w); out=w;}
+  out.connect(master); os.start(t); os.stop(t+d+.05);
 }
 function noise(t,d,o){
   o=o||{}; const a=AC, len=Math.ceil(a.sampleRate*d), buf=a.createBuffer(1,len,a.sampleRate), ch=buf.getChannelData(0);
@@ -363,58 +372,112 @@ function noise(t,d,o){
   g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+at); g.gain.exponentialRampToValueAtTime(.0001,t+d);
   src.connect(fl); fl.connect(g); g.connect(master); src.start(t); src.stop(t+d+.05);
 }
-const N={C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,Ab4:415.3,A4:440,Bb4:466.16,C5:523.25,E5:659.25,G5:783.99,C6:1046.5,E6:1318.5,G6:1568,C7:2093};
-const FAIL_SFX=[
-  t=>{[N.D4,277.18,N.C4,246.94].forEach((f,i)=>tone(t+i*.42,f,i<3?.4:1.2,{type:'sawtooth',lp:1100,vol:.16,vib:i===3?9:0,vr:7}));}, // trombón triste
-  t=>{tone(t,88,.95,{type:'sawtooth',lp:900,vol:.3,vib:38,vr:31}); noise(t,.95,{f:300,q:.8,vol:.15});}, // pedorreta
-  t=>{tone(t,1900,.85,{f2:240,vol:.14,vib:12,vr:7}); tone(t+.9,190,.3,{f2:55,vol:.45}); noise(t+.9,.15,{f:400,vol:.25});}, // silbato cayendo + golpe
-  t=>{[0,.24,.5].forEach((d,i)=>{tone(t+d,i<2?290:280,i<2?.18:.55,{type:'square',lp:1400,vol:.13,f2:i<2?null:190}); tone(t+d,i<2?297:286,i<2?.18:.55,{type:'square',lp:1400,vol:.1,f2:i<2?null:195});});}, // bocina de payaso
-  t=>{tone(t,196,.45,{type:'triangle',f2:170,vol:.35}); tone(t+.5,176,1,{type:'triangle',f2:110,vol:.35,vib:6,vr:5}); tone(t,98,.45,{type:'sawtooth',lp:500,vol:.1}); tone(t+.5,88,1,{type:'sawtooth',lp:500,vol:.1,f2:55});}, // womp womp
-  t=>{noise(t,1.5,{f:950,f2:380,q:2.5,vol:.28,at:.15}); [230,250,268,290,305].forEach(f=>tone(t+Math.random()*.08,f,1.5,{type:'sawtooth',lp:800,f2:f*.68,vol:.035,at:.12}));}, // «ooooh» del público
-  t=>{[[N.G4,.3],[N.E4,.3],[N.A4,.3],[N.G4,.3],[N.E4,.6]].reduce((acc,[f,d])=>{tone(t+acc,f,d*.9,{type:'square',lp:1800,vol:.1});return acc+d;},0);} // «na-na-na-na-naa»
+let CURVE=null;
+function curve(){if(CURVE)return CURVE;const n=1024,c=new Float32Array(n);for(let i=0;i<n;i++){const x=i/(n-1)*2-1;c[i]=Math.tanh(x*5);}return CURVE=c;}
+/* Voz sintética por formantes: una fuente glotal (diente de sierra) filtrada por las resonancias de cada vocal. */
+const VW={a:[800,1150,2900],e:[450,1900,2600],i:[300,2300,3000],o:[480,820,2800],u:[330,720,2500]};
+function vox(t,d,f0,f1,v,o){
+  o=o||{}; const a=AC, F=VW[v], vol=o.vol||.25, at=o.at||.015;
+  const s=a.createOscillator(); s.type='sawtooth';
+  s.frequency.setValueAtTime(f0,t); s.frequency.exponentialRampToValueAtTime(f1||f0,t+d);
+  if(o.vib){const l=a.createOscillator(),lg=a.createGain();l.frequency.value=o.vr||5.5;lg.gain.value=o.vib;l.connect(lg);lg.connect(s.frequency);l.start(t);l.stop(t+d+.05);}
+  const env=a.createGain();
+  env.gain.setValueAtTime(.0001,t); env.gain.exponentialRampToValueAtTime(vol,t+at); env.gain.setValueAtTime(vol,t+Math.max(at,d*.6)); env.gain.exponentialRampToValueAtTime(.0001,t+d);
+  F.forEach((f,i)=>{const bp=a.createBiquadFilter();bp.type='bandpass';bp.frequency.value=f*(o.fs||1);bp.Q.value=5;const gg=a.createGain();gg.gain.value=[4,2.6,1.2][i];s.connect(bp);bp.connect(gg);gg.connect(env);});
+  let out=env;
+  if(o.dist){const w=a.createWaveShaper();w.curve=curve();env.connect(w);out=w;}
+  out.connect(master);
+  if(o.echo){const dl=a.createDelay(1),fb=a.createGain();dl.delayTime.value=o.echo;fb.gain.value=.35;out.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(master);}
+  s.start(t); s.stop(t+d+.05);
+  if(o.h!==false) noise(t,.05,{f:1700,q:.8,vol:vol*.5,at:.004});
+}
+function laugh(t,n,f0,f1,v,syl,gap,o){for(let i=0;i<n;i++){const f=f0+(f1-f0)*(i/Math.max(1,n-1));vox(t+i*(syl+gap),syl,f*1.08,f*.9,v,o);}return n*(syl+gap);}
+const N={C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,Ab4:415.3,Bb4:466.16,B4:493.88,C5:523.25,E5:659.25,F5:698.46,G5:783.99,A5:880,C6:1046.5,E6:1318.5,G6:1568,C7:2093};
+
+/* Risas (devuelven la duración, para que la voz hable después) */
+const LAUGHS=[
+  t=>{vox(t,.4,125,150,'u',{vol:.3,h:false,echo:.22});return .45+laugh(t+.45,7,180,118,'a',.15,.05,{vol:.32,echo:.22});}, // ¡MUAJAJAJA!
+  t=>laugh(t,10,580,470,'i',.08,.035,{vol:.42,fs:1.15}), // ji-ji-ji aguda
+  t=>{vox(t,.3,340,300,'a',{vol:.38});vox(t+.38,.5,255,185,'a',{vol:.38});return .95;}, // ¡JA-JA! de burla
+  t=>laugh(t,6,125,98,'o',.2,.08,{vol:.36}), // JO-JO-JO grave
+  t=>{const d=laugh(t,13,640,720,'a',.06,.03,{vol:.2,vib:30,vr:18});noise(t+d,.45,{f:3200,f2:4800,q:5,vol:.2});return d+.45;}, // hiena
+  t=>{for(let k=0;k<8;k++){const f=140+Math.random()*230,v='aeo'[k%3],sy=.09+Math.random()*.08,n=7+Math.floor(Math.random()*5);laugh(t+Math.random()*.35,n,f*1.1,f*.85,v,sy,.04,{vol:.09});}noise(t,2,{f:900,q:.5,vol:.08,at:.2});return 2;}, // público partiéndose de risa
+  t=>{const d=laugh(t,8,300,200,'a',.12,.04,{vol:.3});[N.D4,277.18,N.C4,246.94].forEach((f,i)=>tone(t+d+i*.38,f,i<3?.36:1,{type:'sawtooth',lp:1100,vol:.14,vib:i===3?9:0,vr:7}));return d+.6;} // risa + trombón triste
 ];
-const WIN_SFX=[
-  t=>{[N.C5,N.E5,N.G5].forEach((f,i)=>tone(t+i*.12,f,.14,{type:'sawtooth',lp:2600,vol:.12})); [N.C6,N.G5,N.E5,N.C5].forEach(f=>tone(t+.36,f,1.3,{type:'sawtooth',lp:2600,vol:.07,vib:5,vr:6}));}, // fanfarria
-  t=>{const s=[[N.C5,.13],[N.C5,.13],[N.C5,.13],[N.C5,.45],[N.Ab4,.45],[N.Bb4,.45],[N.C5,.2],[0,.12]];let x=0;s.forEach(([f,d])=>{if(f)tone(t+x,f,d*.9,{type:'square',lp:2200,vol:.1});x+=d;});[N.C5,N.E5,N.G5].forEach(f=>tone(t+x,f,1.1,{type:'square',lp:2200,vol:.07,vib:4}));}, // victoria de videojuego
-  t=>{[0,.32,.64].forEach((d,i)=>{const L=i<2?.26:.9;[466,471,233].forEach(f=>tone(t+d,f,L,{type:'sawtooth',lp:3200,vol:.09}));}); noise(t+.6,1.6,{f:1600,q:.7,vol:.2,at:.3});}, // bocinas de fiesta
-  t=>{[N.C5,N.E5,N.G5,N.C6,N.E6,N.G6,N.C7].forEach((f,i)=>tone(t+i*.065,f,.12,{type:'square',lp:5000,vol:.08})); for(let i=0;i<14;i++) tone(t+.5+i*.06,2000+Math.random()*3000,.15,{vol:.05});}, // subida de nivel
-  t=>{noise(t,2.2,{f:1400,q:.6,vol:.25,at:.4}); for(let i=0;i<45;i++) noise(t+Math.random()*2,.03,{type:'highpass',f:1800,vol:.25,at:.002}); tone(t+.3,2100,.9,{f2:2700,vol:.06,vib:120,vr:12});}, // ovación y aplausos
-  t=>{[N.G4,N.D4*1.5,349.23*2].forEach(f=>tone(t,f,.13,{type:'sawtooth',lp:2400,vol:.08})); [N.C5,N.E5,N.G5,N.C6].forEach(f=>tone(t+.2,f,1.4,{type:'sawtooth',lp:2400,vol:.08,vib:6,vr:5.5}));}, // ¡ta-chán!
-  t=>{for(let i=0;i<16;i++) tone(t+i*.045,N.C5*Math.pow(2,i/7),.5,{type:'triangle',vol:.06}); [N.C5,N.E5,N.G5,N.C6].forEach(f=>tone(t+.75,f,1.6,{vol:.06,vib:5,at:.25}));} // arpa y coro celestial
+/* Broncas: grito, sirena, bocinazo… y después la voz grita */
+const SHOUTS=[
+  t=>{vox(t,1.1,300,235,'a',{vol:.32,dist:true,vib:20,vr:9,at:.05});noise(t,1.1,{f:2200,q:.5,vol:.1});return .5;}, // ¡AAARGH!
+  t=>{for(let i=0;i<6;i++) tone(t+i*.24,i%2?770:960,.23,{type:'square',lp:3000,vol:.22});return .6;}, // sirena
+  t=>{[0,.5].forEach(d=>{tone(t+d,110,.42,{type:'sawtooth',vol:.18,dist:true});tone(t+d,117,.42,{type:'sawtooth',vol:.14,dist:true});});return .5;}, // bocinazo MEEEC MEEEC
+  t=>{vox(t,1,270,175,'o',{vol:.32,dist:true,vib:12,at:.04});return .4;}, // ¡NOOOO!
+  t=>{tone(t,130,.32,{f2:40,vol:.6});noise(t,.25,{type:'lowpass',f:500,vol:.4,at:.003});vox(t+.3,.8,320,260,'e',{vol:.3,dist:true,vib:16,vr:8});return .7;} // golpe en la mesa + grito
 ];
-const WIN_TXT=['¡INCREÍBLE! El Banco Central quiere ficharte','¡Matrícula de honor! Van a imprimir un billete con tu cara','¡Que alguien llame al FMI! Tenemos un genio','¡Crack, máquina, fiera, titán de las finanzas!','¡Lo nunca visto! La Bolsa ha subido un diez por ciento por ti','¡Bravo, bravo, bravísimo! El Eurogrupo se pone en pie','¡Espectacular! Tu nivel cotiza en máximos históricos','¡Sublime! Hasta el BCE ha parado la reunión para aplaudirte'];
-const FAIL_TXT=['Uy, uy, uy… eso no lo firma ni el becario','Tu cartera acaba de declararse en quiebra','Te han bajado la nota a bono basura','Ni con un préstamo del FMI se rescata esa respuesta','Hasta la hucha de cerdito sabe más que tú','El Banco de España te ha abierto un expediente','Esa respuesta cotiza a cero euros','La CNMV ha suspendido tu cotización por vergüenza'];
+/* Celebraciones épicas, siempre con un estadio ovacionando debajo */
+function stadium(t,d){
+  noise(t,d,{f:1100,q:.4,vol:.16,at:.35}); noise(t,d,{f:2600,q:.7,vol:.07,at:.5});
+  for(let i=0;i<90;i++) noise(t+.2+Math.random()*(d-.4),.025,{type:'highpass',f:1700,vol:.22,at:.002});
+  for(let i=0;i<7;i++){const f=260+Math.random()*240;vox(t+Math.random()*(d-1),.7,f,f*1.35,Math.random()<.5?'u':'o',{vol:.07,at:.08});}
+  tone(t+.4,2100,1,{f2:2800,vol:.05,vib:140,vr:13});
+}
+function chord(t,fs,d,o){fs.forEach(f=>tone(t,f,d,o));}
+function choir(t,syl){let x=0;syl.forEach(([v,fs,d])=>{fs.forEach(f=>vox(t+x,d,f,f,v,{vol:.09,vib:5,at:.1,h:v!=='a'}));x+=d;});return x;}
+const EPICS=[
+  t=>{for(let i=0;i<18;i++) tone(t+i*.055,82,.1,{vol:.45});noise(t,1,{type:'lowpass',f:200,vol:.15});[[N.G4,.15],[N.G4,.15],[N.G4,.15]].forEach(([f,d],i)=>chord(t+1+i*.17,[f,f/2],d,{type:'sawtooth',lp:2400,vol:.08}));chord(t+1.55,[N.C5,N.E5,N.G5,N.C6,N.C4],2,{type:'sawtooth',lp:2600,vol:.06,vib:5});noise(t+1.55,2.4,{type:'highpass',f:5000,vol:.18,at:.005});}, // timbales + fanfarria + platillos
+  t=>{choir(t,[['a',[N.C4,N.E4,N.G4,N.C5],.5],['e',[N.F4,N.A4,N.C5,N.F5],.5],['u',[N.E4,N.G4,N.C5,N.G5],.5],['a',[N.C4,N.E4,N.G4,N.C5,N.E5],1.9]]);}, // coro «a-le-lu-yaaa»
+  t=>{for(let k=0;k<5;k++){const s=t+k*.45;tone(s,500,.4,{f2:2200,vol:.05});tone(s+.42,90,.5,{f2:35,vol:.55});noise(s+.42,.6,{type:'lowpass',f:700,vol:.35,at:.004});for(let i=0;i<14;i++) noise(s+.5+Math.random()*.6,.02,{type:'highpass',f:3500,vol:.18,at:.002});}chord(t+.3,[N.C5,N.E5,N.G5],2,{type:'sawtooth',lp:2200,vol:.05,vib:5});}, // fuegos artificiales
+  t=>{const s=[[N.C5,.13],[N.C5,.13],[N.C5,.13],[N.C5,.45],[N.Ab4,.45],[N.Bb4,.45],[N.C5,.2],[0,.12]];let x=0;s.forEach(([f,d])=>{if(f)tone(t+x,f,d*.9,{type:'square',lp:2200,vol:.1});x+=d;});choir(t+x,[['a',[N.C4,N.E4,N.G4,N.C5],1.6]]);}, // jingle de victoria + coro
+  t=>{[0,.34,.68,1.02].forEach((d,i)=>{const L=i<3?.28:1.1;[466,471,233].forEach(f=>tone(t+d,f,L,{type:'sawtooth',lp:3200,vol:.16}));});}, // bocinas de estadio
+  t=>{[N.C5,N.E5,N.G5,N.C6,N.E6,N.G6,N.C7].forEach((f,i)=>tone(t+i*.065,f,.12,{type:'square',lp:5000,vol:.14}));[0,.5,1,1.5].forEach(d=>[1,2.76,5.4].forEach((m,j)=>tone(t+.5+d,N.C5*m,1.2,{vol:.14/(j+1)})));} // subida de nivel + campanas
+];
+
+const WIN_TXT=['¡¡INCREÍBLE!! ¡Acabas de salvar la economía mundial! ¡Los mercados de todo el planeta lloran de alegría!','¡¡ATENCIÓN, HUMANIDAD!! ¡Esto es más importante que la llegada del hombre a la Luna!','¡¡HISTÓRICO!! ¡Te acaban de dar el Nobel de Economía, el de la Paz y un Óscar a la vez!','¡¡PAREN LAS ROTATIVAS!! ¡Los libros de historia se reescriben en tu honor!','¡¡SÍIII!! ¡Los 190 países del FMI declaran hoy fiesta nacional por ti!','¡¡LEYENDA!! ¡¡MITO!! ¡¡PATRIMONIO DE LA HUMANIDAD!!','¡¡GLORIA ETERNA!! ¡Los bancos centrales acuñarán una moneda con tu cara!','¡¡ESTO ES UN MILAGRO!! ¡La ONU convoca una sesión urgente solo para aplaudirte!','¡¡QUÉ BARBARIDAD!! ¡Tu familia llora de orgullo y el BCE también!'];
+const SHOUT_TXT=['¡¡NOOO!! ¡¿PERO QUÉ HAS HECHO?!','¡¡FATAL!! ¡ESO ES UN DESASTRE ABSOLUTO!','¡¡PERO BUENO!! ¡¿TÚ HAS ABIERTO EL TEMARIO ALGUNA VEZ?!','¡¡ERROR, ERROR!! ¡QUE ALGUIEN LE QUITE EL RATÓN!','¡¿EN SERIO?! ¡ESO LO SABE HASTA MI ABUELA!','¡¡NO, NO Y NO!! ¡ESO NO ES ASÍ NI DE BROMA!','¡¡SUSPENSO!! ¡VUELVE A PRIMERO DE PRIMARIA!','¡¿PERO TÚ QUÉ ESTÁS HACIENDO?! ¡¡CONCÉNTRATE!!'];
+const LAUGH_TXT=['Ja, ja, ja. ¿De verdad has pulsado eso?','Ja, ja, ja, ja. Que alguien grabe esto, por favor.','Ja, ja. El banquero se está partiendo de risa contigo.','Ji, ji, ji. Tranquilo, el ridículo no cotiza en Bolsa.','Ja, ja, ja. Hasta la hucha de cerdito sabe más que tú.','Muajajajá. Tu cartera acaba de declararse en quiebra.','Ja, ja, ja. La CNMV ha suspendido tu cotización por vergüenza.','Jo, jo, jo. Ni con un préstamo del FMI se rescata esa respuesta.'];
 function bag(n){let b=[],last=-1;return ()=>{if(!b.length){b=[...Array(n).keys()].sort(()=>Math.random()-.5);if(b[0]===last)b.push(b.shift());}last=b.shift();return last;};}
-const pick={ws:bag(WIN_SFX.length),fs:bag(FAIL_SFX.length),wt:bag(WIN_TXT.length),ft:bag(FAIL_TXT.length)};
-function say(text,win){
+const pick={ep:bag(EPICS.length),la:bag(LAUGHS.length),sh:bag(SHOUTS.length),wt:bag(WIN_TXT.length),st:bag(SHOUT_TXT.length),lt:bag(LAUGH_TXT.length),kind:bag(2)};
+const VOICE={win:{rate:1.08,pitch:1.45},shout:{rate:1.25,pitch:1.3},laugh:{rate:.92,pitch:.75}};
+function say(text,mode,delay){
   if(!soundOn||!('speechSynthesis' in window)) return;
   try{
     speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text.replace('…','...'));
-    u.lang='es-ES'; u.rate=win?1.12:.9; u.pitch=win?1.5:.6; u.volume=1;
-    const v=speechSynthesis.getVoices().find(x=>/^es/i.test(x.lang)); if(v) u.voice=v;
-    setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){}},win?450:600);
+    const u=new SpeechSynthesisUtterance(text.replace(/…/g,'...'));
+    u.lang='es-ES'; u.rate=VOICE[mode].rate; u.pitch=VOICE[mode].pitch; u.volume=1;
+    const vs=speechSynthesis.getVoices(), v=vs.find(x=>/^es[-_]ES/i.test(x.lang))||vs.find(x=>/^es/i.test(x.lang)); if(v) u.voice=v;
+    clearTimeout(say.t); say.t=setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){}},delay*1000);
   }catch(e){}
 }
 function react(win){
-  const txt=win?WIN_TXT[pick.wt()]:FAIL_TXT[pick.ft()];
-  const a=ac(); if(a){try{(win?WIN_SFX[pick.ws()]:FAIL_SFX[pick.fs()])(a.currentTime+.02);}catch(e){}}
-  say(txt,win);
-  const o=$('#react'); o.className='react '+(win?'win':'fail'); o.innerHTML='<span>'+esc(txt)+'</span>'; o.hidden=false;
+  const a=ac(), t=a?a.currentTime+.03:0;
+  let txt, mode, kick;
+  if(win){
+    txt=WIN_TXT[pick.wt()]; mode='win'; kick='Última hora mundial';
+    if(a){try{EPICS[pick.ep()](t);stadium(t,3.6);}catch(e){}}
+    say(txt,'win',.7);
+  } else if(pick.kind()===0){
+    txt=SHOUT_TXT[pick.st()]; mode='shout'; kick='Bronca del banquero';
+    let d=.5; if(a){try{d=SHOUTS[pick.sh()](t);}catch(e){}}
+    say(txt,'shout',d);
+  } else {
+    txt=LAUGH_TXT[pick.lt()]; mode='laugh'; kick='JA JA JA JA JA';
+    let d=1.2; if(a){try{d=LAUGHS[pick.la()](t);}catch(e){}}
+    say(txt,'laugh',d+.1);
+  }
+  const o=$('#react'); o.className='react '+mode; o.innerHTML='<div class="box"><small>'+esc(kick)+'</small><span>'+esc(txt)+'</span><em>Toca para seguir</em></div>'; o.hidden=false;
   void o.offsetWidth; o.classList.add('on');
-  clearTimeout(react.t); react.t=setTimeout(()=>{o.hidden=true;},2300);
+  clearTimeout(react.t); react.t=setTimeout(()=>{o.hidden=true;},win?4200:3200);
   if(win) confetti();
 }
 function confetti(){
   if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const c=$('#fx'), x=c.getContext('2d'); c.width=innerWidth; c.height=innerHeight; c.hidden=false;
   const cs=getComputedStyle(document.documentElement), cols=['--gold','--green','--g-int','--g-nac','--g-eur'].map(k=>cs.getPropertyValue(k).trim());
-  const P=Array.from({length:140},()=>({x:c.width/2,y:c.height*.45,vx:(Math.random()-.5)*16,vy:-Math.random()*15-4,r:Math.random()*6+4,c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*6}));
+  const P=[];
+  [[.5,.5,0],[.2,.6,.5],[.8,.6,.9],[.5,.35,1.4]].forEach(([ox,oy,dl])=>{for(let i=0;i<110;i++)P.push({x:c.width*ox,y:c.height*oy,vx:(Math.random()-.5)*18,vy:-Math.random()*16-4,r:Math.random()*6+4,c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*6,d:dl*1000});});
   const t0=performance.now();
   (function f(now){
     const k=now-t0; x.clearRect(0,0,c.width,c.height);
-    P.forEach(p=>{p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore();});
-    if(k<1800) requestAnimationFrame(f); else {x.clearRect(0,0,c.width,c.height); c.hidden=true;}
+    P.forEach(p=>{if(k<p.d)return;p.vy+=.42;p.x+=p.vx;p.y+=p.vy;p.vx*=.99;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore();});
+    if(k<3600) requestAnimationFrame(f); else {x.clearRect(0,0,c.width,c.height); c.hidden=true;}
   })(t0);
 }
 function paintSound(){const b=$('#snd'); if(b){b.textContent=soundOn?'Sonido: sí':'Sonido: no'; b.setAttribute('aria-pressed',String(soundOn));}}
@@ -598,6 +661,7 @@ function end(){
   window.scrollTo({top:0});
 }
 
+$('#react').onclick=()=>{$('#react').hidden=true;};
 $('#snd').onclick=()=>{soundOn=!soundOn; try{localStorage.setItem(SND_KEY,soundOn?'on':'off')}catch(e){} if(!soundOn){try{speechSynthesis.cancel()}catch(e){}} else ac(); paintSound();};
 paintSound();
 intro();
