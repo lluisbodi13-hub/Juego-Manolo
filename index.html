@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>Quién es Quién Financiero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Concepto: billete de banco. Papel verde pálido, tinta verde de seguridad, fondos guilloché en el reverso de las fichas, acento dorado. */
+:root{
+  --paper:#EAF0E6; --panel:#F8FAF4; --ink:#0D2A21; --ink-2:#47615A; --line:#C6D4C9;
+  --green:#0F5A44; --on-green:#FFFFFF; --gold:#A87412; --gold-soft:#F2E4BC;
+  --ok:#1B7A47; --ok-soft:#D8EEDF; --bad:#B0342C; --bad-soft:#F6DAD6;
+  --g-int:#1D5E8E; --g-nac:#A33A45; --g-eur:#4A3E9E;
+  --back-a:#0F5A44; --back-b:#3B8C70;
+  --f-display:'Bodoni Moda',Georgia,'Times New Roman',serif;
+  --f-body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0A1613; --panel:#12241E; --ink:#E7F1EB; --ink-2:#9FB7AC; --line:#26433B;
+    --green:#5FCBA3; --on-green:#06140F; --gold:#E6B24A; --gold-soft:#3A2F14;
+    --ok:#6FD79A; --ok-soft:#173825; --bad:#F08A80; --bad-soft:#40201C;
+    --g-int:#74B4E6; --g-nac:#EA8F98; --g-eur:#ABA0F4;
+    --back-a:#1B4A3B; --back-b:#2F7A61; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0A1613; --panel:#12241E; --ink:#E7F1EB; --ink-2:#9FB7AC; --line:#26433B;
+  --green:#5FCBA3; --on-green:#06140F; --gold:#E6B24A; --gold-soft:#3A2F14;
+  --ok:#6FD79A; --ok-soft:#173825; --bad:#F08A80; --bad-soft:#40201C;
+  --g-int:#74B4E6; --g-nac:#EA8F98; --g-eur:#ABA0F4;
+  --back-a:#1B4A3B; --back-b:#2F7A61; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.shell{max-width:1180px;margin-inline:auto;padding-inline:16px;padding-block:14px 40px;display:flex;flex-direction:column;gap:18px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+p{margin:0}
+
+/* barra superior */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;padding-bottom:12px;border-bottom:2px solid var(--ink)}
+.brand{font-family:var(--f-display);font-weight:800;font-size:1.15rem;letter-spacing:.01em}
+.brand small{display:block;font-family:var(--f-mono);font-weight:500;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.pips{display:flex;gap:6px;list-style:none;margin:0;padding:0}
+.pips li{font-family:var(--f-mono);font-size:.68rem;min-width:1.9rem;height:1.9rem;display:grid;place-items:center;border:1.5px solid var(--line);border-radius:50%;color:var(--ink-2)}
+.pips li.done{background:var(--green);border-color:var(--green);color:var(--on-green)}
+.pips li.cur{border-color:var(--gold);color:var(--gold);font-weight:600;box-shadow:0 0 0 3px var(--gold-soft)}
+.stats{display:flex;gap:14px;font-family:var(--f-mono);font-size:.85rem;font-variant-numeric:tabular-nums}
+.stats b{font-weight:600;color:var(--gold)}
+
+/* botones */
+.btn{border:2px solid var(--green);background:var(--green);color:var(--on-green);font-weight:700;padding:.7rem 1.3rem;border-radius:999px;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--green)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* intro */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}
+.guil{aspect-ratio:1;max-width:100%;border-radius:50%;border:2px solid var(--ink);
+  background:
+    repeating-radial-gradient(circle at 38% 42%, transparent 0 5px, var(--back-b) 5px 6px),
+    repeating-radial-gradient(circle at 62% 58%, transparent 0 5px, var(--back-a) 5px 6px),
+    var(--panel);
+  display:grid;place-items:center;position:relative}
+.guil span{font-family:var(--f-display);font-weight:800;font-size:clamp(3rem,10vw,6.5rem);background:var(--panel);width:46%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;border:2px solid var(--ink);color:var(--gold)}
+.eyebrow{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+.hero h1{font-size:clamp(2.3rem,6vw,4.2rem);font-weight:800;margin-block:6px 14px}
+.hero p.lead{font-size:1.1rem;max-width:52ch;color:var(--ink-2)}
+.steps{list-style:none;margin:22px 0;padding:0;display:grid;gap:10px;max-width:56ch}
+.steps li{display:grid;grid-template-columns:2rem 1fr;gap:10px;align-items:baseline}
+.steps b{font-family:var(--f-mono);color:var(--gold)}
+.route{display:flex;flex-wrap:wrap;gap:8px;margin-block:4px 22px;padding:0;list-style:none}
+.route li{border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;font-size:.85rem;background:var(--panel)}
+.route li b{font-family:var(--f-mono);font-size:.7rem;color:var(--gold);margin-right:6px}
+.best{font-family:var(--f-mono);font-size:.8rem;color:var(--ink-2);margin-top:12px}
+
+/* juego */
+.rhead h2{font-size:1.8rem;font-weight:800}
+.rhead .hint{color:var(--ink-2);margin-top:4px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:22px;align-items:start}
+.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.card{perspective:800px;border:0;background:none;padding:0;text-align:center}
+.card .in{position:relative;display:block;aspect-ratio:3/4;transition:transform .6s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d}
+.card.down .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;overflow:hidden}
+.front{background:var(--panel);border:1.5px solid var(--line);border-top:5px solid var(--gc);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:6px 5px}
+.card:hover:not(.down) .front{border-color:var(--gc)}
+.card.sel .front{box-shadow:0 0 0 3px var(--gold);border-color:var(--gold)}
+.sig{font-family:var(--f-mono);font-weight:600;font-size:.74rem;color:var(--gc);border:2px solid var(--gc);border-radius:999px;min-width:2.9rem;padding:.35rem .5rem;line-height:1}
+.sig.l{font-size:.6rem}
+.nm{font-size:.68rem;line-height:1.15;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.back{transform:rotateY(180deg);border:1.5px solid var(--ink);
+  background:
+    repeating-radial-gradient(circle at 30% 30%, transparent 0 3px, var(--back-b) 3px 4px),
+    repeating-radial-gradient(circle at 70% 70%, var(--back-a) 0 3px, transparent 3px 6px),
+    var(--back-a)}
+.g-I{--gc:var(--g-int)} .g-N{--gc:var(--g-nac)} .g-E{--gc:var(--g-eur)}
+
+.panel{display:flex;flex-direction:column;gap:12px;position:sticky;top:12px;min-width:0}
+.secret{display:grid;grid-template-columns:4.2rem 1fr;gap:12px;align-items:center;background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:10px}
+.secret .mini{aspect-ratio:3/4;border-radius:8px;border:1.5px solid var(--ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.8rem;color:var(--gold);
+  background:repeating-radial-gradient(circle at 30% 30%, var(--back-a) 0 3px, var(--back-b) 3px 4px)}
+.secret .mini i{font-style:normal;background:var(--panel);width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--ink)}
+.stat{font-family:var(--f-mono);font-size:.78rem;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px}
+.stat b{color:var(--ink);font-weight:600}
+.guess{background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:12px;padding:12px;display:grid;gap:8px}
+.guess .row{display:flex;gap:8px;flex-wrap:wrap}
+.last{border:1.5px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);min-height:5.4rem}
+.last.yes{border-color:var(--ok);background:var(--ok-soft)}
+.last.no{border-color:var(--bad);background:var(--bad-soft)}
+.verdict{font-family:var(--f-display);font-weight:800;font-size:1.5rem;margin-right:8px}
+.last.yes .verdict{color:var(--ok)} .last.no .verdict{color:var(--bad)}
+.last .q{font-weight:600;font-size:.9rem}
+.last .note{font-size:.85rem;color:var(--ink-2);margin-top:4px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:.3rem .8rem;font-size:.8rem;font-weight:600}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.qs{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:19rem;overflow-y:auto;padding-right:2px}
+.qb{width:100%;text-align:left;border:1.5px solid var(--line);background:var(--panel);border-radius:10px;padding:.55rem .75rem;font-size:.9rem;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.qb:hover:not(:disabled){border-color:var(--green)}
+.qb:disabled{cursor:default;color:var(--ink-2)}
+.qb .r{font-family:var(--f-mono);font-weight:600;flex:none}
+.qb.y .r{color:var(--ok)} .qb.n .r{color:var(--bad)}
+
+/* ficha y test */
+.ficha{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start}
+.ficha .card{pointer-events:none}
+.res{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ok)}
+.ficha h2{font-size:2.1rem;font-weight:800;margin-block:4px 10px}
+.desc{max-width:62ch;font-size:1.05rem}
+.quiz{margin-top:22px;border-top:2px solid var(--ink);padding-top:16px;max-width:62ch}
+.quiz h3{font-size:1.3rem;margin-block:4px 12px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--panel);border-radius:10px;padding:.65rem .9rem}
+.opt:hover:not(:disabled){border-color:var(--green)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.expl{margin-top:12px;color:var(--ink-2);font-size:.95rem}
+.next{margin-top:16px}
+.end{max-width:700px;display:grid;gap:14px}
+.end h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:800}
+.big{font-family:var(--f-mono);font-size:3rem;font-weight:600;color:var(--gold);font-variant-numeric:tabular-nums}
+.sum{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.95rem}
+.sum li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px}
+.sum span:last-child{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.toast{font-family:var(--f-mono);font-size:.8rem;color:var(--ok);min-height:1.2rem}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .guil{max-width:240px;order:-1}
+  .cols{grid-template-columns:1fr}
+  .panel{position:static}
+  .board{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+  .qs{max-height:none}
+  .ficha{grid-template-columns:1fr}
+  .ficha .card{max-width:170px}
+}
+@media (prefers-reduced-motion:reduce){
+  .card .in{transition:none}.btn{transition:none}
+}
+</style>
+
+<div class="shell">
+  <header class="top">
+    <div class="brand">Quién es Quién<small>Sistema financiero internacional</small></div>
+    <ol class="pips" id="pips" aria-label="Progreso"></ol>
+    <div class="stats"><span><b id="sc">0</b> pts</span><span id="tm">00:00</span></div>
+  </header>
+  <main id="view"></main>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- DATOS ---------- */
+const CARDS=[
+ {id:'fmi',n:'Fondo Monetario Internacional',s:'FMI',g:'I',d:'Creado en 1944 en Bretton Woods, con sede en Washington. Supervisa las políticas económicas y monetarias de sus miembros, promueve el empleo y el comercio con estabilidad cambiaria y presta a países con desequilibrios en la Balanza de Pagos. Sus recursos son las cuotas de los socios, según su PIB, que también fijan su número de votos. Creó los Derechos Especiales de Giro (DEG).'},
+ {id:'bm',n:'Banco Mundial',s:'BM',g:'I',d:'Organismo de la ONU creado en 1944, con sede en Washington (antes BIRF). Concede créditos a bajo interés, sin ánimo de lucro, a países en vías de desarrollo o que han sufrido catástrofes. Sus objetivos son el crecimiento, las infraestructuras y el sector privado. Para prestar exige ser socio del BM y del FMI y que el proyecto sea prioritario y no dañe el medio ambiente.'},
+ {id:'bid',n:'Banco Interamericano de Desarrollo',s:'BID',g:'I',d:'Banco regional de desarrollo para América. Es una institución sin ánimo de lucro, formada por países de una zona geográfica concreta, que presta dinero y da asistencia técnica (material, humana y tecnológica) a los países prestatarios.'},
+ {id:'berd',n:'Banco Europeo de Reconstrucción y Desarrollo',s:'BERD',g:'I',d:'Banco regional de desarrollo sin ánimo de lucro. Aunque lleva «Europeo» en el nombre, está en el bloque de organismos internacionales y no es una institución de la UE. Se financia con aportaciones de socios y con lo captado en los mercados financieros internacionales.'},
+ {id:'bpi',n:'Banco de Pagos Internacionales',s:'BPI',g:'I',d:'Con sede en Basilea y propiedad de unos 60 bancos centrales, es el banco de los bancos centrales. Está controlado por 6 de ellos, busca la estabilidad monetaria y financiera global, gestiona reservas de divisas y no rinde cuentas ante ningún gobierno.'},
+ {id:'ocde',n:'OCDE',s:'OCDE',g:'I',d:'Organización para la Cooperación y el Desarrollo Económico, con 37 miembros. Su misión es diseñar mejores políticas para una vida mejor, con prosperidad, igualdad, oportunidades y bienestar para todas las personas.'},
+ {id:'basilea',n:'Comité de Supervisión Bancaria de Basilea',s:'BCBS',g:'I',d:'Entidad asesora a nivel mundial en regulación financiera. Sus recomendaciones guían a las autoridades nacionales que supervisan los sistemas financieros y buscan reforzar la banca frente al blanqueo de capitales, el mal gobierno, el control corporativo débil o el riesgo de crédito. El Banco de España es miembro desde 2001.'},
+ {id:'g20',n:'G20',s:'G20',g:'I',d:'Foro de las grandes economías del mundo. Junto al G7 y el G10 se incluye en el grupo de «otros organismos oficiales» del sistema financiero internacional: es un lugar de coordinación política, no una entidad que preste dinero.'},
+ {id:'bde',n:'Banco de España',s:'BdE',g:'N',d:'Regula y supervisa el sector financiero, protege a los usuarios de servicios bancarios, toma medidas correctoras y sanciona. Ejecuta las funciones del BCE y del Eurosistema, gestiona las reservas de divisas y metales preciosos y la Central de Información de Riesgos, supervisa la liquidez, asesora al gobierno y pone en circulación moneda.'},
+ {id:'cnmv',n:'Comisión Nacional del Mercado de Valores',s:'CNMV',g:'N',d:'Controla, supervisa y asesora respecto al funcionamiento del mercado de valores, donde se negocian títulos de renta fija y variable. Distingue el mercado primario (primera colocación de valores) del secundario (valores ya colocados).'},
+ {id:'dgsfp',n:'Dirección General de Seguros y Fondos de Pensiones',s:'DGSFP',g:'N',d:'Supervisa a las empresas aseguradoras y a los planes y fondos de pensiones, el tercer gran bloque del sistema financiero español junto al Banco de España y la CNMV.'},
+ {id:'av',n:'Agencia de Valores',s:'AV',g:'N',d:'Empresa de servicios de inversión con un capital mínimo de 300.000 €. Gestiona las carteras de sus clientes, les asesora y administra sus valores.'},
+ {id:'sgc',n:'Sociedad Gestora de Carteras',s:'SGC',g:'N',d:'Sociedad anónima con capital mínimo de 100.000 €, especializada en la gestión individualizada de carteras de inversión.'},
+ {id:'eafi',n:'Empresa de Asesoramiento Financiero',s:'EAFI',g:'N',d:'Persona física o jurídica que asesora en materia de inversiones. Es la única empresa de servicios de inversión que puede ser una persona física.'},
+ {id:'scr',n:'Sociedad de Capital Riesgo',s:'SCR',g:'N',d:'Sociedad anónima cuyo objeto social es participar temporalmente en el capital de empresas no financieras que no cotizan en Bolsa.'},
+ {id:'iic',n:'Institución de Inversión Colectiva',s:'IIC',g:'N',d:'Intermediario que capta dinero de ahorradores para invertirlo. Gestiona fondos de inversión mobiliaria e inmobiliaria.'},
+ {id:'broker',n:'Broker',s:'Broker',g:'N',d:'Sociedad de valores que actúa como comisionista: ejecuta las órdenes del cliente y no asume el riesgo de la operación.'},
+ {id:'dealer',n:'Dealer',s:'Dealer',g:'N',d:'Sociedad de valores que actúa por cuenta propia y, por tanto, asume el riesgo de la operación.'},
+ {id:'bce',n:'Banco Central Europeo',s:'BCE',g:'E',d:'Con sede en Francfort desde 1998, es el banco de la UEM. Su objetivo es la estabilidad de precios (inflación inferior al 2%) y gestionar el euro. Fija la política económica y monetaria, autoriza la emisión de euros, dirige las operaciones de cambio de divisas y cuida las reservas internacionales del SEBC.'},
+ {id:'sebc',n:'Sistema Europeo de Bancos Centrales',s:'SEBC',g:'E',d:'Reúne a los bancos centrales de todos los estados miembros de la UE más el BCE. Sus objetivos son mantener la estabilidad de precios y apoyar la política económica de la Unión Monetaria.'},
+ {id:'eurosis',n:'Eurosistema',s:'Euro-sistema',g:'E',d:'Subgrupo del SEBC: el BCE y los bancos centrales de los países que usan el euro.'},
+ {id:'bei',n:'Banco Europeo de Inversiones',s:'BEI',g:'E',d:'Propiedad de los países de la UE desde 1958, con sede en Luxemburgo. Impulsa crecimiento y empleo, apoya medidas contra el cambio climático y fomenta las políticas de la UE en otros países. Ofrece préstamos (más de 25 millones €), créditos a través de instituciones financieras y asesoramiento técnico.'},
+ {id:'ecofin',n:'ECOFIN',s:'ECOFIN',g:'E',d:'Consejo de ministros de economía y hacienda de todos los estados miembros, junto a los comisarios competentes en los temas de cada sesión.'},
+ {id:'eurogrupo',n:'Eurogrupo',s:'Euro-grupo',g:'E',d:'Órgano consultivo informal de los ministros de economía y hacienda de la UEM. Se reúne una vez al mes para coordinar las políticas económicas de los países de la zona euro.'}
+];
+const CATS=[['amb','Ámbito'],['nom','Nombre y sede'],['fun','Funciones'],['val','Mercado de valores'],['eur','Europa y euro']];
+const QS=[
+ {c:'amb',q:'¿Es un organismo internacional (ni español ni de la UE)?',y:'fmi bm bid berd bpi ocde basilea g20',n:'El sistema financiero se organiza en organismos internacionales, nacionales y europeos.'},
+ {c:'amb',q:'¿Forma parte del sistema financiero español?',y:'bde cnmv dgsfp av sgc eafi scr iic broker dealer',n:'En España hay tres supervisores: Banco de España, CNMV y Dirección General de Seguros y Fondos de Pensiones.'},
+ {c:'amb',q:'¿Es una institución o grupo de la Unión Europea?',y:'bce sebc eurosis bei ecofin eurogrupo',n:'El Sistema Monetario Europeo incluye BCE, SEBC, BEI, ECOFIN y Eurogrupo.'},
+ {c:'amb',q:'¿Es una reunión o grupo de ministros o líderes más que una entidad con plantilla?',y:'g20 ecofin eurogrupo',n:'G20, ECOFIN y Eurogrupo son foros de coordinación de políticas económicas.'},
+ {c:'nom',q:'¿Su nombre empieza por «Banco»?',y:'bm bid berd bpi bde bce bei',n:'Son bancos: el Banco Mundial, los bancos regionales, el BPI, el Banco de España, el BCE y el BEI.'},
+ {c:'nom',q:'¿Su nombre completo incluye la palabra «Europeo»?',y:'berd bce sebc bei',n:'Cuidado: el BERD se llama «Europeo» pero es un banco regional de desarrollo del bloque internacional.'},
+ {c:'nom',q:'¿Su nombre incluye la palabra «Desarrollo»?',y:'bid berd ocde',n:'Hay dos bancos regionales de desarrollo en el temario (BID y BERD) y la OCDE (Cooperación y Desarrollo Económico).'},
+ {c:'nom',q:'¿Su nombre incluye la palabra «Reconstrucción»?',y:'berd',n:'Banco Europeo de Reconstrucción y Desarrollo (BERD). El Banco Mundial se llamó antes BIRF: Reconstrucción y Fomento.'},
+ {c:'nom',q:'¿Tiene su sede en Washington?',y:'fmi bm',n:'FMI y Banco Mundial tienen sede en Washington y se crearon en 1944.'},
+ {c:'nom',q:'¿Tiene su sede en Basilea?',y:'bpi basilea',n:'El Banco de Pagos Internacionales tiene su sede en Basilea, y el Comité de Basilea toma su nombre de la ciudad.'},
+ {c:'nom',q:'¿Tiene su sede en Francfort o en Luxemburgo?',y:'bce bei',n:'El BCE está en Francfort (creado en 1998) y el BEI en Luxemburgo (propiedad de la UE desde 1958).'},
+ {c:'fun',q:'¿Concede préstamos o créditos a países o proyectos?',y:'fmi bm bid berd bei',n:'Prestan el FMI, el Banco Mundial, los bancos regionales y el BEI.'},
+ {c:'fun',q:'¿Funciona sin ánimo de lucro?',y:'bm bid berd',n:'El Banco Mundial y los bancos regionales de desarrollo son instituciones sin ánimo de lucro.'},
+ {c:'fun',q:'¿Presta a países con desequilibrios en la Balanza de Pagos?',y:'fmi',n:'Es una de las funciones del FMI, que exige a cambio garantías de devolución y un programa para resolver el problema.'},
+ {c:'fun',q:'¿Creó un activo de reserva internacional llamado DEG?',y:'fmi',n:'Los Derechos Especiales de Giro se valoran con una cesta de euro, dólar, libra, yen y renminbi.'},
+ {c:'fun',q:'¿Es un organismo de las Naciones Unidas?',y:'bm',n:'El Banco Mundial es un organismo de la ONU, con socios que aportan cuotas distintas (EE. UU. el 17%, España el 2%).'},
+ {c:'fun',q:'¿Sus miembros son países de una zona geográfica concreta?',y:'bid berd',n:'Es la nota de los bancos regionales de desarrollo: promueven el desarrollo de su propia zona.'},
+ {c:'fun',q:'¿Se le llama «el banco de los bancos centrales»?',y:'bpi',n:'Es propiedad de unos 60 bancos centrales, está controlado por 6 y no rinde cuentas ante ningún gobierno.'},
+ {c:'fun',q:'¿Emite recomendaciones de regulación contra el blanqueo de capitales y el riesgo de crédito?',y:'basilea',n:'Sus recomendaciones sirven de guía a las autoridades nacionales. El Banco de España es miembro desde 2001.'},
+ {c:'fun',q:'¿Su misión es diseñar mejores políticas para una vida mejor?',y:'ocde',n:'La OCDE tiene 37 miembros y promueve prosperidad, igualdad, oportunidades y bienestar.'},
+ {c:'fun',q:'¿Regula y supervisa a bancos, cajas y entidades de crédito?',y:'bde',n:'El Banco de España también gestiona la Central de Información de Riesgos y pone moneda en circulación.'},
+ {c:'fun',q:'¿Supervisa a las aseguradoras y a los fondos de pensiones?',y:'dgsfp',n:'De la DGSFP dependen las empresas aseguradoras y los planes y fondos de pensiones.'},
+ {c:'val',q:'¿Es la CNMV o depende de ella?',y:'cnmv av sgc eafi scr iic broker dealer',n:'La CNMV supervisa el mercado de valores y a las entidades que operan en él.'},
+ {c:'val',q:'¿Es una empresa de servicios de inversión (ESI)?',y:'av sgc eafi broker dealer',n:'Las ESI prestan servicios de inversión a terceros: sociedades de valores, agencias, gestoras y EAFI.'},
+ {c:'val',q:'¿Controla y supervisa el funcionamiento del mercado de valores?',y:'cnmv',n:'Distingue el mercado primario (primera colocación) del secundario (valores ya colocados).'},
+ {c:'val',q:'¿Actúa por cuenta propia y asume el riesgo?',y:'dealer',n:'Esa es la diferencia con el broker, que es un comisionista y no asume riesgo.'},
+ {c:'val',q:'¿Es un comisionista que no asume riesgo?',y:'broker',n:'El broker ejecuta órdenes de sus clientes; el dealer opera por cuenta propia.'},
+ {c:'val',q:'¿Se le exige un capital mínimo de 300.000 €?',y:'av',n:'La agencia de valores gestiona carteras, asesora y administra los valores de sus clientes.'},
+ {c:'val',q:'¿Es una S.A. especializada en la gestión individualizada de carteras?',y:'sgc',n:'La sociedad gestora de carteras necesita un capital mínimo de 100.000 €.'},
+ {c:'val',q:'¿Puede ser una persona física?',y:'eafi',n:'Las EAFI son personas físicas o jurídicas que asesoran en materia de inversiones.'},
+ {c:'val',q:'¿Capta dinero de ahorradores para gestionar fondos de inversión?',y:'iic',n:'Las instituciones de inversión colectiva gestionan fondos de inversión mobiliaria e inmobiliaria.'},
+ {c:'val',q:'¿Participa temporalmente en el capital de empresas que no cotizan en Bolsa?',y:'scr',n:'Las sociedades de capital riesgo invierten en empresas no financieras que no están en Bolsa.'},
+ {c:'eur',q:'¿Su objetivo es la estabilidad de precios, con inflación inferior al 2%?',y:'bce sebc eurosis',n:'Es el objetivo central del BCE y del sistema de bancos centrales que lo rodea.'},
+ {c:'eur',q:'¿Fija la política monetaria y autoriza la emisión de euros?',y:'bce',n:'El BCE también dirige las operaciones de cambio de divisas y cuida las reservas del SEBC.'},
+ {c:'eur',q:'¿Está formado por bancos centrales nacionales más el BCE?',y:'sebc eurosis',n:'El SEBC reúne a todos los bancos centrales de la UE; el Eurosistema solo a los de la zona euro.'},
+ {c:'eur',q:'¿Es un subgrupo del SEBC?',y:'eurosis',n:'El Eurosistema es un subgrupo del SEBC.'},
+ {c:'eur',q:'¿Solo actúa en la zona euro?',y:'bce eurosis eurogrupo',n:'BCE, Eurosistema y Eurogrupo trabajan para los países que usan el euro.'},
+ {c:'eur',q:'¿Participan todos los estados miembros de la UE?',y:'sebc ecofin',n:'En ECOFIN están los ministros de todos los estados miembros y en el SEBC sus bancos centrales.'},
+ {c:'eur',q:'¿Se reúne una vez al mes como órgano consultivo informal?',y:'eurogrupo',n:'El Eurogrupo coordina las políticas económicas de la zona euro.'},
+ {c:'eur',q:'¿Es el consejo de ministros de economía y hacienda de toda la UE?',y:'ecofin',n:'Asisten también los comisarios competentes en los temas de cada sesión.'},
+ {c:'eur',q:'¿Impulsa el empleo y la lucha contra el cambio climático con préstamos en Europa?',y:'bei',n:'El BEI ofrece préstamos (más de 25 millones €), créditos a través de entidades y asesoramiento técnico.'}
+];
+QS.forEach((q,i)=>{q.id=i;q.y=q.y.split(' ');});
+const BY=Object.fromEntries(CARDS.map(c=>[c.id,c]));
+
+const ROUNDS=[
+ {t:'Los grandes prestamistas',pool:['fmi','bm','bid','berd'],hint:'Pista: es uno de los organismos internacionales que prestan dinero.',
+  quiz:{q:'El DEG del FMI se valora con una cesta de monedas. ¿Cuál de estas NO está en la cesta?',o:['Euro','Dólar','Franco suizo','Renminbi chino'],a:2,e:'La cesta incluye euro, dólar, libra esterlina, yen y renminbi chino, las monedas de los países más exportadores.'}},
+ {t:'Reguladores y foros globales',pool:['bpi','ocde','basilea','g20'],hint:'Pista: es internacional y no presta dinero a países.',
+  quiz:{q:'¿Qué organismo se conoce como «el banco de los bancos centrales»?',o:['Banco Central Europeo','Banco de Pagos Internacionales','Banco Mundial','Fondo Monetario Internacional'],a:1,e:'El BPI es propiedad de unos 60 bancos centrales y gestiona sus reservas de divisas.'}},
+ {t:'Supervisores de España',pool:['bde','cnmv','dgsfp','iic','scr'],hint:'Pista: pertenece al sistema financiero español y no es una empresa de servicios de inversión.',
+  quiz:{q:'Una empresa vende por primera vez sus acciones a inversores. ¿En qué mercado lo hace?',o:['Mercado primario','Mercado secundario','Mercado de divisas','Euromercado'],a:0,e:'En el mercado primario se colocan los valores por primera vez. En el secundario se intercambian los ya colocados.'}},
+ {t:'Intermediarios del mercado de valores',pool:['av','sgc','eafi','broker','dealer'],hint:'Pista: presta servicios de inversión a terceros bajo la supervisión de la CNMV.',
+  quiz:{q:'¿Qué diferencia a un dealer de un broker?',o:['El dealer actúa por cuenta propia y asume riesgo; el broker es comisionista','El dealer asesora y el broker gestiona fondos','El dealer es público y el broker es extranjero','No hay diferencia, son sinónimos'],a:0,e:'El broker ejecuta órdenes de clientes sin asumir riesgo. El dealer opera con su propio dinero.'}},
+ {t:'Europa y el euro',pool:['bce','sebc','eurosis','bei','ecofin','eurogrupo'],hint:'Pista: pertenece al Sistema Monetario Europeo.',
+  quiz:{q:'¿Qué inflación persigue el BCE como objetivo de estabilidad de precios?',o:['Entre el 5% y el 7%','Exactamente el 0%','Inferior al 2%','Inferior al 10%'],a:2,e:'El BCE mantiene la estabilidad de precios con una inflación inferior al 2% y gestiona el euro.'}}
+];
+const TEST=[
+ {q:'¿En qué acuerdo y año se creó el FMI?',o:['Maastricht, 1992','Bretton Woods, 1944','Roma, 1957','Basilea, 1974'],a:1,e:'El FMI nace con el Tratado de Bretton Woods en 1944, el mismo año que el Banco Mundial.'},
+ {q:'Un país con mucha deuda externa necesita aliviar una crisis. ¿Qué préstamo del Banco Mundial le corresponde?',o:['De infraestructuras','Sectorial','Institucional','De ajuste estructural'],a:3,e:'Los préstamos de ajuste estructural alivian situaciones de crisis por elevada deuda externa.'},
+ {q:'¿Quién gestiona la Central de Información de Riesgos y supervisa a los bancos en España?',o:['CNMV','Banco de España','DGSFP','Eurogrupo'],a:1,e:'El Banco de España regula y supervisa el sector financiero y protege a los usuarios de servicios bancarios.'},
+ {q:'¿Qué es el Eurosistema?',o:['Un subgrupo del SEBC','El consejo de ministros de la UE','Un banco regional de desarrollo','El banco de los bancos centrales'],a:0,e:'El Eurosistema es un subgrupo del Sistema Europeo de Bancos Centrales.'},
+ {q:'¿Qué entidad participa temporalmente en el capital de empresas que no cotizan en Bolsa?',o:['Sociedad de Capital Riesgo','Agencia de Valores','Institución de Inversión Colectiva','EAFI'],a:0,e:'Las sociedades de capital riesgo son S.A. cuyo objeto social es esa participación temporal.'},
+ {q:'¿Quién forma el Eurogrupo?',o:['Los presidentes de los bancos centrales','Los ministros de economía y hacienda de la zona euro','Los 37 miembros de la OCDE','Los 60 propietarios del BPI'],a:1,e:'Es un órgano consultivo informal que se reúne una vez al mes.'},
+ {q:'¿Qué hace la CNMV?',o:['Pone moneda en circulación','Supervisa a las aseguradoras','Controla, supervisa y asesora sobre el mercado de valores','Fija los tipos de interés del euro'],a:2,e:'La CNMV vigila el mercado de valores, tanto el primario como el secundario.'}
+];
+
+/* ---------- ESTADO ---------- */
+const $=s=>document.querySelector(s);
+const view=$('#view');
+const PER_Q=4, PER_WRONG=12;
+let S=null, timer=null;
+const BEST_KEY='qeq-financiero-best';
+function getBest(){try{return +localStorage.getItem(BEST_KEY)||0}catch(e){return 0}}
+function setBest(v){try{localStorage.setItem(BEST_KEY,String(v))}catch(e){}}
+function newState(){return {r:0,total:0,t0:Date.now(),log:[],testOk:0,quizOk:0};}
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+function fmt(ms){const s=Math.floor(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function pips(cur){
+  const items=[];
+  for(let i=0;i<=ROUNDS.length;i++){
+    const label=i<ROUNDS.length?i+1:'T';
+    const cls=i<cur?'done':(i===cur?'cur':'');
+    items.push('<li class="'+cls+'">'+label+'</li>');
+  }
+  $('#pips').innerHTML=items.join('');
+}
+function setScore(){$('#sc').textContent=S?S.total:0;}
+function startTimer(){
+  clearInterval(timer);
+  timer=setInterval(()=>{ if(S) $('#tm').textContent=fmt(Date.now()-S.t0); },1000);
+}
+function cardHtml(c,extra){
+  return '<button class="card g-'+c.g+(extra||'')+'" data-id="'+c.id+'" aria-label="'+esc(c.n)+'"><span class="in">'
+   +'<span class="face front"><span class="sig'+(c.s.length>4?' l':'')+'">'+esc(c.s)+'</span><span class="nm">'+esc(c.n)+'</span></span>'
+   +'<span class="face back"></span></span></button>';
+}
+
+/* ---------- INTRO ---------- */
+function intro(){
+  S=null; clearInterval(timer); $('#tm').textContent='00:00'; $('#sc').textContent='0'; pips(-1);
+  const best=getBest();
+  view.innerHTML='<section class="hero"><div>'
+   +'<p class="eyebrow">UD 1 · Introducción al sistema financiero internacional</p>'
+   +'<h1>¿Quién es quién? Versión financiera</h1>'
+   +'<p class="lead">Un organismo del sistema financiero se esconde tras una ficha. Tienes 24 sospechosos y un banquero que solo responde sí o no.</p>'
+   +'<ol class="steps">'
+   +'<li><b>1</b><span>Elige una pregunta. El banquero responde y las fichas que no encajan se dan la vuelta.</span></li>'
+   +'<li><b>2</b><span>Cada pregunta cuesta 4 puntos y cada fallo al adivinar cuesta 12. Pregunta con cabeza.</span></li>'
+   +'<li><b>3</b><span>Al acertar lees la ficha de estudio y contestas una pregunta de repaso.</span></li></ol>'
+   +'<ul class="route"><li><b>R1</b>Prestamistas</li><li><b>R2</b>Foros globales</li><li><b>R3</b>España</li><li><b>R4</b>Mercado de valores</li><li><b>R5</b>Europa</li><li><b>T</b>Test final</li></ul>'
+   +'<button class="btn" id="go">Empezar la partida</button>'
+   +'<p class="best">Duración aproximada: 25 a 30 minutos.'+(best?' Tu mejor puntuación: '+best+' pts.':'')+'</p>'
+   +'</div><div class="guil" aria-hidden="true"><span>?</span></div></section>';
+  $('#go').onclick=()=>{S=newState();setScore();startTimer();startRound(0);};
+}
+
+/* ---------- RONDA ---------- */
+function startRound(i){
+  const R=ROUNDS[i];
+  const secret=R.pool[Math.floor(Math.random()*R.pool.length)];
+  Object.assign(S,{r:i,secret,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:'amb'});
+  pips(i); setScore();
+  view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">Ronda '+(i+1)+' de '+ROUNDS.length+'</p><h2>'+esc(R.t)+'</h2><p class="hint">'+esc(R.hint)+'</p></div>'
+   +'<div class="cols"><div><div class="board" id="board">'+CARDS.map(c=>cardHtml(c)).join('')+'</div></div>'
+   +'<aside class="panel"><div class="secret"><div class="mini" aria-hidden="true"><i>?</i></div><div><b>Organismo secreto</b><div class="stat" id="stat"></div></div></div>'
+   +'<div class="guess" id="guess" hidden></div>'
+   +'<div class="last" id="last" aria-live="polite"></div>'
+   +'<div class="tabs" id="tabs" role="tablist"></div><ul class="qs" id="qs"></ul></aside></div></section>';
+  $('#board').onclick=e=>{
+    const b=e.target.closest('.card'); if(!b||!S.alive.has(b.dataset.id)) return;
+    S.sel=S.sel===b.dataset.id?null:b.dataset.id; paint();
+  };
+  $('#tabs').onclick=e=>{const b=e.target.closest('.tab'); if(!b) return; S.tab=b.dataset.c; paint();};
+  $('#qs').onclick=e=>{const b=e.target.closest('.qb'); if(!b||b.disabled) return; ask(+b.dataset.q);};
+  $('#guess').onclick=e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.a==='no'){S.sel=null;paint();} else if(b.dataset.a==='yes'){guess(S.sel);}
+  };
+  paint();
+}
+function ask(id){
+  const q=QS[id]; if(S.asked[id]!==undefined) return;
+  const ans=q.y.includes(S.secret);
+  S.asked[id]=ans; S.nq++; S.rs=Math.max(10,S.rs-PER_Q);
+  S.alive.forEach(cid=>{ if(q.y.includes(cid)!==ans) S.alive.delete(cid); });
+  if(S.sel&&!S.alive.has(S.sel)) S.sel=null;
+  S.last={q:q.q,ans,note:q.n};
+  paint();
+}
+function guess(id){
+  if(id===S.secret){ S.total+=S.rs; setScore(); finishRound(); return; }
+  S.alive.delete(id); S.nwrong++; S.rs=Math.max(10,S.rs-PER_WRONG); S.sel=null;
+  S.last={wrong:BY[id].n};
+  paint();
+}
+function paint(){
+  const R=ROUNDS[S.r];
+  document.querySelectorAll('#board .card').forEach(el=>{
+    el.classList.toggle('down',!S.alive.has(el.dataset.id));
+    el.classList.toggle('sel',S.sel===el.dataset.id);
+    el.tabIndex=S.alive.has(el.dataset.id)?0:-1;
+  });
+  $('#stat').innerHTML='<span>Fichas: <b>'+S.alive.size+'</b></span><span>Preguntas: <b>'+S.nq+'</b></span><span>Ronda: <b>'+S.rs+'</b> pts</span>';
+  const g=$('#guess');
+  if(S.sel){
+    g.hidden=false;
+    g.innerHTML='<b>¿Es «'+esc(BY[S.sel].n)+'»?</b><div class="row"><button class="btn" data-a="yes">Sí, es este</button><button class="btn ghost" data-a="no">Cancelar</button></div><span style="font-size:.8rem">Si fallas pierdes '+PER_WRONG+' puntos.</span>';
+  } else if(S.alive.size===1){
+    const only=[...S.alive][0];
+    g.hidden=false;
+    g.innerHTML='<b>Solo queda una ficha.</b><div class="row"><button class="btn" id="lastone">Elegir «'+esc(BY[only].s)+'»</button></div>';
+    $('#lastone').onclick=()=>guess(only);
+  } else g.hidden=true;
+  const L=$('#last');
+  if(!S.last){L.className='last';L.innerHTML='<p class="q">Haz tu primera pregunta.</p><p class="note">Una buena pregunta deja fuera a la mitad de las fichas.</p>';}
+  else if(S.last.wrong){L.className='last no';L.innerHTML='<span class="verdict">Fallo</span><span class="q">«'+esc(S.last.wrong)+'» no es el organismo secreto.</span><p class="note">Esa ficha sale del tablero.</p>';}
+  else{L.className='last '+(S.last.ans?'yes':'no');L.innerHTML='<span class="verdict">'+(S.last.ans?'Sí':'No')+'</span><span class="q">'+esc(S.last.q)+'</span><p class="note">'+esc(S.last.note)+'</p>';}
+  $('#tabs').innerHTML=CATS.map(c=>'<button class="tab" role="tab" data-c="'+c[0]+'" aria-selected="'+(S.tab===c[0])+'">'+c[1]+'</button>').join('');
+  $('#qs').innerHTML=QS.filter(q=>q.c===S.tab).map(q=>{
+    const a=S.asked[q.id];
+    return '<li><button class="qb'+(a===undefined?'':(a?' y':' n'))+'" data-q="'+q.id+'"'+(a===undefined?'':' disabled')+'><span>'+esc(q.q)+'</span>'+(a===undefined?'':'<span class="r">'+(a?'SÍ':'NO')+'</span>')+'</button></li>';
+  }).join('');
+}
+
+/* ---------- FICHA + REPASO ---------- */
+function finishRound(){
+  const R=ROUNDS[S.r], c=BY[S.secret];
+  S.log.push({t:R.t,pts:S.rs,nq:S.nq,wrong:S.nwrong});
+  const qz=R.quiz;
+  view.innerHTML='<section class="ficha"><div class="board" style="grid-template-columns:1fr">'+cardHtml(c)+'</div><div>'
+   +'<p class="res">Acertaste · +'+S.rs+' pts · '+S.nq+' preguntas</p><h2>'+esc(c.n)+'</h2><p class="desc">'+esc(c.d)+'</p>'
+   +'<div class="quiz"><p class="eyebrow">Repaso rápido · +15 pts</p><h3>'+esc(qz.q)+'</h3><div class="opts" id="opts">'
+   +qz.o.map((o,k)=>'<button class="opt" data-k="'+k+'">'+esc(o)+'</button>').join('')+'</div><p class="expl" id="expl" hidden></p><div class="next" id="nx" hidden></div></div></div></section>';
+  $('#opts').onclick=e=>{
+    const b=e.target.closest('.opt'); if(!b||b.disabled) return;
+    answerMC(qz,+b.dataset.k,15,()=>{S.quizOk++;});
+    const last=S.r===ROUNDS.length-1;
+    $('#nx').hidden=false;
+    $('#nx').innerHTML='<button class="btn" id="nb">'+(last?'Ir al test final':'Siguiente ronda')+'</button>';
+    $('#nb').onclick=()=>{ if(last) startTest(); else startRound(S.r+1); };
+  };
+  window.scrollTo({top:0});
+}
+function answerMC(qz,k,pts,onOk){
+  const ok=k===qz.a;
+  document.querySelectorAll('#opts .opt').forEach((el,i)=>{
+    el.disabled=true;
+    if(i===qz.a) el.classList.add('right'); else if(i===k) el.classList.add('wrong');
+  });
+  if(ok){S.total+=pts;setScore();if(onOk)onOk();}
+  const ex=$('#expl'); ex.hidden=false;
+  ex.textContent=(ok?'Correcto. ':'No era esa. ')+qz.e;
+}
+
+/* ---------- TEST FINAL ---------- */
+function startTest(){
+  S.ti=0; S.r=ROUNDS.length; pips(S.r); testQ();
+}
+function testQ(){
+  const qz=TEST[S.ti];
+  view.innerHTML='<section class="quiz" style="border:0;margin:0;padding:0"><p class="eyebrow">Test final · pregunta '+(S.ti+1)+' de '+TEST.length+' · +10 pts</p><h2 style="font-size:1.9rem;margin-block:6px 16px">'+esc(qz.q)+'</h2>'
+   +'<div class="opts" id="opts">'+qz.o.map((o,k)=>'<button class="opt" data-k="'+k+'">'+esc(o)+'</button>').join('')+'</div>'
+   +'<p class="expl" id="expl" hidden></p><div class="next" id="nx" hidden></div></section>';
+  $('#opts').onclick=e=>{
+    const b=e.target.closest('.opt'); if(!b||b.disabled) return;
+    answerMC(qz,+b.dataset.k,10,()=>{S.testOk++;});
+    const last=S.ti===TEST.length-1;
+    $('#nx').hidden=false;
+    $('#nx').innerHTML='<button class="btn" id="nb">'+(last?'Ver mi resultado':'Siguiente')+'</button>';
+    $('#nb').onclick=()=>{ if(last) end(); else {S.ti++;testQ();} };
+  };
+  window.scrollTo({top:0});
+}
+
+/* ---------- FINAL ---------- */
+function rank(p){return p>=450?'Gobernador del Banco Central':p>=350?'Gestor de carteras':p>=200?'Analista junior':'Becario de ventanilla';}
+function end(){
+  clearInterval(timer);
+  const mins=Math.max(1,Math.round((Date.now()-S.t0)/60000));
+  const prev=getBest(); const record=S.total>prev; if(record) setBest(S.total);
+  pips(ROUNDS.length+1);
+  const txt='Jugué ¿Quién es quién? Versión financiera y saqué '+S.total+' puntos en '+mins+' min. Rango: '+rank(S.total)+'. ¿Me superas?';
+  view.innerHTML='<section class="end"><p class="eyebrow">Partida terminada · '+fmt(Date.now()-S.t0)+'</p><h1>'+rank(S.total)+'</h1>'
+   +'<div class="big">'+S.total+' pts</div>'+(record?'<p class="res">Nuevo récord personal</p>':'')
+   +'<ul class="sum">'+S.log.map((l,i)=>'<li><span>R'+(i+1)+' · '+esc(l.t)+' ('+l.nq+' preguntas, '+l.wrong+' fallos)</span><span>+'+l.pts+'</span></li>').join('')
+   +'<li><span>Repasos de ronda acertados</span><span>'+S.quizOk+' / '+ROUNDS.length+'</span></li>'
+   +'<li><span>Test final acertado</span><span>'+S.testOk+' / '+TEST.length+'</span></li></ul>'
+   +'<div class="row"><button class="btn" id="again">Jugar otra vez</button><button class="btn ghost" id="cp">Copiar mi resultado</button></div><p class="toast" id="ts" role="status"></p>'
+   +'<p style="color:var(--ink-2);font-size:.9rem">Para retar a otra persona, envíale el enlace de este juego junto con tu resultado.</p></section>';
+  $('#again').onclick=intro;
+  $('#cp').onclick=()=>{
+    const done=m=>{$('#ts').textContent=m;};
+    try{
+      navigator.clipboard.writeText(txt).then(()=>done('Resultado copiado.'),()=>done(txt));
+    }catch(e){done(txt);}
+  };
+  window.scrollTo({top:0});
+}
+
+intro();
+})();
+</script>
+
+</body>
+</html>
