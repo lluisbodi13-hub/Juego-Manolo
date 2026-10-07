@@ -154,6 +154,22 @@ p{margin:0}
 .sum li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px}
 .sum span:last-child{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
 .row{display:flex;flex-wrap:wrap;gap:10px}
+.react{position:fixed;inset:0;display:grid;place-items:center;pointer-events:none;z-index:20;padding-inline:16px}
+.react span{font-family:var(--f-display);font-weight:800;font-size:clamp(1.6rem,5vw,3rem);text-align:center;text-wrap:balance;max-width:18ch;padding:18px 26px;border-radius:16px;border:3px solid var(--ink);background:var(--panel);box-shadow:0 12px 0 var(--ink)}
+.react.win span{color:var(--gold);border-color:var(--gold);box-shadow:0 12px 0 var(--gold)}
+.react.fail span{color:var(--bad);border-color:var(--bad);box-shadow:0 12px 0 var(--bad)}
+.react.on.win span{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+.react.on.fail span{animation:shake .6s}
+@keyframes pop{0%{transform:scale(.3) rotate(-8deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-14px) rotate(-3deg)}40%{transform:translateX(12px) rotate(2deg)}60%{transform:translateX(-8px)}80%{transform:translateX(5px)}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:19}
+.snd{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:.15rem .7rem;font-family:var(--f-mono);font-size:.75rem}
+.cool{display:grid;gap:6px;font-family:var(--f-mono);font-size:.8rem;color:var(--ink-2)}
+.cool .bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.cool .bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s linear}
+.cool.ready{color:var(--ok)}
+.qs.wait .qb:not(.y):not(.n){opacity:.5}
+@media (prefers-reduced-motion:reduce){.react.on span{animation:none}}
 .toast{font-family:var(--f-mono);font-size:.8rem;color:var(--ok);min-height:1.2rem}
 
 @media (max-width:900px){
@@ -175,9 +191,11 @@ p{margin:0}
   <header class="top">
     <div class="brand">Quién es Quién<small>Sistema financiero internacional</small></div>
     <ol class="pips" id="pips" aria-label="Progreso"></ol>
-    <div class="stats"><span><b id="sc">0</b> pts</span><span id="tm">00:00</span></div>
+    <div class="stats"><span><b id="sc">0</b> pts</span><span id="tm">00:00</span><button class="snd" id="snd" aria-pressed="true">Sonido: sí</button></div>
   </header>
   <main id="view"></main>
+  <div class="react" id="react" hidden aria-live="assertive"></div>
+  <canvas id="fx" hidden></canvas>
 </div>
 
 <script>
@@ -284,7 +302,7 @@ const TEST=[
 const $=s=>document.querySelector(s);
 const view=$('#view');
 const PER_Q=4, PER_WRONG=12;
-let S=null, timer=null;
+let S=null, timer=null, cdTimer=null;
 const BEST_KEY='qeq-financiero-best';
 function getBest(){try{return +localStorage.getItem(BEST_KEY)||0}catch(e){return 0}}
 function setBest(v){try{localStorage.setItem(BEST_KEY,String(v))}catch(e){}}
@@ -311,6 +329,96 @@ function cardHtml(c,extra){
    +'<span class="face back"></span></span></button>';
 }
 
+/* ---------- SONIDO Y REACCIONES ---------- */
+const COOLDOWN=15000;
+const SND_KEY='qeq-financiero-sound';
+let soundOn=true; try{soundOn=localStorage.getItem(SND_KEY)!=='off'}catch(e){}
+let AC=null, master=null;
+function ac(){
+  if(!soundOn) return null;
+  try{
+    if(!AC){const C=window.AudioContext||window.webkitAudioContext; if(!C) return null;
+      AC=new C(); const comp=AC.createDynamicsCompressor(); master=AC.createGain(); master.gain.value=.7; master.connect(comp); comp.connect(AC.destination);}
+    if(AC.state==='suspended') AC.resume();
+    return AC;
+  }catch(e){return null;}
+}
+function tone(t,f,d,o){
+  o=o||{}; const a=AC, os=a.createOscillator(), g=a.createGain(), v=o.vol||.18, at=o.at||.012;
+  os.type=o.type||'sine'; os.frequency.setValueAtTime(f,t);
+  if(o.f2) os.frequency.exponentialRampToValueAtTime(o.f2,t+d);
+  if(o.vib){const l=a.createOscillator(), lg=a.createGain(); l.frequency.value=o.vr||6; lg.gain.value=o.vib; l.connect(lg); lg.connect(os.frequency); l.start(t); l.stop(t+d+.05);}
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+at);
+  g.gain.setValueAtTime(v,t+Math.max(at,d*.75)); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  if(o.lp){const fl=a.createBiquadFilter(); fl.type='lowpass'; fl.frequency.value=o.lp; os.connect(fl); fl.connect(g);} else os.connect(g);
+  g.connect(master); os.start(t); os.stop(t+d+.05);
+}
+function noise(t,d,o){
+  o=o||{}; const a=AC, len=Math.ceil(a.sampleRate*d), buf=a.createBuffer(1,len,a.sampleRate), ch=buf.getChannelData(0);
+  for(let i=0;i<len;i++) ch[i]=Math.random()*2-1;
+  const src=a.createBufferSource(); src.buffer=buf;
+  const fl=a.createBiquadFilter(); fl.type=o.type||'bandpass'; fl.frequency.setValueAtTime(o.f||1000,t); fl.Q.value=o.q||1;
+  if(o.f2) fl.frequency.exponentialRampToValueAtTime(o.f2,t+d);
+  const g=a.createGain(), v=o.vol||.2, at=o.at||.02;
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+at); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  src.connect(fl); fl.connect(g); g.connect(master); src.start(t); src.stop(t+d+.05);
+}
+const N={C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,Ab4:415.3,A4:440,Bb4:466.16,C5:523.25,E5:659.25,G5:783.99,C6:1046.5,E6:1318.5,G6:1568,C7:2093};
+const FAIL_SFX=[
+  t=>{[N.D4,277.18,N.C4,246.94].forEach((f,i)=>tone(t+i*.42,f,i<3?.4:1.2,{type:'sawtooth',lp:1100,vol:.16,vib:i===3?9:0,vr:7}));}, // trombón triste
+  t=>{tone(t,88,.95,{type:'sawtooth',lp:900,vol:.3,vib:38,vr:31}); noise(t,.95,{f:300,q:.8,vol:.15});}, // pedorreta
+  t=>{tone(t,1900,.85,{f2:240,vol:.14,vib:12,vr:7}); tone(t+.9,190,.3,{f2:55,vol:.45}); noise(t+.9,.15,{f:400,vol:.25});}, // silbato cayendo + golpe
+  t=>{[0,.24,.5].forEach((d,i)=>{tone(t+d,i<2?290:280,i<2?.18:.55,{type:'square',lp:1400,vol:.13,f2:i<2?null:190}); tone(t+d,i<2?297:286,i<2?.18:.55,{type:'square',lp:1400,vol:.1,f2:i<2?null:195});});}, // bocina de payaso
+  t=>{tone(t,196,.45,{type:'triangle',f2:170,vol:.35}); tone(t+.5,176,1,{type:'triangle',f2:110,vol:.35,vib:6,vr:5}); tone(t,98,.45,{type:'sawtooth',lp:500,vol:.1}); tone(t+.5,88,1,{type:'sawtooth',lp:500,vol:.1,f2:55});}, // womp womp
+  t=>{noise(t,1.5,{f:950,f2:380,q:2.5,vol:.28,at:.15}); [230,250,268,290,305].forEach(f=>tone(t+Math.random()*.08,f,1.5,{type:'sawtooth',lp:800,f2:f*.68,vol:.035,at:.12}));}, // «ooooh» del público
+  t=>{[[N.G4,.3],[N.E4,.3],[N.A4,.3],[N.G4,.3],[N.E4,.6]].reduce((acc,[f,d])=>{tone(t+acc,f,d*.9,{type:'square',lp:1800,vol:.1});return acc+d;},0);} // «na-na-na-na-naa»
+];
+const WIN_SFX=[
+  t=>{[N.C5,N.E5,N.G5].forEach((f,i)=>tone(t+i*.12,f,.14,{type:'sawtooth',lp:2600,vol:.12})); [N.C6,N.G5,N.E5,N.C5].forEach(f=>tone(t+.36,f,1.3,{type:'sawtooth',lp:2600,vol:.07,vib:5,vr:6}));}, // fanfarria
+  t=>{const s=[[N.C5,.13],[N.C5,.13],[N.C5,.13],[N.C5,.45],[N.Ab4,.45],[N.Bb4,.45],[N.C5,.2],[0,.12]];let x=0;s.forEach(([f,d])=>{if(f)tone(t+x,f,d*.9,{type:'square',lp:2200,vol:.1});x+=d;});[N.C5,N.E5,N.G5].forEach(f=>tone(t+x,f,1.1,{type:'square',lp:2200,vol:.07,vib:4}));}, // victoria de videojuego
+  t=>{[0,.32,.64].forEach((d,i)=>{const L=i<2?.26:.9;[466,471,233].forEach(f=>tone(t+d,f,L,{type:'sawtooth',lp:3200,vol:.09}));}); noise(t+.6,1.6,{f:1600,q:.7,vol:.2,at:.3});}, // bocinas de fiesta
+  t=>{[N.C5,N.E5,N.G5,N.C6,N.E6,N.G6,N.C7].forEach((f,i)=>tone(t+i*.065,f,.12,{type:'square',lp:5000,vol:.08})); for(let i=0;i<14;i++) tone(t+.5+i*.06,2000+Math.random()*3000,.15,{vol:.05});}, // subida de nivel
+  t=>{noise(t,2.2,{f:1400,q:.6,vol:.25,at:.4}); for(let i=0;i<45;i++) noise(t+Math.random()*2,.03,{type:'highpass',f:1800,vol:.25,at:.002}); tone(t+.3,2100,.9,{f2:2700,vol:.06,vib:120,vr:12});}, // ovación y aplausos
+  t=>{[N.G4,N.D4*1.5,349.23*2].forEach(f=>tone(t,f,.13,{type:'sawtooth',lp:2400,vol:.08})); [N.C5,N.E5,N.G5,N.C6].forEach(f=>tone(t+.2,f,1.4,{type:'sawtooth',lp:2400,vol:.08,vib:6,vr:5.5}));}, // ¡ta-chán!
+  t=>{for(let i=0;i<16;i++) tone(t+i*.045,N.C5*Math.pow(2,i/7),.5,{type:'triangle',vol:.06}); [N.C5,N.E5,N.G5,N.C6].forEach(f=>tone(t+.75,f,1.6,{vol:.06,vib:5,at:.25}));} // arpa y coro celestial
+];
+const WIN_TXT=['¡INCREÍBLE! El Banco Central quiere ficharte','¡Matrícula de honor! Van a imprimir un billete con tu cara','¡Que alguien llame al FMI! Tenemos un genio','¡Crack, máquina, fiera, titán de las finanzas!','¡Lo nunca visto! La Bolsa ha subido un diez por ciento por ti','¡Bravo, bravo, bravísimo! El Eurogrupo se pone en pie','¡Espectacular! Tu nivel cotiza en máximos históricos','¡Sublime! Hasta el BCE ha parado la reunión para aplaudirte'];
+const FAIL_TXT=['Uy, uy, uy… eso no lo firma ni el becario','Tu cartera acaba de declararse en quiebra','Te han bajado la nota a bono basura','Ni con un préstamo del FMI se rescata esa respuesta','Hasta la hucha de cerdito sabe más que tú','El Banco de España te ha abierto un expediente','Esa respuesta cotiza a cero euros','La CNMV ha suspendido tu cotización por vergüenza'];
+function bag(n){let b=[],last=-1;return ()=>{if(!b.length){b=[...Array(n).keys()].sort(()=>Math.random()-.5);if(b[0]===last)b.push(b.shift());}last=b.shift();return last;};}
+const pick={ws:bag(WIN_SFX.length),fs:bag(FAIL_SFX.length),wt:bag(WIN_TXT.length),ft:bag(FAIL_TXT.length)};
+function say(text,win){
+  if(!soundOn||!('speechSynthesis' in window)) return;
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text.replace('…','...'));
+    u.lang='es-ES'; u.rate=win?1.12:.9; u.pitch=win?1.5:.6; u.volume=1;
+    const v=speechSynthesis.getVoices().find(x=>/^es/i.test(x.lang)); if(v) u.voice=v;
+    setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){}},win?450:600);
+  }catch(e){}
+}
+function react(win){
+  const txt=win?WIN_TXT[pick.wt()]:FAIL_TXT[pick.ft()];
+  const a=ac(); if(a){try{(win?WIN_SFX[pick.ws()]:FAIL_SFX[pick.fs()])(a.currentTime+.02);}catch(e){}}
+  say(txt,win);
+  const o=$('#react'); o.className='react '+(win?'win':'fail'); o.innerHTML='<span>'+esc(txt)+'</span>'; o.hidden=false;
+  void o.offsetWidth; o.classList.add('on');
+  clearTimeout(react.t); react.t=setTimeout(()=>{o.hidden=true;},2300);
+  if(win) confetti();
+}
+function confetti(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c=$('#fx'), x=c.getContext('2d'); c.width=innerWidth; c.height=innerHeight; c.hidden=false;
+  const cs=getComputedStyle(document.documentElement), cols=['--gold','--green','--g-int','--g-nac','--g-eur'].map(k=>cs.getPropertyValue(k).trim());
+  const P=Array.from({length:140},()=>({x:c.width/2,y:c.height*.45,vx:(Math.random()-.5)*16,vy:-Math.random()*15-4,r:Math.random()*6+4,c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*6}));
+  const t0=performance.now();
+  (function f(now){
+    const k=now-t0; x.clearRect(0,0,c.width,c.height);
+    P.forEach(p=>{p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore();});
+    if(k<1800) requestAnimationFrame(f); else {x.clearRect(0,0,c.width,c.height); c.hidden=true;}
+  })(t0);
+}
+function paintSound(){const b=$('#snd'); if(b){b.textContent=soundOn?'Sonido: sí':'Sonido: no'; b.setAttribute('aria-pressed',String(soundOn));}}
+
 /* ---------- INTRO ---------- */
 function intro(){
   S=null; clearInterval(timer); $('#tm').textContent='00:00'; $('#sc').textContent='0'; pips(-1);
@@ -321,8 +429,8 @@ function intro(){
    +'<p class="lead">Un organismo del sistema financiero se esconde tras una ficha. Tienes 24 sospechosos y un banquero que solo responde sí o no.</p>'
    +'<ol class="steps">'
    +'<li><b>1</b><span>Elige una pregunta. El banquero responde y las fichas que no encajan se dan la vuelta.</span></li>'
-   +'<li><b>2</b><span>Cada pregunta cuesta 4 puntos y cada fallo al adivinar cuesta 12. Pregunta con cabeza.</span></li>'
-   +'<li><b>3</b><span>Al acertar lees la ficha de estudio y contestas una pregunta de repaso.</span></li></ol>'
+   +'<li><b>2</b><span>Solo puedes hacer una pregunta cada 15 segundos. Cada pregunta cuesta 4 puntos y cada fallo al adivinar cuesta 12.</span></li>'
+   +'<li><b>3</b><span>Al acertar lees la ficha de estudio y contestas una pregunta de repaso. Sube el volumen: el banquero no se calla.</span></li></ol>'
    +'<ul class="route"><li><b>R1</b>FMI, Banco Mundial y bancos regionales</li><li><b>R2</b>BPI, OCDE, Basilea y G20</li><li><b>R3</b>Supervisores españoles, IIC y capital riesgo</li><li><b>R4</b>Empresas de servicios de inversión</li><li><b>R5</b>Sistema Monetario Europeo</li><li><b>T</b>Test final</li></ul>'
    +'<button class="btn" id="go">Empezar la partida</button>'
    +'<p class="best">Duración aproximada: 25 a 30 minutos.'+(best?' Tu mejor puntuación: '+best+' pts.':'')+'</p>'
@@ -334,14 +442,15 @@ function intro(){
 function startRound(i){
   const R=ROUNDS[i];
   const secret=R.pool[Math.floor(Math.random()*R.pool.length)];
-  Object.assign(S,{r:i,secret,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:'nom'});
+  Object.assign(S,{r:i,secret,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:'nom',nextAt:0,cooling:false});
+  clearInterval(cdTimer); cdTimer=setInterval(tickCool,200);
   pips(i); setScore();
   view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">Ronda '+(i+1)+' de '+ROUNDS.length+' · '+esc(R.sec)+'</p><h2>'+esc(R.t)+'</h2><p class="hint">'+esc(R.hint)+'</p></div>'
    +'<div class="cols"><div><div class="board" id="board">'+CARDS.map(c=>cardHtml(c)).join('')+'</div></div>'
    +'<aside class="panel"><div class="secret"><div class="mini" aria-hidden="true"><i>?</i></div><div><b>Organismo secreto</b><div class="stat" id="stat"></div></div></div>'
    +'<div class="guess" id="guess" hidden></div>'
    +'<div class="last" id="last" aria-live="polite"></div>'
-   +'<div class="tabs" id="tabs" role="tablist"></div><ul class="qs" id="qs"></ul></aside></div></section>';
+   +'<div class="cool" id="cool"><span id="coolt"></span><span class="bar"><i id="coolbar"></i></span></div><div class="tabs" id="tabs" role="tablist"></div><ul class="qs" id="qs"></ul></aside></div></section>';
   $('#board').onclick=e=>{
     const b=e.target.closest('.card'); if(!b||!S.alive.has(b.dataset.id)) return;
     S.sel=S.sel===b.dataset.id?null:b.dataset.id; paint();
@@ -355,18 +464,31 @@ function startRound(i){
   paint();
 }
 function ask(id){
-  const q=QS[id]; if(S.asked[id]!==undefined) return;
+  const q=QS[id]; if(S.asked[id]!==undefined||Date.now()<S.nextAt) return;
+  S.nextAt=Date.now()+COOLDOWN; S.cooling=true;
   const ans=q.y.includes(S.secret);
   S.asked[id]=ans; S.nq++; S.rs=Math.max(10,S.rs-PER_Q);
   S.alive.forEach(cid=>{ if(q.y.includes(cid)!==ans) S.alive.delete(cid); });
   if(S.sel&&!S.alive.has(S.sel)) S.sel=null;
   S.last={q:q.q,ans,note:q.n};
-  paint();
+  paint(); tickCool();
+}
+function tickCool(){
+  if(!S||!$('#cool')) return;
+  const rem=S.nextAt-Date.now();
+  if(rem>0){
+    $('#cool').className='cool'; $('#coolt').textContent='Siguiente pregunta en '+Math.ceil(rem/1000)+' s';
+    $('#coolbar').style.width=(100-rem/COOLDOWN*100)+'%';
+  } else {
+    $('#cool').className='cool ready'; $('#coolt').textContent='Ya puedes preguntar'; $('#coolbar').style.width='100%';
+    if(S.cooling){S.cooling=false; paint();}
+  }
 }
 function guess(id){
-  if(id===S.secret){ S.total+=S.rs; setScore(); finishRound(); return; }
+  if(id===S.secret){ S.total+=S.rs; setScore(); react(true); finishRound(); return; }
   S.alive.delete(id); S.nwrong++; S.rs=Math.max(10,S.rs-PER_WRONG); S.sel=null;
   S.last={wrong:BY[id].n};
+  react(false);
   paint();
 }
 function paint(){
@@ -392,14 +514,16 @@ function paint(){
   else if(S.last.wrong){L.className='last no';L.innerHTML='<span class="verdict">Fallo</span><span class="q">«'+esc(S.last.wrong)+'» no es el organismo secreto.</span><p class="note">Esa ficha sale del tablero.</p>';}
   else{L.className='last '+(S.last.ans?'yes':'no');L.innerHTML='<span class="verdict">'+(S.last.ans?'Sí':'No')+'</span><span class="q">'+esc(S.last.q)+'</span><p class="note">'+esc(S.last.note)+'</p>';}
   $('#tabs').innerHTML=CATS.map(c=>'<button class="tab" role="tab" data-c="'+c[0]+'" aria-selected="'+(S.tab===c[0])+'">'+c[1]+'</button>').join('');
+  $('#qs').classList.toggle('wait',S.cooling);
   $('#qs').innerHTML=QS.filter(q=>q.c===S.tab).map(q=>{
     const a=S.asked[q.id];
-    return '<li><button class="qb'+(a===undefined?'':(a?' y':' n'))+'" data-q="'+q.id+'"'+(a===undefined?'':' disabled')+'><span>'+esc(q.q)+'</span>'+(a===undefined?'':'<span class="r">'+(a?'SÍ':'NO')+'</span>')+'</button></li>';
+    return '<li><button class="qb'+(a===undefined?'':(a?' y':' n'))+'" data-q="'+q.id+'"'+(a===undefined&&!S.cooling?'':' disabled')+'><span>'+esc(q.q)+'</span>'+(a===undefined?'':'<span class="r">'+(a?'SÍ':'NO')+'</span>')+'</button></li>';
   }).join('');
 }
 
 /* ---------- FICHA + REPASO ---------- */
 function finishRound(){
+  clearInterval(cdTimer);
   const R=ROUNDS[S.r], c=BY[S.secret];
   S.log.push({t:R.t,pts:S.rs,nq:S.nq,wrong:S.nwrong});
   const qz=R.quiz;
@@ -424,6 +548,7 @@ function answerMC(qz,k,pts,onOk){
     if(i===qz.a) el.classList.add('right'); else if(i===k) el.classList.add('wrong');
   });
   if(ok){S.total+=pts;setScore();if(onOk)onOk();}
+  react(ok);
   const ex=$('#expl'); ex.hidden=false;
   ex.textContent=(ok?'Correcto. ':'No era esa. ')+qz.e;
 }
@@ -473,6 +598,8 @@ function end(){
   window.scrollTo({top:0});
 }
 
+$('#snd').onclick=()=>{soundOn=!soundOn; try{localStorage.setItem(SND_KEY,soundOn?'on':'off')}catch(e){} if(!soundOn){try{speechSynthesis.cancel()}catch(e){}} else ac(); paintSound();};
+paintSound();
 intro();
 })();
 </script>
