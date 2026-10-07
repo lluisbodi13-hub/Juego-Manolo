@@ -4,12 +4,13 @@ Juego educativo basado en la **UD 1 · Introducción al sistema financiero inter
 Duración aproximada: 25–30 minutos.
 
 ## Cómo se juega
-- Hay 24 organismos en el tablero (FMI, Banco Mundial, BID, BERD, BPI, OCDE, Comité de Basilea, G20, Banco de España, CNMV, DGSFP, agencias y sociedades de valores, BCE, SEBC, Eurosistema, BEI, ECOFIN, Eurogrupo…).
-- En cada ronda hay un organismo secreto. Haz preguntas de sí/no y las fichas que no encajan se dan la vuelta.
-- Solo se puede hacer una pregunta cada 15 segundos. Cada pregunta cuesta 4 puntos y cada fallo al adivinar, 12.
-- Al fallar, el banquero te grita o se ríe de ti (7 risas y 5 broncas distintas, con voz). Al acertar, celebración épica con estadio, fanfarrias, coro y fuegos artificiales. Nada se repite seguido. Se puede apagar con el botón «Sonido».
-- Al acertar se muestra la ficha de estudio y una pregunta de repaso.
-- 5 rondas temáticas + test final de 7 preguntas.
+1. En cada ronda hay de 4 a 6 candidatos (los organismos de un apartado del temario) y uno es el organismo secreto. El resto de fichas se da la vuelta al empezar.
+2. Haz preguntas de sí o no, una cada 15 segundos. Las fichas que no encajan con la respuesta se giran solas. Las preguntas que no descartarían a nadie aparecen apagadas al final de la lista.
+3. Cuando lo tengas, toca la ficha y confirma. Cada pregunta resta 4 puntos y cada fallo al adivinar, 12.
+4. Al acertar lees la ficha de estudio y respondes 2 preguntas de repaso.
+5. Son 5 rondas y un test final de 7 preguntas. Duración aproximada: 25 minutos.
+
+Al fallar, el banquero te grita o se ríe de ti con sonidos, voz e imágenes a pantalla completa. Al acertar, celebración épica. Nada se repite seguido. El sonido se apaga con el botón «Sonido».
 
 ## Jugar
 Abre `index.html` en cualquier navegador. No necesita instalación.
