@@ -10,7 +10,7 @@ Duración aproximada: 25–30 minutos.
 4. Al acertar lees la ficha de estudio y respondes 2 preguntas de repaso.
 5. Son 5 rondas y un test final de 7 preguntas. Duración aproximada: 25 minutos.
 
-Al fallar, el banquero te grita o se ríe de ti con sonidos, voz e imágenes a pantalla completa. Al acertar, celebración épica. Nada se repite seguido. El sonido se apaga con el botón «Sonido».
+Al fallar, el banquero te grita o se ríe de ti con bromas de economía (sonido, voz y titular a pantalla completa). Al acertar, celebración épica con felicitaciones exageradas. Nada se repite seguido. El sonido se apaga con el botón «Sonido».
 
 ## Jugar
 Abre `index.html` en cualquier navegador. No necesita instalación.
