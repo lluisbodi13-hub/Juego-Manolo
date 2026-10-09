@@ -201,6 +201,11 @@ p{margin:0}
 .qhead{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);padding:8px 2px 0}
 .qb.useless{opacity:.45;border-style:dashed}
 
+.clue{margin-top:10px;display:grid;gap:6px;padding:14px 18px;border-radius:14px;border:2px solid var(--gold);background:var(--gold-soft);max-width:60rem}
+.clue small{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.clue p{font-family:var(--f-display);font-weight:800;font-size:clamp(1.3rem,3vw,2rem);line-height:1.15;text-wrap:balance;color:var(--ink)}
+.rhead .hint{margin-top:8px}
+.ptitle{font-family:var(--f-body);font-weight:700;font-size:1rem;margin:4px 0 0}
 .toast{font-family:var(--f-mono);font-size:.8rem;color:var(--ok);min-height:1.2rem}
 
 @media (max-width:900px){
@@ -261,49 +266,47 @@ const CARDS=[
  {id:'ecofin',n:'ECOFIN',s:'ECOFIN',g:'E',d:'Consejo de ministros de economía y hacienda de todos los estados miembros, junto a los comisarios competentes en los temas de cada sesión.'},
  {id:'eurogrupo',n:'Eurogrupo',s:'Euro-grupo',g:'E',d:'Órgano consultivo informal de los ministros de economía y hacienda de la UEM. Se reúne una vez al mes para coordinar las políticas económicas de los países de la zona euro.'}
 ];
-const CATS=[['nom','Nombre'],['dat','Fechas, sedes y cifras'],['quien','Quién lo forma'],['fun','Funciones'],['val','Mercado de valores']];
+const CATS=[['dat','Fechas, sedes y cifras'],['quien','Quién lo forma'],['fun','Funciones'],['val','Mercado de valores']];
 const QS=[
- {c:'nom',q:'¿Su nombre empieza por la palabra «Banco»?',y:'bm bid berd bpi bde bce bei',n:'Empiezan por «Banco»: Banco Mundial, BID, BERD, BPI, Banco de España, BCE y BEI.'},
- {c:'nom',q:'¿Su nombre contiene «Euro» o «Europeo»?',y:'berd bce sebc eurosis bei eurogrupo',n:'Ojo: el BERD se llama «Europeo» pero el temario lo estudia con los bancos regionales de desarrollo.'},
- {c:'nom',q:'¿Su nombre contiene la palabra «Desarrollo»?',y:'bid berd ocde',n:'BID, BERD y la OCDE (Organización para la Cooperación y el Desarrollo Económico).'},
- {c:'nom',q:'¿Su nombre es una «G» seguida de un número?',y:'g20',n:'El temario cita el G7, el G10 y el G20 entre los otros organismos oficiales.'},
- {c:'nom',q:'¿Antes se llamaba BIRF (Banco Internacional de Reconstrucción y Fomento)?',y:'bm',n:'El Banco Mundial se llamaba antes BIRF, que hoy es una de las entidades de su grupo.'},
- {c:'nom',q:'¿Su nombre contiene la palabra «Reconstrucción»?',y:'berd',n:'Banco Europeo de Reconstrucción y Desarrollo.'},
- {c:'dat',q:'¿Se creó en 1944 con los acuerdos de Bretton Woods?',y:'fmi bm',n:'El FMI y el Banco Mundial nacen en 1944.'},
- {c:'dat',q:'¿Tiene unos 190 países miembros?',y:'fmi',n:'El FMI tiene unos 190 miembros (189 en una de las versiones del temario).'},
- {c:'dat',q:'¿Tiene 37 países miembros?',y:'ocde',n:'La OCDE tiene 37 miembros.'},
- {c:'dat',q:'¿Su nombre o su sede están ligados a la ciudad de Basilea?',y:'bpi basilea',n:'El BPI tiene su sede en Basilea y el Comité de Supervisión Bancaria lleva el nombre de la ciudad.'},
- {c:'dat',q:'¿Es propiedad de unos 60 bancos centrales?',y:'bpi',n:'El BPI es propiedad de unos 60 bancos centrales y está controlado por 6 de ellos.'},
- {c:'dat',q:'¿Es el banco con sede en Francfort creado en 1998?',y:'bce',n:'El BCE se creó en 1998 y tiene su sede en Francfort.'},
- {c:'dat',q:'¿Es el banco con sede en Luxemburgo, propiedad de la UE desde 1958?',y:'bei',n:'El Banco Europeo de Inversiones tiene su sede en Luxemburgo.'},
- {c:'dat',q:'¿Su capital mínimo exigido es de 300.000 €?',y:'av',n:'La agencia de valores necesita un capital mínimo de 300.000 €.'},
- {c:'dat',q:'¿Su capital mínimo exigido es de 100.000 €?',y:'sgc',n:'La sociedad gestora de carteras necesita un capital mínimo de 100.000 €.'},
- {c:'quien',q:'¿Es una entidad del sistema financiero español?',y:'bde cnmv dgsfp av sgc eafi scr iic broker dealer',n:'El bloque nacional: los tres supervisores y las entidades que dependen de la CNMV.'},
- {c:'quien',q:'¿Es uno de los tres supervisores españoles: Banco de España, CNMV o DGSFP?',y:'bde cnmv dgsfp',n:'Banco de España (banca), CNMV (mercado de valores) y DGSFP (seguros y pensiones).'},
- {c:'quien',q:'¿Es un banco regional de desarrollo formado por países de una zona concreta?',y:'bid berd',n:'Los bancos regionales de desarrollo del temario son el BID, el Banco Asiático y el BERD.'},
- {c:'quien',q:'¿Es un consejo u órgano de ministros de economía y hacienda de la UE?',y:'ecofin eurogrupo',n:'ECOFIN reúne a los de todos los estados miembros y el Eurogrupo a los de la zona euro.'},
- {c:'quien',q:'¿Reúne a los ministros de TODOS los estados de la UE, con los comisarios del tema?',y:'ecofin',n:'Así es el ECOFIN. El Eurogrupo solo reúne a los ministros de la UEM.'},
- {c:'quien',q:'¿Es un sistema formado por bancos centrales nacionales y el BCE?',y:'sebc eurosis',n:'El SEBC y su subgrupo, el Eurosistema.'},
- {c:'quien',q:'¿Incluye a los bancos centrales de todos los países de la UE, usen o no el euro?',y:'sebc',n:'El SEBC reúne a todos. El Eurosistema, solo a los de la zona euro.'},
- {c:'fun',q:'¿Presta a países con desequilibrios en su Balanza de Pagos?',y:'fmi',n:'El FMI exige garantía de devolución y un programa para solucionar el problema.'},
- {c:'fun',q:'¿Creó los Derechos Especiales de Giro (DEG)?',y:'fmi',n:'El DEG es un activo de reserva internacional valorado con euro, dólar, libra, yen y renminbi.'},
- {c:'fun',q:'¿Concede préstamos de infraestructuras, sectoriales, institucionales y de ajuste estructural?',y:'bm',n:'Son los cuatro tipos de préstamo del Banco Mundial.'},
- {c:'fun',q:'¿Se le llama «el banco de los bancos centrales»?',y:'bpi',n:'El BPI gestiona reservas de divisas de bancos centrales y no rinde cuentas ante ningún gobierno.'},
- {c:'fun',q:'¿Recomienda a los supervisores medidas contra el blanqueo de capitales y el riesgo de crédito?',y:'basilea',n:'El Comité de Basilea asesora en regulación financiera. El Banco de España es miembro desde 2001.'},
- {c:'fun',q:'¿Su misión es «diseñar mejores políticas para una vida mejor»?',y:'ocde',n:'Es la misión de la OCDE.'},
- {c:'fun',q:'¿Gestiona la Central de Información de Riesgos y pone moneda en circulación en España?',y:'bde',n:'Son funciones del Banco de España.'},
- {c:'fun',q:'¿Supervisa a las aseguradoras y a los planes y fondos de pensiones?',y:'dgsfp',n:'Es la Dirección General de Seguros y Fondos de Pensiones.'},
- {c:'fun',q:'¿Fija la política monetaria y autoriza la emisión de euros?',y:'bce',n:'El BCE, que además persigue una inflación inferior al 2%.'},
- {c:'fun',q:'¿Concede préstamos de más de 25 millones € y apoya medidas contra el cambio climático?',y:'bei',n:'Es el BEI, que también impulsa crecimiento y empleo en Europa.'},
- {c:'fun',q:'¿Se reúne una vez al mes como órgano consultivo informal?',y:'eurogrupo',n:'El Eurogrupo coordina las políticas económicas de la zona euro.'},
- {c:'val',q:'¿Controla, supervisa y asesora sobre el mercado de valores?',y:'cnmv',n:'La CNMV vigila el mercado primario y el secundario.'},
- {c:'val',q:'¿Depende de la CNMV?',y:'av sgc eafi scr iic broker dealer',n:'Dependen de la CNMV las ESI, las instituciones de inversión colectiva y las sociedades de capital riesgo.'},
- {c:'val',q:'¿Es una empresa de servicios de inversión (ESI)?',y:'av sgc eafi broker dealer',n:'Son ESI las sociedades de valores (broker y dealer), las agencias de valores, las gestoras de carteras y las EAFI.'},
- {c:'val',q:'¿Es una sociedad de valores?',y:'broker dealer',n:'Las sociedades de valores pueden actuar como broker o como dealer.'},
- {c:'val',q:'¿Opera por cuenta propia y asume el riesgo?',y:'dealer',n:'El dealer asume riesgo. El broker es un comisionista y no lo asume.'},
- {c:'val',q:'¿Puede ser una persona física?',y:'eafi',n:'Las EAFI son personas físicas o jurídicas que asesoran en materia de inversiones.'},
- {c:'val',q:'¿Gestiona fondos de inversión mobiliaria e inmobiliaria con dinero de ahorradores?',y:'iic',n:'Son las instituciones de inversión colectiva.'},
- {c:'val',q:'¿Entra temporalmente en el capital de empresas no financieras que no cotizan en Bolsa?',y:'scr',n:'Es la sociedad de capital riesgo.'}
+ {c:'dat',q:'¿Se creó en 1944 con los acuerdos de Bretton Woods?',s:'Se creó en 1944 con los acuerdos de Bretton Woods.',y:'fmi bm',n:'El FMI y el Banco Mundial nacen en 1944.'},
+ {c:'dat',q:'¿Tiene unos 190 países miembros?',s:'Tiene unos 190 países miembros.',y:'fmi',n:'El FMI tiene unos 190 miembros (189 en una de las versiones del temario).'},
+ {c:'dat',q:'¿Tiene 37 países miembros?',s:'Tiene 37 países miembros.',y:'ocde',n:'La OCDE tiene 37 miembros.'},
+ {c:'dat',q:'¿Su nombre o su sede están ligados a la ciudad de Basilea?',s:'Su nombre o su sede están ligados a la ciudad de Basilea.',y:'bpi basilea',n:'El BPI tiene su sede en Basilea y el Comité de Supervisión Bancaria lleva el nombre de la ciudad.'},
+ {c:'dat',q:'¿Es propiedad de unos 60 bancos centrales?',s:'Es propiedad de unos 60 bancos centrales.',y:'bpi',n:'El BPI es propiedad de unos 60 bancos centrales y está controlado por 6 de ellos.'},
+ {c:'dat',q:'¿Es el banco con sede en Francfort creado en 1998?',s:'Tiene su sede en Francfort y se creó en 1998.',y:'bce',n:'El BCE se creó en 1998 y tiene su sede en Francfort.'},
+ {c:'dat',q:'¿Es el banco con sede en Luxemburgo, propiedad de la UE desde 1958?',s:'Tiene su sede en Luxemburgo y es propiedad de la UE desde 1958.',y:'bei',n:'El Banco Europeo de Inversiones tiene su sede en Luxemburgo.'},
+ {c:'dat',q:'¿Su capital mínimo exigido es de 300.000 €?',s:'Se le exige un capital mínimo de 300.000 €.',y:'av',n:'La agencia de valores necesita un capital mínimo de 300.000 €.'},
+ {c:'dat',q:'¿Su capital mínimo exigido es de 100.000 €?',s:'Se le exige un capital mínimo de 100.000 €.',y:'sgc',n:'La sociedad gestora de carteras necesita un capital mínimo de 100.000 €.'},
+ {c:'quien',q:'¿El temario lo estudia entre los organismos internacionales?',s:'El temario lo estudia entre los organismos internacionales.',y:'fmi bm bid berd bpi ocde basilea g20',n:'Bloque 1: FMI, Banco Mundial, bancos regionales de desarrollo y otros organismos oficiales como BPI, OCDE, Comité de Basilea y G20.'},
+ {c:'quien',q:'¿Pertenece al Sistema Monetario Europeo?',s:'Pertenece al Sistema Monetario Europeo.',y:'bce sebc eurosis bei ecofin eurogrupo',n:'El Sistema Monetario Europeo incluye BCE, SEBC (y su Eurosistema), BEI, ECOFIN y Eurogrupo.'},
+ {c:'quien',q:'¿Es un foro de las grandes economías del mundo, como el G7 o el G10?',s:'Es un foro de las grandes economías del mundo, como el G7 o el G10.',y:'g20',n:'El G20 aparece en el temario junto al G7 y el G10 entre los otros organismos oficiales.'},
+ {c:'quien',q:'¿Sus países socios son de América?',s:'Sus países socios son de América.',y:'bid',n:'El Banco Interamericano de Desarrollo es el banco regional de desarrollo de América.'},
+ {c:'quien',q:'¿Es una entidad del sistema financiero español?',s:'Es una entidad del sistema financiero español.',y:'bde cnmv dgsfp av sgc eafi scr iic broker dealer',n:'El bloque nacional: los tres supervisores y las entidades que dependen de la CNMV.'},
+ {c:'quien',q:'¿Es uno de los tres supervisores españoles: Banco de España, CNMV o DGSFP?',s:'Es uno de los tres supervisores del sistema financiero español.',y:'bde cnmv dgsfp',n:'Banco de España (banca), CNMV (mercado de valores) y DGSFP (seguros y pensiones).'},
+ {c:'quien',q:'¿Es un banco regional de desarrollo formado por países de una zona concreta?',s:'Es un banco regional de desarrollo formado por países de una zona concreta.',y:'bid berd',n:'Los bancos regionales de desarrollo del temario son el BID, el Banco Asiático y el BERD.'},
+ {c:'quien',q:'¿Es un consejo u órgano de ministros de economía y hacienda de la UE?',s:'Es un consejo u órgano de ministros de economía y hacienda de la UE.',y:'ecofin eurogrupo',n:'ECOFIN reúne a los de todos los estados miembros y el Eurogrupo a los de la zona euro.'},
+ {c:'quien',q:'¿Reúne a los ministros de TODOS los estados de la UE, con los comisarios del tema?',s:'Reúne a los ministros de todos los estados de la UE.',y:'ecofin',n:'Así es el ECOFIN. El Eurogrupo solo reúne a los ministros de la UEM.'},
+ {c:'quien',q:'¿Es un sistema formado por bancos centrales nacionales y el BCE?',s:'Es un sistema formado por bancos centrales nacionales y el BCE.',y:'sebc eurosis',n:'El SEBC y su subgrupo, el Eurosistema.'},
+ {c:'quien',q:'¿Incluye a los bancos centrales de todos los países de la UE, usen o no el euro?',s:'Incluye a los bancos centrales de todos los países de la UE, usen o no el euro.',y:'sebc',n:'El SEBC reúne a todos. El Eurosistema, solo a los de la zona euro.'},
+ {c:'fun',q:'¿Presta a países con desequilibrios en su Balanza de Pagos?',s:'Presta a países con desequilibrios en su Balanza de Pagos.',y:'fmi',n:'El FMI exige garantía de devolución y un programa para solucionar el problema.'},
+ {c:'fun',q:'¿Creó los Derechos Especiales de Giro (DEG)?',s:'Creó los Derechos Especiales de Giro (DEG).',y:'fmi',n:'El DEG es un activo de reserva internacional valorado con euro, dólar, libra, yen y renminbi.'},
+ {c:'fun',q:'¿Concede préstamos de infraestructuras, sectoriales, institucionales y de ajuste estructural?',s:'Concede préstamos de infraestructuras, sectoriales, institucionales y de ajuste estructural.',y:'bm',n:'Son los cuatro tipos de préstamo del Banco Mundial.'},
+ {c:'fun',q:'¿Se le llama «el banco de los bancos centrales»?',s:'Se le llama «el banco de los bancos centrales».',y:'bpi',n:'El BPI gestiona reservas de divisas de bancos centrales y no rinde cuentas ante ningún gobierno.'},
+ {c:'fun',q:'¿Recomienda a los supervisores medidas contra el blanqueo de capitales y el riesgo de crédito?',s:'Recomienda a los supervisores medidas contra el blanqueo de capitales y el riesgo de crédito.',y:'basilea',n:'El Comité de Basilea asesora en regulación financiera. El Banco de España es miembro desde 2001.'},
+ {c:'fun',q:'¿Su misión es «diseñar mejores políticas para una vida mejor»?',s:'Su misión es «diseñar mejores políticas para una vida mejor».',y:'ocde',n:'Es la misión de la OCDE.'},
+ {c:'fun',q:'¿Gestiona la Central de Información de Riesgos y pone moneda en circulación en España?',s:'Gestiona la Central de Información de Riesgos y pone moneda en circulación en España.',y:'bde',n:'Son funciones del Banco de España.'},
+ {c:'fun',q:'¿Supervisa a las aseguradoras y a los planes y fondos de pensiones?',s:'Supervisa a las aseguradoras y a los planes y fondos de pensiones.',y:'dgsfp',n:'Es la Dirección General de Seguros y Fondos de Pensiones.'},
+ {c:'fun',q:'¿Fija la política monetaria y autoriza la emisión de euros?',s:'Fija la política monetaria y autoriza la emisión de euros.',y:'bce',n:'El BCE, que además persigue una inflación inferior al 2%.'},
+ {c:'fun',q:'¿Concede préstamos de más de 25 millones € y apoya medidas contra el cambio climático?',s:'Concede préstamos de más de 25 millones € y apoya medidas contra el cambio climático.',y:'bei',n:'Es el BEI, que también impulsa crecimiento y empleo en Europa.'},
+ {c:'fun',q:'¿Se reúne una vez al mes como órgano consultivo informal?',s:'Se reúne una vez al mes como órgano consultivo informal.',y:'eurogrupo',n:'El Eurogrupo coordina las políticas económicas de la zona euro.'},
+ {c:'val',q:'¿Controla, supervisa y asesora sobre el mercado de valores?',s:'Controla, supervisa y asesora sobre el mercado de valores.',y:'cnmv',n:'La CNMV vigila el mercado primario y el secundario.'},
+ {c:'val',q:'¿Depende de la CNMV?',s:'Depende de la CNMV.',y:'av sgc eafi scr iic broker dealer',n:'Dependen de la CNMV las ESI, las instituciones de inversión colectiva y las sociedades de capital riesgo.'},
+ {c:'val',q:'¿Es una empresa de servicios de inversión (ESI)?',s:'Es una empresa de servicios de inversión (ESI).',y:'av sgc eafi broker dealer',n:'Son ESI las sociedades de valores (broker y dealer), las agencias de valores, las gestoras de carteras y las EAFI.'},
+ {c:'val',q:'¿Es una sociedad de valores?',s:'Es una sociedad de valores.',y:'broker dealer',n:'Las sociedades de valores pueden actuar como broker o como dealer.'},
+ {c:'val',q:'¿Opera por cuenta propia y asume el riesgo?',s:'Opera por cuenta propia y asume el riesgo.',y:'dealer',n:'El dealer asume riesgo. El broker es un comisionista y no lo asume.'},
+ {c:'val',q:'¿Puede ser una persona física?',s:'Puede ser una persona física.',y:'eafi',n:'Las EAFI son personas físicas o jurídicas que asesoran en materia de inversiones.'},
+ {c:'val',q:'¿Gestiona fondos de inversión mobiliaria e inmobiliaria con dinero de ahorradores?',s:'Gestiona fondos de inversión mobiliaria e inmobiliaria con dinero de ahorradores.',y:'iic',n:'Son las instituciones de inversión colectiva.'},
+ {c:'val',q:'¿Entra temporalmente en el capital de empresas no financieras que no cotizan en Bolsa?',s:'Entra temporalmente en el capital de empresas no financieras que no cotizan en Bolsa.',y:'scr',n:'Es la sociedad de capital riesgo.'}
 ];
 QS.forEach((q,i)=>{q.id=i;q.y=q.y.split(' ');});
 const BY=Object.fromEntries(CARDS.map(c=>[c.id,c]));
@@ -574,9 +577,9 @@ function intro(){
    +'<h1>¿Quién es quién? Versión financiera</h1>'
    +'<p class="lead">Un organismo del sistema financiero se esconde tras una ficha. Tienes 24 sospechosos y un banquero que solo responde sí o no.</p>'
    +'<ol class="steps">'
-   +'<li><b>1</b><span>Hay 24 organismos en el tablero y uno es el secreto. En cada ronda cambia.</span></li>'
-   +'<li><b>2</b><span>Haz preguntas de sí o no, una cada 15 segundos. Las fichas que no encajan se dan la vuelta solas.</span></li>'
-   +'<li><b>3</b><span>¿Lo tienes? Toca la ficha y confirma. Cada pregunta resta 4 puntos y cada fallo, 12.</span></li>'
+   +'<li><b>1</b><span>Hay 24 organismos en el tablero y uno es el secreto. Cada ronda empieza con una pista sobre él.</span></li>'
+   +'<li><b>2</b><span>Si dudas entre varios, pide otra pista (una cada 15 segundos). Las fichas que no encajan se dan la vuelta solas.</span></li>'
+   +'<li><b>3</b><span>¿Lo tienes? Toca la ficha y confirma. Cada pista extra resta 4 puntos y cada fallo, 12.</span></li>'
    +'<li><b>4</b><span>Lee la ficha de estudio y responde 2 preguntas de repaso. Al final hay un test. Sube el volumen.</span></li></ol>'
    +'<ul class="route"><li><b>R1</b>Ronda 1</li><li><b>R2</b>Ronda 2</li><li><b>R3</b>Ronda 3</li><li><b>R4</b>Ronda 4</li><li><b>R5</b>Ronda 5</li><li><b>T</b>Test final</li></ul>'
    +'<button class="btn" id="go">Empezar la partida</button>'
@@ -590,16 +593,19 @@ function usefulCount(q){let y=0;S.alive.forEach(c=>{if(q.y.includes(c))y++;});re
 function startRound(i){
   const R=ROUNDS[i];
   const secret=R.pool[Math.floor(Math.random()*R.pool.length)];
-  Object.assign(S,{r:i,secret,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:null,nextAt:0,cooling:false});
+  // Pista inicial: un dato del secreto que comparten de 2 a 10 fichas, para orientar sin resolver
+  const fits=QS.filter(q=>q.y.includes(secret)&&q.y.length>=2&&q.y.length<=10);
+  const clue=(fits.length?fits:QS.filter(q=>q.y.includes(secret)))[Math.floor(Math.random()*(fits.length||1))];
+  Object.assign(S,{r:i,secret,clue:clue.id,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:null,nextAt:0,cooling:false});
   clearInterval(cdTimer); cdTimer=setInterval(tickCool,200);
   pips(i); setScore();
-  view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">Ronda '+(i+1)+' de '+ROUNDS.length+'</p><h2>¿Quién es el organismo secreto?</h2><p class="hint">Hay 24 sospechosos en el tablero. Pregunta y las fichas que no encajen se darán la vuelta.</p></div>'
+  view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">Ronda '+(i+1)+' de '+ROUNDS.length+'</p><div class="clue"><small>Pista inicial</small><p>'+esc(clue.s)+'</p></div><p class="hint">¿Quién es? Si lo sabes, toca su ficha. Si dudas entre varios, pide otra pista.</p></div>'
    +'<div class="cols"><div><div class="board" id="board">'+CARDS.map(c=>cardHtml(c)).join('')+'</div></div>'
    +'<aside class="panel"><div class="secret"><div class="mini" aria-hidden="true"><i>?</i></div><div><b>Organismo secreto</b><div class="stat" id="stat"></div></div></div>'
-   +'<ol class="how"><li><b>1</b>Elige una pregunta</li><li><b>2</b>Se giran las fichas que no encajan</li><li><b>3</b>Toca tu ficha y confirma</li></ol>'
+   +'<ol class="how"><li><b>1</b>Lee la pista inicial</li><li><b>2</b>Si dudas, pide otra pista: se giran las fichas que no encajan</li><li><b>3</b>Toca tu ficha y confirma</li></ol>'
    +'<div class="guess" id="guess"></div>'
    +'<div class="last" id="last" aria-live="polite"></div>'
-   +'<div class="cool" id="cool"><span id="coolt"></span><span class="bar"><i id="coolbar"></i></span></div><div class="tabs" id="tabs" role="tablist"></div><ul class="qs" id="qs"></ul></aside></div></section>';
+   +'<h3 class="ptitle">Pide otra pista</h3><div class="cool" id="cool"><span id="coolt"></span><span class="bar"><i id="coolbar"></i></span></div><div class="tabs" id="tabs" role="tablist"></div><ul class="qs" id="qs"></ul></aside></div></section>';
   $('#board').onclick=e=>{
     const b=e.target.closest('.card'); if(!b||!S.alive.has(b.dataset.id)) return;
     S.sel=S.sel===b.dataset.id?null:b.dataset.id; paint();
@@ -628,10 +634,10 @@ function tickCool(){
   if(!S||!$('#cool')) return;
   const rem=S.nextAt-Date.now();
   if(rem>0){
-    $('#cool').className='cool'; $('#coolt').textContent='Siguiente pregunta en '+Math.ceil(rem/1000)+' s. Mientras, puedes adivinar.';
+    $('#cool').className='cool'; $('#coolt').textContent='Siguiente pista en '+Math.ceil(rem/1000)+' s. Mientras, puedes adivinar.';
     $('#coolbar').style.width=(100-rem/COOLDOWN*100)+'%';
   } else {
-    $('#cool').className='cool ready'; $('#coolt').textContent='Ya puedes preguntar'; $('#coolbar').style.width='100%';
+    $('#cool').className='cool ready'; $('#coolt').textContent='Ya puedes pedir otra pista'; $('#coolbar').style.width='100%';
     if(S.cooling){S.cooling=false; paint();}
   }
 }
@@ -654,7 +660,7 @@ function paint(){
   paintPanel();
 }
 function paintPanel(){
-  $('#stat').innerHTML='<span>Candidatos: <b>'+S.alive.size+'</b></span><span>Preguntas: <b>'+S.nq+'</b></span><span>Ronda: <b>'+S.rs+'</b> pts</span>';
+  $('#stat').innerHTML='<span>Candidatos: <b>'+S.alive.size+'</b></span><span>Pistas: <b>'+S.nq+'</b></span><span>Ronda: <b>'+S.rs+'</b> pts</span>';
   const g=$('#guess');
   if(S.sel){
     g.className='guess';
@@ -669,19 +675,19 @@ function paintPanel(){
     g.innerHTML='<span>¿Ya lo sabes? Toca una ficha del tablero para adivinar.</span>';
   }
   const L=$('#last');
-  if(!S.last){L.className='last';L.innerHTML='<p class="q">Haz tu primera pregunta.</p><p class="note">Las preguntas de arriba son las que descartan alguna ficha. Las mejores dejan fuera a la mitad.</p>';}
+  if(!S.last){L.className='last';L.innerHTML='<p class="q">Aún no has pedido más pistas.</p><p class="note">Las pistas de arriba de cada pestaña son las que descartan alguna ficha. Las mejores dejan fuera a la mitad.</p>';}
   else if(S.last.wrong){L.className='last no';L.innerHTML='<span class="verdict">Fallo</span><span class="q">«'+esc(S.last.wrong)+'» no es el organismo secreto.</span><p class="note">Esa ficha sale del tablero.</p>';}
   else{L.className='last '+(S.last.ans?'yes':'no');L.innerHTML='<span class="verdict">'+(S.last.ans?'Sí':'No')+'</span><span class="q">'+esc(S.last.q)+'</span><p class="note">'+esc(S.last.note)+'</p><p class="out">'+(S.last.out===1?'Se ha girado 1 ficha.':'Se han girado '+S.last.out+' fichas.')+'</p>';}
-  const cnt={}; CATS.forEach(c=>{cnt[c[0]]=QS.filter(q=>q.c===c[0]&&S.asked[q.id]===undefined&&usefulCount(q)).length;});
+  const cnt={}; CATS.forEach(c=>{cnt[c[0]]=QS.filter(q=>q.c===c[0]&&q.id!==S.clue&&S.asked[q.id]===undefined&&usefulCount(q)).length;});
   if(!S.tab) S.tab=(CATS.find(c=>cnt[c[0]]>0)||CATS[0])[0];
   $('#tabs').innerHTML=CATS.map(c=>'<button class="tab" role="tab" data-c="'+c[0]+'" aria-selected="'+(S.tab===c[0])+'">'+c[1]+' <i class="'+(cnt[c[0]]?'':'zero')+'">'+cnt[c[0]]+'</i></button>').join('');
-  const list=QS.filter(q=>q.c===S.tab);
+  const list=QS.filter(q=>q.c===S.tab&&q.id!==S.clue);
   const asked=list.filter(q=>S.asked[q.id]!==undefined), open=list.filter(q=>S.asked[q.id]===undefined);
   const good=open.filter(usefulCount), bad=open.filter(q=>!usefulCount(q));
   const btn=(q,dis,extra)=>{const a=S.asked[q.id];return '<li><button class="qb'+(a===undefined?'':(a?' y':' n'))+(extra||'')+'" data-q="'+q.id+'"'+(dis?' disabled':'')+'><span>'+esc(q.q)+'</span>'+(a===undefined?'':'<span class="r">'+(a?'SÍ':'NO')+'</span>')+'</button></li>';};
   $('#qs').classList.toggle('wait',S.cooling);
-  $('#qs').innerHTML=(good.length?good.map(q=>btn(q,S.cooling)).join(''):'<li class="qhead">En esta pestaña ya no quedan preguntas útiles. Prueba otra.</li>')
-    +(asked.length?'<li class="qhead">Ya preguntadas</li>'+asked.map(q=>btn(q,true)).join(''):'')
+  $('#qs').innerHTML=(good.length?good.map(q=>btn(q,S.cooling)).join(''):'<li class="qhead">En esta pestaña ya no quedan pistas útiles. Prueba otra.</li>')
+    +(asked.length?'<li class="qhead">Pistas ya pedidas</li>'+asked.map(q=>btn(q,true)).join(''):'')
     +(bad.length?'<li class="qhead">No descartan a nadie ahora</li>'+bad.map(q=>btn(q,true,' useless')).join(''):'');
 }
 
@@ -692,7 +698,7 @@ function finishRound(){
   S.log.push({t:R.t,pts:S.rs,nq:S.nq,wrong:S.nwrong});
   S.qi=0;
   view.innerHTML='<section class="ficha"><div class="board" style="grid-template-columns:1fr">'+cardHtml(c)+'</div><div>'
-   +'<p class="res">Acertaste · +'+S.rs+' pts · '+S.nq+(S.nq===1?' pregunta':' preguntas')+'</p><h2>'+esc(c.n)+'</h2><p class="eyebrow">Ficha de estudio · '+esc(R.sec)+': '+esc(R.t)+'</p><p class="desc">'+esc(c.d)+'</p>'
+   +'<p class="res">Acertaste · +'+S.rs+' pts · '+S.nq+(S.nq===1?' pista extra':' pistas extra')+'</p><h2>'+esc(c.n)+'</h2><p class="eyebrow">Ficha de estudio · '+esc(R.sec)+': '+esc(R.t)+'</p><p class="desc">'+esc(c.d)+'</p>'
    +'<div class="quiz" id="quizbox"></div></div></section>';
   showQuiz();
   window.scrollTo({top:0});
@@ -752,7 +758,7 @@ function end(){
   const txt='Jugué ¿Quién es quién? Versión financiera y saqué '+S.total+' puntos en '+mins+' min. Rango: '+rank(S.total)+'. ¿Me superas?';
   view.innerHTML='<section class="end"><p class="eyebrow">Partida terminada · '+fmt(Date.now()-S.t0)+'</p><h1>'+rank(S.total)+'</h1>'
    +'<div class="big">'+S.total+' pts</div>'+(record?'<p class="res">Nuevo récord personal</p>':'')
-   +'<ul class="sum">'+S.log.map((l,i)=>'<li><span>R'+(i+1)+' · '+esc(l.t)+' ('+l.nq+(l.nq===1?' pregunta, ':' preguntas, ')+l.wrong+(l.wrong===1?' fallo)':' fallos)')+'</span><span>+'+l.pts+'</span></li>').join('')
+   +'<ul class="sum">'+S.log.map((l,i)=>'<li><span>R'+(i+1)+' · '+esc(l.t)+' ('+l.nq+(l.nq===1?' pista, ':' pistas, ')+l.wrong+(l.wrong===1?' fallo)':' fallos)')+'</span><span>+'+l.pts+'</span></li>').join('')
    +'<li><span>Repasos de ronda acertados</span><span>'+S.quizOk+' / '+(ROUNDS.length*2)+'</span></li>'
    +'<li><span>Test final acertado</span><span>'+S.testOk+' / '+TEST.length+'</span></li></ul>'
    +'<div class="row"><button class="btn" id="again">Jugar otra vez</button><button class="btn ghost" id="cp">Copiar mi resultado</button></div><p class="toast" id="ts" role="status"></p>'
