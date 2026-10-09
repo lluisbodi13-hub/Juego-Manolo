@@ -269,7 +269,7 @@ const CARDS=[
 const CATS=[['dat','Fechas, sedes y cifras'],['quien','Quién lo forma'],['fun','Funciones'],['val','Mercado de valores']];
 const QS=[
  {c:'dat',q:'¿Se creó en 1944 con los acuerdos de Bretton Woods?',s:'Se creó en 1944 con los acuerdos de Bretton Woods.',y:'fmi bm',n:'El FMI y el Banco Mundial nacen en 1944.'},
- {c:'dat',q:'¿Tiene unos 190 países miembros?',s:'Tiene unos 190 países miembros.',y:'fmi',n:'El FMI tiene unos 190 miembros (189 en una de las versiones del temario).'},
+ {c:'dat',q:'¿Tiene unos 190 países miembros?',s:'Tiene unos 190 países miembros.',y:'fmi',n:'El FMI tiene unos 190 países miembros.'},
  {c:'dat',q:'¿Tiene 37 países miembros?',s:'Tiene 37 países miembros.',y:'ocde',n:'La OCDE tiene 37 miembros.'},
  {c:'dat',q:'¿Su nombre o su sede están ligados a la ciudad de Basilea?',s:'Su nombre o su sede están ligados a la ciudad de Basilea.',y:'bpi basilea',n:'El BPI tiene su sede en Basilea y el Comité de Supervisión Bancaria lleva el nombre de la ciudad.'},
  {c:'dat',q:'¿Es propiedad de unos 60 bancos centrales?',s:'Es propiedad de unos 60 bancos centrales.',y:'bpi',n:'El BPI es propiedad de unos 60 bancos centrales y está controlado por 6 de ellos.'},
@@ -277,13 +277,15 @@ const QS=[
  {c:'dat',q:'¿Es el banco con sede en Luxemburgo, propiedad de la UE desde 1958?',s:'Tiene su sede en Luxemburgo y es propiedad de la UE desde 1958.',y:'bei',n:'El Banco Europeo de Inversiones tiene su sede en Luxemburgo.'},
  {c:'dat',q:'¿Su capital mínimo exigido es de 300.000 €?',s:'Se le exige un capital mínimo de 300.000 €.',y:'av',n:'La agencia de valores necesita un capital mínimo de 300.000 €.'},
  {c:'dat',q:'¿Su capital mínimo exigido es de 100.000 €?',s:'Se le exige un capital mínimo de 100.000 €.',y:'sgc',n:'La sociedad gestora de carteras necesita un capital mínimo de 100.000 €.'},
- {c:'quien',q:'¿El temario lo estudia entre los organismos internacionales?',s:'El temario lo estudia entre los organismos internacionales.',y:'fmi bm bid berd bpi ocde basilea g20',n:'Bloque 1: FMI, Banco Mundial, bancos regionales de desarrollo y otros organismos oficiales como BPI, OCDE, Comité de Basilea y G20.'},
- {c:'quien',q:'¿Pertenece al Sistema Monetario Europeo?',s:'Pertenece al Sistema Monetario Europeo.',y:'bce sebc eurosis bei ecofin eurogrupo',n:'El Sistema Monetario Europeo incluye BCE, SEBC (y su Eurosistema), BEI, ECOFIN y Eurogrupo.'},
- {c:'quien',q:'¿Es un foro de las grandes economías del mundo, como el G7 o el G10?',s:'Es un foro de las grandes economías del mundo, como el G7 o el G10.',y:'g20',n:'El G20 aparece en el temario junto al G7 y el G10 entre los otros organismos oficiales.'},
+ {c:'quien',b:1,q:'¿Es un organismo internacional (ni español ni de la Unión Europea)?',s:'Es un organismo internacional: no es español ni de la Unión Europea.',y:'fmi bm bid berd bpi ocde basilea g20',n:'Son organismos internacionales el FMI, el Banco Mundial, los bancos regionales de desarrollo, el BPI, la OCDE, el Comité de Basilea y el G20.'},
+ {c:'quien',b:1,q:'¿Pertenece al Sistema Monetario Europeo?',s:'Pertenece al Sistema Monetario Europeo.',y:'bce sebc eurosis bei ecofin eurogrupo',n:'El Sistema Monetario Europeo incluye BCE, SEBC (y su Eurosistema), BEI, ECOFIN y Eurogrupo.'},
+ {c:'quien',q:'¿Es un foro de las grandes economías del mundo, como el G7 o el G10?',s:'Es un foro de las grandes economías del mundo, como el G7 o el G10.',y:'g20',n:'El G20 es, como el G7 y el G10, un grupo que reúne a grandes economías.'},
  {c:'quien',q:'¿Sus países socios son de América?',s:'Sus países socios son de América.',y:'bid',n:'El Banco Interamericano de Desarrollo es el banco regional de desarrollo de América.'},
- {c:'quien',q:'¿Es una entidad del sistema financiero español?',s:'Es una entidad del sistema financiero español.',y:'bde cnmv dgsfp av sgc eafi scr iic broker dealer',n:'El bloque nacional: los tres supervisores y las entidades que dependen de la CNMV.'},
+ {c:'quien',q:'¿Es un banco de la Unión Europea?',s:'Es un banco de la Unión Europea.',y:'bce bei',n:'Los dos bancos de la UE son el BCE (Francfort) y el BEI (Luxemburgo).'},
+ {c:'fun',q:'¿Es un organismo internacional que no es un banco y no presta dinero?',s:'Es un organismo internacional que no es un banco y no presta dinero.',y:'ocde basilea g20',n:'La OCDE, el Comité de Basilea y el G20 asesoran o coordinan políticas, pero no prestan dinero.'},
+ {c:'quien',b:1,q:'¿Es una entidad del sistema financiero español?',s:'Es una entidad del sistema financiero español.',y:'bde cnmv dgsfp av sgc eafi scr iic broker dealer',n:'El bloque nacional: los tres supervisores y las entidades que dependen de la CNMV.'},
  {c:'quien',q:'¿Es uno de los tres supervisores españoles: Banco de España, CNMV o DGSFP?',s:'Es uno de los tres supervisores del sistema financiero español.',y:'bde cnmv dgsfp',n:'Banco de España (banca), CNMV (mercado de valores) y DGSFP (seguros y pensiones).'},
- {c:'quien',q:'¿Es un banco regional de desarrollo formado por países de una zona concreta?',s:'Es un banco regional de desarrollo formado por países de una zona concreta.',y:'bid berd',n:'Los bancos regionales de desarrollo del temario son el BID, el Banco Asiático y el BERD.'},
+ {c:'quien',q:'¿Es un banco regional de desarrollo formado por países de una zona concreta?',s:'Es un banco regional de desarrollo formado por países de una zona concreta.',y:'bid berd',n:'Son bancos regionales de desarrollo el BID, el Banco Asiático de Desarrollo y el BERD.'},
  {c:'quien',q:'¿Es un consejo u órgano de ministros de economía y hacienda de la UE?',s:'Es un consejo u órgano de ministros de economía y hacienda de la UE.',y:'ecofin eurogrupo',n:'ECOFIN reúne a los de todos los estados miembros y el Eurogrupo a los de la zona euro.'},
  {c:'quien',q:'¿Reúne a los ministros de TODOS los estados de la UE, con los comisarios del tema?',s:'Reúne a los ministros de todos los estados de la UE.',y:'ecofin',n:'Así es el ECOFIN. El Eurogrupo solo reúne a los ministros de la UEM.'},
  {c:'quien',q:'¿Es un sistema formado por bancos centrales nacionales y el BCE?',s:'Es un sistema formado por bancos centrales nacionales y el BCE.',y:'sebc eurosis',n:'El SEBC y su subgrupo, el Eurosistema.'},
@@ -576,8 +578,9 @@ function usefulCount(q){let y=0;S.alive.forEach(c=>{if(q.y.includes(c))y++;});re
 function startRound(i){
   const R=ROUNDS[i];
   const secret=R.pool[Math.floor(Math.random()*R.pool.length)];
-  // Pista inicial: un dato del secreto que comparten de 2 a 10 fichas, para orientar sin resolver
-  const fits=QS.filter(q=>q.y.includes(secret)&&q.y.length>=2&&q.y.length<=10);
+  // Pista inicial: un dato concreto del secreto que comparten de 2 a 10 fichas, para orientar sin resolver
+  let fits=QS.filter(q=>!q.b&&q.y.includes(secret)&&q.y.length>=2&&q.y.length<=10);
+  if(!fits.length) fits=QS.filter(q=>q.y.includes(secret)&&q.y.length>=2&&q.y.length<=10);
   const clue=(fits.length?fits:QS.filter(q=>q.y.includes(secret)))[Math.floor(Math.random()*(fits.length||1))];
   Object.assign(S,{r:i,mult:i===ROUNDS.length-1?2:1,secret,clue:clue.id,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:null,nextAt:0,cooling:false});
   clearInterval(cdTimer); cdTimer=setInterval(tickCool,200);
