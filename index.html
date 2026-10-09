@@ -206,6 +206,11 @@ p{margin:0}
 .clue p{font-family:var(--f-display);font-weight:800;font-size:clamp(1.3rem,3vw,2rem);line-height:1.15;text-wrap:balance;color:var(--ink)}
 .rhead .hint{margin-top:8px}
 .ptitle{font-family:var(--f-body);font-weight:700;font-size:1rem;margin:4px 0 0}
+.recap{margin-top:18px;max-width:62ch}
+.recap ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}
+.recap li{display:grid;grid-template-columns:4.2rem 1fr;gap:10px;align-items:baseline;font-size:.92rem;padding-block:3px;border-bottom:1px dashed var(--line)}
+.recap b{font-family:var(--f-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--gold)}
+.recap b.y{color:var(--ok)} .recap b.n{color:var(--bad)}
 .toast{font-family:var(--f-mono);font-size:.8rem;color:var(--ok);min-height:1.2rem}
 
 @media (max-width:900px){
@@ -325,6 +330,37 @@ const ROUNDS=[
  {"t":"BEI, ECOFIN y Eurogrupo","sec":"Temario 3","pool":["bei","ecofin","eurogrupo"],"quiz":[{"q":"¿Qué diferencia al ECOFIN del Eurogrupo?","o":["El ECOFIN reúne a los ministros de toda la UE y el Eurogrupo solo a los de la zona euro","El ECOFIN es un banco y el Eurogrupo un fondo de inversión","El Eurogrupo se reúne una vez al año y el ECOFIN cada día","No hay ninguna diferencia"],"a":0,"e":"El ECOFIN es el consejo de ministros de economía y hacienda de todos los estados miembros. El Eurogrupo es informal, de la zona euro, y se reúne una vez al mes."},{"q":"¿Quién forma el Eurogrupo?","o":["Los presidentes de los bancos centrales","Los ministros de economía y hacienda de la zona euro","Los 37 miembros de la OCDE","Los 60 propietarios del BPI"],"a":1,"e":"Es un órgano consultivo informal que se reúne una vez al mes."}]}
 ];
 
+/* Para que el repaso no repita una pista ya vista: cada pregunta indica qué datos la delatan */
+const QUIZ_AVOID=[
+ ['¿En qué acuerdo y año',/1944|Bretton/],
+ ['El DEG del FMI',/DEG|Derechos Especiales/],
+ ['Un país con mucha deuda',/ajuste estructural|infraestructuras/],
+ ['¿Qué tipo de préstamo del Banco Mundial',/ajuste estructural|infraestructuras/],
+ ['¿Qué organismo se conoce como',/bancos centrales»|60 bancos centrales/],
+ ['¿Desde qué año es miembro',/blanqueo|2001/],
+ ['¿Quién gestiona la Central',/Central de Información/],
+ ['¿Quién supervisa a las empresas aseguradoras',/aseguradoras/],
+ ['¿Qué hace la CNMV',/mercado de valores/],
+ ['¿Qué entidad participa temporalmente',/temporalmente/],
+ ['Una empresa vende por primera vez',/primario/],
+ ['¿Qué diferencia a un dealer',/cuenta propia|comisionista|sociedad de valores/],
+ ['¿Qué capital mínimo',/300\.000|100\.000/],
+ ['¿Qué inflación persigue',/inflación|política monetaria/],
+ ['¿Qué es el Eurosistema',/subgrupo|bancos centrales nacionales|usen o no el euro/],
+ ['¿Qué diferencia al ECOFIN',/ministros|una vez al mes/],
+ ['¿Quién forma el Eurogrupo',/ministros|una vez al mes/]
+];
+function pickQuiz(){
+  const seen=[QS[S.clue].s].concat(S.order.map(id=>QS[id].q+' '+QS[id].n)).join(' ');
+  const clash=qz=>{const m=QUIZ_AVOID.find(([k])=>qz.q.startsWith(k));return m?m[1].test(seen):false;};
+  const fresh=qz=>!S.usedQ.includes(qz.q);
+  let c=ROUNDS[S.r].quiz.filter(q=>fresh(q)&&!clash(q));
+  if(!c.length) c=ROUNDS.flatMap(r=>r.quiz).filter(q=>fresh(q)&&!clash(q));
+  if(!c.length) c=ROUNDS[S.r].quiz.filter(fresh);
+  if(!c.length) c=ROUNDS[S.r].quiz;
+  const qz=c[Math.floor(Math.random()*c.length)]; S.usedQ.push(qz.q); return qz;
+}
+
 /* ---------- ESTADO ---------- */
 const $=s=>document.querySelector(s);
 const view=$('#view');
@@ -333,7 +369,7 @@ let S=null, timer=null, cdTimer=null;
 const BEST_KEY='qeq-financiero-best';
 function getBest(){try{return +localStorage.getItem(BEST_KEY)||0}catch(e){return 0}}
 function setBest(v){try{localStorage.setItem(BEST_KEY,String(v))}catch(e){}}
-function newState(){return {r:0,total:0,t0:Date.now(),log:[],quizOk:0};}
+function newState(){return {r:0,total:0,t0:Date.now(),log:[],quizOk:0,usedQ:[]};}
 function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
 function fmt(ms){const s=Math.floor(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
 function pips(cur){
@@ -582,7 +618,7 @@ function startRound(i){
   let fits=QS.filter(q=>!q.b&&q.y.includes(secret)&&q.y.length>=2&&q.y.length<=10);
   if(!fits.length) fits=QS.filter(q=>q.y.includes(secret)&&q.y.length>=2&&q.y.length<=10);
   const clue=(fits.length?fits:QS.filter(q=>q.y.includes(secret)))[Math.floor(Math.random()*(fits.length||1))];
-  Object.assign(S,{r:i,mult:i===ROUNDS.length-1?2:1,secret,clue:clue.id,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:null,nextAt:0,cooling:false});
+  Object.assign(S,{r:i,mult:i===ROUNDS.length-1?2:1,secret,clue:clue.id,order:[],alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:null,nextAt:0,cooling:false});
   clearInterval(cdTimer); cdTimer=setInterval(tickCool,200);
   pips(i); setScore();
   view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">'+(i===ROUNDS.length-1?'Ronda final · ¡los puntos valen el doble!':'Ronda '+(i+1)+' de '+ROUNDS.length)+'</p><div class="clue"><small>Pista inicial</small><p>'+esc(clue.s)+'</p></div><p class="hint">¿Quién es? Si lo sabes, toca su ficha. Si dudas entre varios, pide otra pista.</p></div>'
@@ -609,7 +645,7 @@ function ask(id){
   const q=QS[id]; if(S.asked[id]!==undefined||Date.now()<S.nextAt) return;
   S.nextAt=Date.now()+COOLDOWN; S.cooling=true;
   const ans=q.y.includes(S.secret);
-  S.asked[id]=ans; S.nq++; S.rs=Math.max(10,S.rs-PER_Q);
+  S.asked[id]=ans; S.order.push(id); S.nq++; S.rs=Math.max(10,S.rs-PER_Q);
   let out=0;
   S.alive.forEach(cid=>{ if(q.y.includes(cid)!==ans){ S.alive.delete(cid); out++; } });
   if(S.sel&&!S.alive.has(S.sel)) S.sel=null;
@@ -684,8 +720,10 @@ function finishRound(){
   S.log.push({t:R.t,pts:S.rs,nq:S.nq,wrong:S.nwrong});
   view.innerHTML='<section class="ficha"><div class="board" style="grid-template-columns:1fr">'+cardHtml(c)+'</div><div>'
    +'<p class="res">Acertaste · +'+S.rs+' pts'+(S.mult>1?' (doble)':'')+' · '+S.nq+(S.nq===1?' pista extra':' pistas extra')+'</p><h2>'+esc(c.n)+'</h2><p class="eyebrow">Ficha de estudio · '+esc(R.sec)+': '+esc(R.t)+'</p><p class="desc">'+esc(c.d)+'</p>'
+   +'<div class="recap"><p class="eyebrow">Pistas de esta ronda</p><ul><li><b>Inicial</b><span>'+esc(QS[S.clue].s)+'</span></li>'
+   +S.order.map(id=>'<li><b class="'+(S.asked[id]?'y':'n')+'">'+(S.asked[id]?'Sí':'No')+'</b><span>'+esc(QS[id].q)+'</span></li>').join('')+'</ul></div>'
    +'<div class="quiz" id="quizbox"></div></div></section>';
-  showQuiz(R.quiz[Math.floor(Math.random()*R.quiz.length)]);
+  showQuiz(pickQuiz());
   window.scrollTo({top:0});
 }
 function showQuiz(qz){
