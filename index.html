@@ -97,7 +97,7 @@ p{margin:0}
 .card.sel .front{box-shadow:0 0 0 3px var(--gold);border-color:var(--gold)}
 .sig{font-family:var(--f-mono);font-weight:600;font-size:.74rem;color:var(--gc);border:2px solid var(--gc);border-radius:999px;min-width:2.9rem;padding:.35rem .5rem;line-height:1}
 .sig.l{font-size:.6rem}
-.nm{font-size:.68rem;line-height:1.15;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.nm{font-size:.68rem;line-height:1.15;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto}
 .back{transform:rotateY(180deg);border:1.5px solid var(--ink);
   background:
     repeating-radial-gradient(circle at 30% 30%, transparent 0 3px, var(--back-b) 3px 4px),
@@ -190,7 +190,6 @@ p{margin:0}
 .cool.ready{color:var(--ok)}
 .qs.wait .qb:not(.y):not(.n){opacity:.5}
 @media (prefers-reduced-motion:reduce){.react.on .box,.react.on p,.react.on,.react.on::before,.react .tick div{animation:none}}
-.card.out{opacity:.38}
 .card[aria-disabled="true"]{cursor:default}
 .how{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--ink-2)}
 .how b{font-family:var(--f-mono);color:var(--gold);margin-right:5px}
@@ -201,7 +200,6 @@ p{margin:0}
 .tab i.zero{background:transparent;color:var(--ink-2)}
 .qhead{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);padding:8px 2px 0}
 .qb.useless{opacity:.45;border-style:dashed}
-@media (max-width:900px){#board .card.out{display:none} #board{grid-template-columns:repeat(3,minmax(0,1fr))} #board.n4{grid-template-columns:repeat(4,minmax(0,1fr))}}
 
 .toast{font-family:var(--f-mono);font-size:.8rem;color:var(--ok);min-height:1.2rem}
 
@@ -211,6 +209,7 @@ p{margin:0}
   .cols{grid-template-columns:1fr}
   .panel{position:static}
   .board{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+  .nm{font-size:.62rem;-webkit-line-clamp:5}
   .qs{max-height:none}
   .ficha{grid-template-columns:1fr}
   .ficha .card{max-width:170px}
@@ -220,7 +219,7 @@ p{margin:0}
 }
 </style>
 
-<div class="shell">
+<div class="shell" lang="es">
   <header class="top">
     <div class="brand">Quién es Quién<small>Sistema financiero internacional</small></div>
     <ol class="pips" id="pips" aria-label="Progreso"></ol>
@@ -575,11 +574,11 @@ function intro(){
    +'<h1>¿Quién es quién? Versión financiera</h1>'
    +'<p class="lead">Un organismo del sistema financiero se esconde tras una ficha. Tienes 24 sospechosos y un banquero que solo responde sí o no.</p>'
    +'<ol class="steps">'
-   +'<li><b>1</b><span>En cada ronda hay de 4 a 6 candidatos y uno es el organismo secreto.</span></li>'
+   +'<li><b>1</b><span>Hay 24 organismos en el tablero y uno es el secreto. En cada ronda cambia.</span></li>'
    +'<li><b>2</b><span>Haz preguntas de sí o no, una cada 15 segundos. Las fichas que no encajan se dan la vuelta solas.</span></li>'
    +'<li><b>3</b><span>¿Lo tienes? Toca la ficha y confirma. Cada pregunta resta 4 puntos y cada fallo, 12.</span></li>'
    +'<li><b>4</b><span>Lee la ficha de estudio y responde 2 preguntas de repaso. Al final hay un test. Sube el volumen.</span></li></ol>'
-   +'<ul class="route"><li><b>R1</b>FMI, Banco Mundial y bancos regionales</li><li><b>R2</b>BPI, OCDE, Basilea y G20</li><li><b>R3</b>Supervisores españoles, IIC y capital riesgo</li><li><b>R4</b>Empresas de servicios de inversión</li><li><b>R5</b>Sistema Monetario Europeo</li><li><b>T</b>Test final</li></ul>'
+   +'<ul class="route"><li><b>R1</b>Ronda 1</li><li><b>R2</b>Ronda 2</li><li><b>R3</b>Ronda 3</li><li><b>R4</b>Ronda 4</li><li><b>R5</b>Ronda 5</li><li><b>T</b>Test final</li></ul>'
    +'<button class="btn" id="go">Empezar la partida</button>'
    +'<p class="best">Duración aproximada: 25 minutos.'+(best?' Tu mejor puntuación: '+best+' pts.':'')+'</p>'
    +'</div><div class="guil" aria-hidden="true"><span>?</span></div></section>';
@@ -591,11 +590,11 @@ function usefulCount(q){let y=0;S.alive.forEach(c=>{if(q.y.includes(c))y++;});re
 function startRound(i){
   const R=ROUNDS[i];
   const secret=R.pool[Math.floor(Math.random()*R.pool.length)];
-  Object.assign(S,{r:i,secret,alive:new Set(R.pool),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:null,nextAt:0,cooling:false});
+  Object.assign(S,{r:i,secret,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:null,nextAt:0,cooling:false});
   clearInterval(cdTimer); cdTimer=setInterval(tickCool,200);
   pips(i); setScore();
-  view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">Ronda '+(i+1)+' de '+ROUNDS.length+' · '+esc(R.sec)+'</p><h2>'+esc(R.t)+'</h2><p class="hint">'+esc(R.hint)+' Las demás fichas quedan fuera de esta ronda.</p></div>'
-   +'<div class="cols"><div><div class="board'+(R.pool.length===4?' n4':'')+'" id="board">'+CARDS.map(c=>cardHtml(c,R.pool.includes(c.id)?'':' out')).join('')+'</div></div>'
+  view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">Ronda '+(i+1)+' de '+ROUNDS.length+'</p><h2>¿Quién es el organismo secreto?</h2><p class="hint">Hay 24 sospechosos en el tablero. Pregunta y las fichas que no encajen se darán la vuelta.</p></div>'
+   +'<div class="cols"><div><div class="board" id="board">'+CARDS.map(c=>cardHtml(c)).join('')+'</div></div>'
    +'<aside class="panel"><div class="secret"><div class="mini" aria-hidden="true"><i>?</i></div><div><b>Organismo secreto</b><div class="stat" id="stat"></div></div></div>'
    +'<ol class="how"><li><b>1</b>Elige una pregunta</li><li><b>2</b>Se giran las fichas que no encajan</li><li><b>3</b>Toca tu ficha y confirma</li></ol>'
    +'<div class="guess" id="guess"></div>'
@@ -611,15 +610,7 @@ function startRound(i){
     const b=e.target.closest('button'); if(!b) return;
     if(b.dataset.a==='no'){S.sel=null;paint();} else if(b.dataset.a==='yes'){guess(S.sel);}
   };
-  // Primero se ven las 24 fichas; después se giran en cascada las que no juegan esta ronda
-  const outs=[...document.querySelectorAll('#board .card.out')];
-  paintPanel();
-  setTimeout(()=>{
-    if(!$('#board')) return;
-    outs.forEach((el,k)=>{el.style.transitionDelay=(k*30)+'ms';});
-    paint();
-    setTimeout(()=>outs.forEach(el=>{el.style.transitionDelay='';}),1500);
-  },500);
+  paint();
   window.scrollTo({top:0});
 }
 function ask(id){
@@ -701,7 +692,7 @@ function finishRound(){
   S.log.push({t:R.t,pts:S.rs,nq:S.nq,wrong:S.nwrong});
   S.qi=0;
   view.innerHTML='<section class="ficha"><div class="board" style="grid-template-columns:1fr">'+cardHtml(c)+'</div><div>'
-   +'<p class="res">Acertaste · +'+S.rs+' pts · '+S.nq+(S.nq===1?' pregunta':' preguntas')+'</p><h2>'+esc(c.n)+'</h2><p class="eyebrow">Ficha de estudio</p><p class="desc">'+esc(c.d)+'</p>'
+   +'<p class="res">Acertaste · +'+S.rs+' pts · '+S.nq+(S.nq===1?' pregunta':' preguntas')+'</p><h2>'+esc(c.n)+'</h2><p class="eyebrow">Ficha de estudio · '+esc(R.sec)+': '+esc(R.t)+'</p><p class="desc">'+esc(c.d)+'</p>'
    +'<div class="quiz" id="quizbox"></div></div></section>';
   showQuiz();
   window.scrollTo({top:0});
