@@ -311,33 +311,16 @@ const QS=[
 QS.forEach((q,i)=>{q.id=i;q.y=q.y.split(' ');});
 const BY=Object.fromEntries(CARDS.map(c=>[c.id,c]));
 
+/* 8 rondas: cada una saca el secreto de un apartado del temario. La última vale el doble. */
 const ROUNDS=[
- {t:'FMI, Banco Mundial y bancos regionales de desarrollo',sec:'Temario 1.1 a 1.3',pool:['fmi','bm','bid','berd'],hint:'El organismo secreto es uno de estos cuatro: FMI, Banco Mundial, BID o BERD.',
-  quiz:{q:'El DEG del FMI se valora con una cesta de monedas. ¿Cuál de estas NO está en la cesta?',o:['Euro','Dólar','Franco suizo','Renminbi chino'],a:2,e:'La cesta incluye euro, dólar, libra esterlina, yen y renminbi chino, las monedas de los países más exportadores.'}},
- {t:'Otros organismos oficiales: BPI, OCDE, Comité de Basilea y G20',sec:'Temario 1.4',pool:['bpi','ocde','basilea','g20'],hint:'El organismo secreto es uno de estos cuatro: BPI, OCDE, Comité de Basilea o G20.',
-  quiz:{q:'¿Qué organismo se conoce como «el banco de los bancos centrales»?',o:['Banco Central Europeo','Banco de Pagos Internacionales','Banco Mundial','Fondo Monetario Internacional'],a:1,e:'El BPI es propiedad de unos 60 bancos centrales y gestiona sus reservas de divisas.'}},
- {t:'Supervisores españoles, inversión colectiva y capital riesgo',sec:'Temario 2',pool:['bde','cnmv','dgsfp','iic','scr'],hint:'El organismo secreto es uno de estos cinco: Banco de España, CNMV, DGSFP, Institución de Inversión Colectiva o Sociedad de Capital Riesgo.',
-  quiz:{q:'Una empresa vende por primera vez sus acciones a inversores. ¿En qué mercado lo hace?',o:['Mercado primario','Mercado secundario','Mercado de divisas','Euromercado'],a:0,e:'En el mercado primario se colocan los valores por primera vez. En el secundario se intercambian los ya colocados.'}},
- {t:'Empresas de servicios de inversión (ESI)',sec:'Temario 2 · CNMV',pool:['av','sgc','eafi','broker','dealer'],hint:'El organismo secreto es uno de estos cinco: Agencia de Valores, Sociedad Gestora de Carteras, EAFI, broker o dealer.',
-  quiz:{q:'¿Qué diferencia a un dealer de un broker?',o:['El dealer actúa por cuenta propia y asume riesgo; el broker es comisionista','El dealer asesora y el broker gestiona fondos','El dealer es público y el broker es extranjero','No hay diferencia, son sinónimos'],a:0,e:'El broker ejecuta órdenes de clientes sin asumir riesgo. El dealer opera con su propio dinero.'}},
- {t:'Sistema Monetario Europeo',sec:'Temario 3',pool:['bce','sebc','eurosis','bei','ecofin','eurogrupo'],hint:'El organismo secreto es uno de estos seis: BCE, SEBC, Eurosistema, BEI, ECOFIN o Eurogrupo.',
-  quiz:{q:'¿Qué inflación persigue el BCE como objetivo de estabilidad de precios?',o:['Entre el 5% y el 7%','Exactamente el 0%','Inferior al 2%','Inferior al 10%'],a:2,e:'El BCE mantiene la estabilidad de precios con una inflación inferior al 2% y gestiona el euro.'}}
-];
-const EXTRA_QUIZ=[
- {q:'¿Qué tipo de préstamo del Banco Mundial financia gasoductos o telecomunicaciones?',o:['De proyectos de infraestructuras','Sectorial','Institucional','De ajuste estructural'],a:0,e:'Los préstamos de infraestructuras financian obras como gasoductos y telecomunicaciones. Los sectoriales van a agricultura o energía.'},
- {q:'¿Desde qué año es miembro del Comité de Basilea el Banco de España?',o:['1944','1998','2001','2010'],a:2,e:'El Banco de España es miembro del Comité de Supervisión Bancaria de Basilea desde 2001.'},
- {q:'¿Quién supervisa a las empresas aseguradoras y a los fondos de pensiones?',o:['CNMV','Banco de España','DGSFP','Banco Central Europeo'],a:2,e:'De la Dirección General de Seguros y Fondos de Pensiones dependen aseguradoras y planes y fondos de pensiones.'},
- {q:'¿Qué capital mínimo se exige a una Agencia de Valores?',o:['100.000 €','300.000 €','25 millones de €','No se exige capital mínimo'],a:1,e:'La agencia de valores necesita 300.000 €. La sociedad gestora de carteras, 100.000 €.'},
- {q:'¿Qué diferencia al ECOFIN del Eurogrupo?',o:['El ECOFIN reúne a los ministros de toda la UE y el Eurogrupo solo a los de la zona euro','El ECOFIN es un banco y el Eurogrupo un fondo de inversión','El Eurogrupo se reúne una vez al año y el ECOFIN cada día','No hay ninguna diferencia'],a:0,e:'El ECOFIN es el consejo de ministros de economía y hacienda de todos los estados miembros. El Eurogrupo es informal, de la zona euro, y se reúne una vez al mes.'}
-];
-const TEST=[
- {q:'¿En qué acuerdo y año se creó el FMI?',o:['Maastricht, 1992','Bretton Woods, 1944','Roma, 1957','Basilea, 1974'],a:1,e:'El FMI nace con el Tratado de Bretton Woods en 1944, el mismo año que el Banco Mundial.'},
- {q:'Un país con mucha deuda externa necesita aliviar una crisis. ¿Qué préstamo del Banco Mundial le corresponde?',o:['De infraestructuras','Sectorial','Institucional','De ajuste estructural'],a:3,e:'Los préstamos de ajuste estructural alivian situaciones de crisis por elevada deuda externa.'},
- {q:'¿Quién gestiona la Central de Información de Riesgos y supervisa a los bancos en España?',o:['CNMV','Banco de España','DGSFP','Eurogrupo'],a:1,e:'El Banco de España regula y supervisa el sector financiero y protege a los usuarios de servicios bancarios.'},
- {q:'¿Qué es el Eurosistema?',o:['Un subgrupo del SEBC','El consejo de ministros de la UE','Un banco regional de desarrollo','El banco de los bancos centrales'],a:0,e:'El Eurosistema es un subgrupo del Sistema Europeo de Bancos Centrales.'},
- {q:'¿Qué entidad participa temporalmente en el capital de empresas que no cotizan en Bolsa?',o:['Sociedad de Capital Riesgo','Agencia de Valores','Institución de Inversión Colectiva','EAFI'],a:0,e:'Las sociedades de capital riesgo son S.A. cuyo objeto social es esa participación temporal.'},
- {q:'¿Quién forma el Eurogrupo?',o:['Los presidentes de los bancos centrales','Los ministros de economía y hacienda de la zona euro','Los 37 miembros de la OCDE','Los 60 propietarios del BPI'],a:1,e:'Es un órgano consultivo informal que se reúne una vez al mes.'},
- {q:'¿Qué hace la CNMV?',o:['Pone moneda en circulación','Supervisa a las aseguradoras','Controla, supervisa y asesora sobre el mercado de valores','Fija los tipos de interés del euro'],a:2,e:'La CNMV vigila el mercado de valores, tanto el primario como el secundario.'}
+ {"t":"Fondo Monetario Internacional y Banco Mundial","sec":"Temario 1.1 y 1.2","pool":["fmi","bm"],"quiz":[{"q":"¿En qué acuerdo y año se creó el FMI?","o":["Maastricht, 1992","Bretton Woods, 1944","Roma, 1957","Basilea, 1974"],"a":1,"e":"El FMI nace con el Tratado de Bretton Woods en 1944, el mismo año que el Banco Mundial."},{"q":"El DEG del FMI se valora con una cesta de monedas. ¿Cuál de estas NO está en la cesta?","o":["Euro","Dólar","Franco suizo","Renminbi chino"],"a":2,"e":"La cesta incluye euro, dólar, libra esterlina, yen y renminbi chino, las monedas de los países más exportadores."}]},
+ {"t":"Bancos regionales de desarrollo","sec":"Temario 1.3","pool":["bid","berd"],"quiz":[{"q":"Un país con mucha deuda externa necesita aliviar una crisis. ¿Qué préstamo del Banco Mundial le corresponde?","o":["De infraestructuras","Sectorial","Institucional","De ajuste estructural"],"a":3,"e":"Los préstamos de ajuste estructural alivian situaciones de crisis por elevada deuda externa."},{"q":"¿Qué tipo de préstamo del Banco Mundial financia gasoductos o telecomunicaciones?","o":["De proyectos de infraestructuras","Sectorial","Institucional","De ajuste estructural"],"a":0,"e":"Los préstamos de infraestructuras financian obras como gasoductos y telecomunicaciones. Los sectoriales van a agricultura o energía."}]},
+ {"t":"Otros organismos oficiales: BPI, OCDE, Comité de Basilea y G20","sec":"Temario 1.4","pool":["bpi","ocde","basilea","g20"],"quiz":[{"q":"¿Qué organismo se conoce como «el banco de los bancos centrales»?","o":["Banco Central Europeo","Banco de Pagos Internacionales","Banco Mundial","Fondo Monetario Internacional"],"a":1,"e":"El BPI es propiedad de unos 60 bancos centrales y gestiona sus reservas de divisas."},{"q":"¿Desde qué año es miembro del Comité de Basilea el Banco de España?","o":["1944","1998","2001","2010"],"a":2,"e":"El Banco de España es miembro del Comité de Supervisión Bancaria de Basilea desde 2001."}]},
+ {"t":"Supervisores españoles: Banco de España, CNMV y DGSFP","sec":"Temario 2","pool":["bde","cnmv","dgsfp"],"quiz":[{"q":"¿Quién gestiona la Central de Información de Riesgos y supervisa a los bancos en España?","o":["CNMV","Banco de España","DGSFP","Eurogrupo"],"a":1,"e":"El Banco de España regula y supervisa el sector financiero y protege a los usuarios de servicios bancarios."},{"q":"¿Quién supervisa a las empresas aseguradoras y a los fondos de pensiones?","o":["CNMV","Banco de España","DGSFP","Banco Central Europeo"],"a":2,"e":"De la Dirección General de Seguros y Fondos de Pensiones dependen aseguradoras y planes y fondos de pensiones."},{"q":"¿Qué hace la CNMV?","o":["Pone moneda en circulación","Supervisa a las aseguradoras","Controla, supervisa y asesora sobre el mercado de valores","Fija los tipos de interés del euro"],"a":2,"e":"La CNMV vigila el mercado de valores, tanto el primario como el secundario."}]},
+ {"t":"Inversión colectiva, capital riesgo y asesoramiento financiero","sec":"Temario 2 · CNMV","pool":["iic","scr","eafi"],"quiz":[{"q":"¿Qué entidad participa temporalmente en el capital de empresas que no cotizan en Bolsa?","o":["Sociedad de Capital Riesgo","Agencia de Valores","Institución de Inversión Colectiva","EAFI"],"a":0,"e":"Las sociedades de capital riesgo son S.A. cuyo objeto social es esa participación temporal."},{"q":"Una empresa vende por primera vez sus acciones a inversores. ¿En qué mercado lo hace?","o":["Mercado primario","Mercado secundario","Mercado de divisas","Euromercado"],"a":0,"e":"En el mercado primario se colocan los valores por primera vez. En el secundario se intercambian los ya colocados."}]},
+ {"t":"Agencias, gestoras y sociedades de valores","sec":"Temario 2 · CNMV","pool":["av","sgc","broker","dealer"],"quiz":[{"q":"¿Qué diferencia a un dealer de un broker?","o":["El dealer actúa por cuenta propia y asume riesgo; el broker es comisionista","El dealer asesora y el broker gestiona fondos","El dealer es público y el broker es extranjero","No hay diferencia, son sinónimos"],"a":0,"e":"El broker ejecuta órdenes de clientes sin asumir riesgo. El dealer opera con su propio dinero."},{"q":"¿Qué capital mínimo se exige a una Agencia de Valores?","o":["100.000 €","300.000 €","25 millones de €","No se exige capital mínimo"],"a":1,"e":"La agencia de valores necesita 300.000 €. La sociedad gestora de carteras, 100.000 €."}]},
+ {"t":"Banco Central Europeo y sistema de bancos centrales","sec":"Temario 3","pool":["bce","sebc","eurosis"],"quiz":[{"q":"¿Qué inflación persigue el BCE como objetivo de estabilidad de precios?","o":["Entre el 5% y el 7%","Exactamente el 0%","Inferior al 2%","Inferior al 10%"],"a":2,"e":"El BCE mantiene la estabilidad de precios con una inflación inferior al 2% y gestiona el euro."},{"q":"¿Qué es el Eurosistema?","o":["Un subgrupo del SEBC","El consejo de ministros de la UE","Un banco regional de desarrollo","El banco de los bancos centrales"],"a":0,"e":"El Eurosistema es un subgrupo del Sistema Europeo de Bancos Centrales."}]},
+ {"t":"BEI, ECOFIN y Eurogrupo","sec":"Temario 3","pool":["bei","ecofin","eurogrupo"],"quiz":[{"q":"¿Qué diferencia al ECOFIN del Eurogrupo?","o":["El ECOFIN reúne a los ministros de toda la UE y el Eurogrupo solo a los de la zona euro","El ECOFIN es un banco y el Eurogrupo un fondo de inversión","El Eurogrupo se reúne una vez al año y el ECOFIN cada día","No hay ninguna diferencia"],"a":0,"e":"El ECOFIN es el consejo de ministros de economía y hacienda de todos los estados miembros. El Eurogrupo es informal, de la zona euro, y se reúne una vez al mes."},{"q":"¿Quién forma el Eurogrupo?","o":["Los presidentes de los bancos centrales","Los ministros de economía y hacienda de la zona euro","Los 37 miembros de la OCDE","Los 60 propietarios del BPI"],"a":1,"e":"Es un órgano consultivo informal que se reúne una vez al mes."}]}
 ];
 
 /* ---------- ESTADO ---------- */
@@ -348,13 +331,13 @@ let S=null, timer=null, cdTimer=null;
 const BEST_KEY='qeq-financiero-best';
 function getBest(){try{return +localStorage.getItem(BEST_KEY)||0}catch(e){return 0}}
 function setBest(v){try{localStorage.setItem(BEST_KEY,String(v))}catch(e){}}
-function newState(){return {r:0,total:0,t0:Date.now(),log:[],testOk:0,quizOk:0};}
+function newState(){return {r:0,total:0,t0:Date.now(),log:[],quizOk:0};}
 function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
 function fmt(ms){const s=Math.floor(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
 function pips(cur){
   const items=[];
-  for(let i=0;i<=ROUNDS.length;i++){
-    const label=i<ROUNDS.length?i+1:'T';
+  for(let i=0;i<ROUNDS.length;i++){
+    const label=i<ROUNDS.length-1?i+1:'F';
     const cls=i<cur?'done':(i===cur?'cur':'');
     items.push('<li class="'+cls+'">'+label+'</li>');
   }
@@ -580,10 +563,10 @@ function intro(){
    +'<li><b>1</b><span>Hay 24 organismos en el tablero y uno es el secreto. Cada ronda empieza con una pista sobre él.</span></li>'
    +'<li><b>2</b><span>Si dudas entre varios, pide otra pista (una cada 15 segundos). Las fichas que no encajan se dan la vuelta solas.</span></li>'
    +'<li><b>3</b><span>¿Lo tienes? Toca la ficha y confirma. Cada pista extra resta 4 puntos y cada fallo, 12.</span></li>'
-   +'<li><b>4</b><span>Lee la ficha de estudio y responde 2 preguntas de repaso. Al final hay un test. Sube el volumen.</span></li></ol>'
-   +'<ul class="route"><li><b>R1</b>Ronda 1</li><li><b>R2</b>Ronda 2</li><li><b>R3</b>Ronda 3</li><li><b>R4</b>Ronda 4</li><li><b>R5</b>Ronda 5</li><li><b>T</b>Test final</li></ul>'
+   +'<li><b>4</b><span>Lee la ficha de estudio y responde una pregunta de repaso. Son 8 rondas y la última vale el doble. Sube el volumen.</span></li></ol>'
+   +'<ul class="route"><li><b>R1</b>Ronda 1</li><li><b>R2</b>Ronda 2</li><li><b>R3</b>Ronda 3</li><li><b>R4</b>Ronda 4</li><li><b>R5</b>Ronda 5</li><li><b>R6</b>Ronda 6</li><li><b>R7</b>Ronda 7</li><li><b>F</b>Ronda final ×2</li></ul>'
    +'<button class="btn" id="go">Empezar la partida</button>'
-   +'<p class="best">Duración aproximada: 25 minutos.'+(best?' Tu mejor puntuación: '+best+' pts.':'')+'</p>'
+   +'<p class="best">Duración aproximada: 25 a 30 minutos.'+(best?' Tu mejor puntuación: '+best+' pts.':'')+'</p>'
    +'</div><div class="guil" aria-hidden="true"><span>?</span></div></section>';
   $('#go').onclick=()=>{S=newState();setScore();startTimer();startRound(0);};
 }
@@ -596,10 +579,10 @@ function startRound(i){
   // Pista inicial: un dato del secreto que comparten de 2 a 10 fichas, para orientar sin resolver
   const fits=QS.filter(q=>q.y.includes(secret)&&q.y.length>=2&&q.y.length<=10);
   const clue=(fits.length?fits:QS.filter(q=>q.y.includes(secret)))[Math.floor(Math.random()*(fits.length||1))];
-  Object.assign(S,{r:i,secret,clue:clue.id,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:null,nextAt:0,cooling:false});
+  Object.assign(S,{r:i,mult:i===ROUNDS.length-1?2:1,secret,clue:clue.id,alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:null,nextAt:0,cooling:false});
   clearInterval(cdTimer); cdTimer=setInterval(tickCool,200);
   pips(i); setScore();
-  view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">Ronda '+(i+1)+' de '+ROUNDS.length+'</p><div class="clue"><small>Pista inicial</small><p>'+esc(clue.s)+'</p></div><p class="hint">¿Quién es? Si lo sabes, toca su ficha. Si dudas entre varios, pide otra pista.</p></div>'
+  view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">'+(i===ROUNDS.length-1?'Ronda final · ¡los puntos valen el doble!':'Ronda '+(i+1)+' de '+ROUNDS.length)+'</p><div class="clue"><small>Pista inicial</small><p>'+esc(clue.s)+'</p></div><p class="hint">¿Quién es? Si lo sabes, toca su ficha. Si dudas entre varios, pide otra pista.</p></div>'
    +'<div class="cols"><div><div class="board" id="board">'+CARDS.map(c=>cardHtml(c)).join('')+'</div></div>'
    +'<aside class="panel"><div class="secret"><div class="mini" aria-hidden="true"><i>?</i></div><div><b>Organismo secreto</b><div class="stat" id="stat"></div></div></div>'
    +'<ol class="how"><li><b>1</b>Lee la pista inicial</li><li><b>2</b>Si dudas, pide otra pista: se giran las fichas que no encajan</li><li><b>3</b>Toca tu ficha y confirma</li></ol>'
@@ -643,7 +626,7 @@ function tickCool(){
 }
 function guess(id){
   if(!id) return;
-  if(id===S.secret){ S.total+=S.rs; setScore(); react(true); finishRound(); return; }
+  if(id===S.secret){ S.rs*=S.mult; S.total+=S.rs; setScore(); react(true); finishRound(); return; }
   S.alive.delete(id); S.nwrong++; S.rs=Math.max(10,S.rs-PER_WRONG); S.sel=null;
   S.last={wrong:BY[id].n};
   react(false);
@@ -660,7 +643,7 @@ function paint(){
   paintPanel();
 }
 function paintPanel(){
-  $('#stat').innerHTML='<span>Candidatos: <b>'+S.alive.size+'</b></span><span>Pistas: <b>'+S.nq+'</b></span><span>Ronda: <b>'+S.rs+'</b> pts</span>';
+  $('#stat').innerHTML='<span>Candidatos: <b>'+S.alive.size+'</b></span><span>Pistas: <b>'+S.nq+'</b></span><span>Ronda: <b>'+S.rs+'</b> pts'+(S.mult>1?' ×2':'')+'</span>';
   const g=$('#guess');
   if(S.sel){
     g.className='guess';
@@ -696,24 +679,22 @@ function finishRound(){
   clearInterval(cdTimer);
   const R=ROUNDS[S.r], c=BY[S.secret];
   S.log.push({t:R.t,pts:S.rs,nq:S.nq,wrong:S.nwrong});
-  S.qi=0;
   view.innerHTML='<section class="ficha"><div class="board" style="grid-template-columns:1fr">'+cardHtml(c)+'</div><div>'
-   +'<p class="res">Acertaste · +'+S.rs+' pts · '+S.nq+(S.nq===1?' pista extra':' pistas extra')+'</p><h2>'+esc(c.n)+'</h2><p class="eyebrow">Ficha de estudio · '+esc(R.sec)+': '+esc(R.t)+'</p><p class="desc">'+esc(c.d)+'</p>'
+   +'<p class="res">Acertaste · +'+S.rs+' pts'+(S.mult>1?' (doble)':'')+' · '+S.nq+(S.nq===1?' pista extra':' pistas extra')+'</p><h2>'+esc(c.n)+'</h2><p class="eyebrow">Ficha de estudio · '+esc(R.sec)+': '+esc(R.t)+'</p><p class="desc">'+esc(c.d)+'</p>'
    +'<div class="quiz" id="quizbox"></div></div></section>';
-  showQuiz();
+  showQuiz(R.quiz[Math.floor(Math.random()*R.quiz.length)]);
   window.scrollTo({top:0});
 }
-function showQuiz(){
-  const R=ROUNDS[S.r], qz=[R.quiz,EXTRA_QUIZ[S.r]][S.qi];
-  $('#quizbox').innerHTML='<p class="eyebrow">Repaso '+(S.qi+1)+' de 2 · +15 pts</p><h3>'+esc(qz.q)+'</h3><div class="opts" id="opts">'
+function showQuiz(qz){
+  $('#quizbox').innerHTML='<p class="eyebrow">Pregunta de repaso · +15 pts</p><h3>'+esc(qz.q)+'</h3><div class="opts" id="opts">'
    +qz.o.map((o,k)=>'<button class="opt" data-k="'+k+'">'+esc(o)+'</button>').join('')+'</div><p class="expl" id="expl" hidden></p><div class="next" id="nx" hidden></div>';
   $('#opts').onclick=e=>{
     const b=e.target.closest('.opt'); if(!b||b.disabled) return;
     answerMC(qz,+b.dataset.k,15,()=>{S.quizOk++;});
-    const lastQ=S.qi===1, lastR=S.r===ROUNDS.length-1;
+    const lastR=S.r===ROUNDS.length-1, nextFinal=S.r===ROUNDS.length-2;
     $('#nx').hidden=false;
-    $('#nx').innerHTML='<button class="btn" id="nb">'+(!lastQ?'Siguiente pregunta de repaso':lastR?'Ir al test final':'Empezar la ronda '+(S.r+2))+'</button>';
-    $('#nb').onclick=()=>{ if(!lastQ){S.qi++;showQuiz();} else if(lastR) startTest(); else startRound(S.r+1); };
+    $('#nx').innerHTML='<button class="btn" id="nb">'+(lastR?'Ver mi resultado':nextFinal?'Empezar la ronda final':'Empezar la ronda '+(S.r+2))+'</button>';
+    $('#nb').onclick=()=>{ if(lastR) end(); else startRound(S.r+1); };
   };
 }
 function answerMC(qz,k,pts,onOk){
@@ -728,39 +709,18 @@ function answerMC(qz,k,pts,onOk){
   ex.textContent=(ok?'Correcto. ':'No era esa. ')+qz.e;
 }
 
-/* ---------- TEST FINAL ---------- */
-function startTest(){
-  S.ti=0; S.r=ROUNDS.length; pips(S.r); testQ();
-}
-function testQ(){
-  const qz=TEST[S.ti];
-  view.innerHTML='<section class="quiz" style="border:0;margin:0;padding:0"><p class="eyebrow">Test final · pregunta '+(S.ti+1)+' de '+TEST.length+' · +10 pts</p><h2 style="font-size:1.9rem;margin-block:6px 16px">'+esc(qz.q)+'</h2>'
-   +'<div class="opts" id="opts">'+qz.o.map((o,k)=>'<button class="opt" data-k="'+k+'">'+esc(o)+'</button>').join('')+'</div>'
-   +'<p class="expl" id="expl" hidden></p><div class="next" id="nx" hidden></div></section>';
-  $('#opts').onclick=e=>{
-    const b=e.target.closest('.opt'); if(!b||b.disabled) return;
-    answerMC(qz,+b.dataset.k,10,()=>{S.testOk++;});
-    const last=S.ti===TEST.length-1;
-    $('#nx').hidden=false;
-    $('#nx').innerHTML='<button class="btn" id="nb">'+(last?'Ver mi resultado':'Siguiente')+'</button>';
-    $('#nb').onclick=()=>{ if(last) end(); else {S.ti++;testQ();} };
-  };
-  window.scrollTo({top:0});
-}
-
 /* ---------- FINAL ---------- */
-function rank(p){return p>=600?'Gobernador del Banco Central':p>=480?'Gestor de carteras':p>=330?'Analista junior':'Becario de ventanilla';}
+function rank(p){return p>=820?'Gobernador del Banco Central':p>=660?'Gestor de carteras':p>=460?'Analista junior':'Becario de ventanilla';}
 function end(){
   clearInterval(timer);
   const mins=Math.max(1,Math.round((Date.now()-S.t0)/60000));
   const prev=getBest(); const record=S.total>prev; if(record) setBest(S.total);
-  pips(ROUNDS.length+1);
+  pips(ROUNDS.length);
   const txt='Jugué ¿Quién es quién? Versión financiera y saqué '+S.total+' puntos en '+mins+' min. Rango: '+rank(S.total)+'. ¿Me superas?';
   view.innerHTML='<section class="end"><p class="eyebrow">Partida terminada · '+fmt(Date.now()-S.t0)+'</p><h1>'+rank(S.total)+'</h1>'
    +'<div class="big">'+S.total+' pts</div>'+(record?'<p class="res">Nuevo récord personal</p>':'')
-   +'<ul class="sum">'+S.log.map((l,i)=>'<li><span>R'+(i+1)+' · '+esc(l.t)+' ('+l.nq+(l.nq===1?' pista, ':' pistas, ')+l.wrong+(l.wrong===1?' fallo)':' fallos)')+'</span><span>+'+l.pts+'</span></li>').join('')
-   +'<li><span>Repasos de ronda acertados</span><span>'+S.quizOk+' / '+(ROUNDS.length*2)+'</span></li>'
-   +'<li><span>Test final acertado</span><span>'+S.testOk+' / '+TEST.length+'</span></li></ul>'
+   +'<ul class="sum">'+S.log.map((l,i)=>'<li><span>'+(i===ROUNDS.length-1?'Final':'R'+(i+1))+' · '+esc(l.t)+' ('+l.nq+(l.nq===1?' pista, ':' pistas, ')+l.wrong+(l.wrong===1?' fallo)':' fallos)')+'</span><span>+'+l.pts+'</span></li>').join('')
+   +'<li><span>Preguntas de repaso acertadas</span><span>'+S.quizOk+' / '+ROUNDS.length+'</span></li></ul>'
    +'<div class="row"><button class="btn" id="again">Jugar otra vez</button><button class="btn ghost" id="cp">Copiar mi resultado</button></div><p class="toast" id="ts" role="status"></p>'
    +'<p style="color:var(--ink-2);font-size:.9rem">Para retar a otra persona, envíale el enlace de este juego junto con tu resultado.</p></section>';
   $('#again').onclick=intro;
