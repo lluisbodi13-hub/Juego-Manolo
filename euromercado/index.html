@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
 <style>
-/* Concepto: cámara acorazada de un banco offshore de noche. Acero azul oscuro, latón en placas y cerraduras, turquesa caribeño para lo que se abre. Diseño oscuro a propósito (una sola apariencia). */
+/* Concepto: un banco offshore de noche, recorrido sala a sala. Acero azul oscuro, latón en placas y cerraduras, turquesa caribeño para lo que se abre. Diseño oscuro a propósito (una sola apariencia). */
 :root{
   --bg:#0C1822; --steel:#152634; --steel-2:#1E3446; --edge:#2E4A60;
   --text:#E9EFF3; --muted:#93A8B8; --brass:#D2AE57; --brass-2:#8C6F2A;
@@ -26,7 +26,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--f-body);font-size:
   background-image:radial-gradient(ellipse at 50% -20%,color-mix(in srgb,var(--sea) 14%,transparent),transparent 60%),repeating-linear-gradient(90deg,transparent 0 79px,color-mix(in srgb,var(--edge) 35%,transparent) 79px 80px)}
 .app{max-width:1100px;margin-inline:auto;padding-inline:16px;padding-block:14px 48px;display:flex;flex-direction:column;gap:18px}
 button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible,input:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
+button:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--brass);outline-offset:2px}
 h1,h2,h3{font-family:var(--f-display);font-weight:800;letter-spacing:.02em;line-height:1;margin:0;text-wrap:balance}
 p{margin:0}
 .bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;padding-bottom:12px;border-bottom:2px solid var(--edge)}
@@ -62,22 +62,31 @@ p{margin:0}
 .rules li{display:grid;grid-template-columns:1.8rem 1fr;gap:8px}
 .rules b{font-family:var(--f-mono);color:var(--brass)}
 
-/* cámara: cajas */
-.vault h2{font-size:clamp(2rem,5vw,3rem)}
-.boxes{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:14px}
-.box{position:relative;border:2px solid var(--edge);border-radius:14px;background:linear-gradient(160deg,var(--steel-2),var(--steel));padding:14px 12px 16px;text-align:left;display:grid;gap:8px;min-height:13rem;box-shadow:inset 0 0 0 6px #0003}
+/* plano de salas */
+.plan{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.room{border:2px solid var(--edge);border-radius:14px;background:var(--steel);padding:12px 14px;display:grid;gap:4px;text-align:left}
+.room b{font-family:var(--f-display);font-size:1.4rem;letter-spacing:.04em}
+.room span{font-size:.8rem;color:var(--muted)}
+.room.cur{border-color:var(--brass);background:color-mix(in srgb,var(--brass) 10%,var(--steel))}
+.room.done{border-color:var(--sea)}
+.room.done b{color:var(--sea)}
+.room.locked{opacity:.45}
+
+/* sala: pruebas */
+.hall h2{font-size:clamp(2rem,5vw,3rem)}
+.boxes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}
+.box{position:relative;border:2px solid var(--edge);border-radius:14px;background:linear-gradient(160deg,var(--steel-2),var(--steel));padding:14px 12px 16px;text-align:left;display:grid;gap:8px;min-height:12rem;box-shadow:inset 0 0 0 6px #0003}
 .box:hover{border-color:var(--brass)}
-.box .plate{font-family:var(--f-display);font-size:2.6rem;color:var(--brass);line-height:.9}
+.box .plate{font-family:var(--f-display);font-size:2.4rem;color:var(--brass);line-height:.9}
 .box .t{font-weight:800;font-size:1rem;line-height:1.2}
 .box .s{font-size:.8rem;color:var(--muted);line-height:1.3}
-.box .lock{position:absolute;right:12px;top:12px;width:34px;height:34px;border-radius:50%;border:3px solid var(--brass-2);display:grid;place-items:center;font-family:var(--f-mono);font-size:.7rem;color:var(--brass)}
+.box .kind{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--brass)}
 .box .st{margin-top:auto;font-family:var(--f-mono);font-size:.75rem;color:var(--muted)}
 .box.open{border-color:var(--sea);background:linear-gradient(160deg,color-mix(in srgb,var(--sea) 18%,var(--steel-2)),var(--steel))}
-.box.open .lock{border-color:var(--sea);color:var(--sea)}
 .box.open .st{color:var(--sea)}
-.digit{font-family:var(--f-mono);font-weight:700;font-size:2.2rem;color:var(--sea);line-height:1}
-.doorcta{margin-top:18px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;border:2px dashed var(--brass-2);border-radius:14px;padding:14px 18px}
-.slots{display:flex;gap:8px}
+.reward{font-family:var(--f-mono);font-weight:700;font-size:2.2rem;color:var(--sea);line-height:1}
+.lockpanel{margin-top:18px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;border:2px dashed var(--brass-2);border-radius:14px;padding:14px 18px}
+.slots{display:flex;flex-wrap:wrap;gap:8px}
 .slot{width:2.6rem;height:3.2rem;border-radius:8px;border:2px solid var(--edge);display:grid;place-items:center;font-family:var(--f-mono);font-weight:700;font-size:1.5rem;background:#0008;color:var(--sea)}
 
 /* prueba */
@@ -90,7 +99,6 @@ p{margin:0}
 .chip:hover{border-color:var(--brass)}
 .chip.sel{border-color:var(--brass);background:color-mix(in srgb,var(--brass) 22%,var(--steel-2));box-shadow:0 0 0 3px color-mix(in srgb,var(--brass) 35%,transparent)}
 .chip.bad{border-color:var(--bad);animation:shake .4s}
-.chip.good{border-color:var(--ok)}
 @keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 .buckets{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))}
 .bucket{border:2px solid var(--edge);border-radius:14px;background:var(--steel);padding:12px;display:flex;flex-direction:column;gap:8px;min-height:8rem;text-align:left}
@@ -99,23 +107,51 @@ p{margin:0}
 .bucket h3{font-family:var(--f-body);font-weight:800;font-size:1rem;letter-spacing:0;line-height:1.25}
 .bucket .in{display:flex;flex-direction:column;gap:6px}
 .bucket .in .chip{font-size:.85rem}
+/* rellenar huecos */
+.doc{background:#F3EEDF;color:#1C1A14;border-radius:6px;padding:20px 24px;font-size:1.08rem;line-height:2.3;box-shadow:0 10px 30px #0008;max-width:75ch}
+.gap{display:inline-flex;align-items:center;min-width:8.5rem;min-height:2rem;vertical-align:middle;border:2px dashed #8A7B57;border-radius:8px;padding:0 6px;margin:0 2px;cursor:pointer;background:#0000}
+.gap.target{border-color:#A87412;background:#E9D9A6}
+.gap .chip{background:#1E3446;color:var(--text);padding:.2rem .55rem;font-size:.9rem}
+/* ordenar */
+.steps{display:grid;gap:8px;max-width:820px}
+.step{display:grid;grid-template-columns:3rem 1fr;gap:10px;align-items:center;border:2px solid var(--edge);border-radius:12px;background:var(--steel);padding:8px 10px;min-height:3.6rem;text-align:left}
+.step.target{border-color:var(--brass);cursor:pointer}
+.step .num{font-family:var(--f-display);font-size:1.8rem;color:var(--brass);text-align:center}
+.step .in .chip{width:100%}
+/* elegir una opción por grupo */
+.groups{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr))}
+.group{border:2px solid var(--edge);border-radius:14px;background:var(--steel);padding:12px 14px;display:grid;gap:8px}
+.group.bad{border-color:var(--bad);animation:shake .4s}
+.group h3{font-family:var(--f-body);font-weight:800;font-size:1rem;letter-spacing:0;line-height:1.3}
+.opts{display:grid;gap:6px}
+.opt{border:2px solid var(--edge);background:var(--steel-2);border-radius:10px;padding:.5rem .7rem;text-align:left;font-size:.9rem;font-weight:600}
+.opt:hover{border-color:var(--brass)}
+.opt[aria-pressed="true"]{border-color:var(--brass);background:color-mix(in srgb,var(--brass) 22%,var(--steel-2))}
 .msg{min-height:1.6rem;font-weight:700}
 .msg.bad{color:var(--bad)} .msg.ok{color:var(--ok)} .msg.info{color:var(--muted);font-weight:500}
 .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .hintbox{border-left:4px solid var(--sea);background:color-mix(in srgb,var(--sea) 10%,transparent);padding:10px 14px;border-radius:0 10px 10px 0;font-size:.92rem}
 .solved{border:2px solid var(--sea);border-radius:16px;padding:22px;display:grid;gap:10px;justify-items:start;background:color-mix(in srgb,var(--sea) 8%,var(--steel))}
-.solved .digit{font-size:4rem}
+.solved .reward{font-size:4rem}
 
-/* puerta */
-.door{display:grid;grid-template-columns:1fr minmax(0,340px);gap:24px;align-items:start}
-.wheel{aspect-ratio:1;max-width:340px;width:100%;border-radius:50%;border:10px solid var(--brass-2);background:repeating-conic-gradient(var(--steel-2) 0 15deg,var(--steel) 15deg 30deg);display:grid;place-items:center;box-shadow:inset 0 0 0 14px #0006,0 0 40px #0008}
+/* cerraduras */
+.lockv{display:grid;grid-template-columns:1fr minmax(0,320px);gap:24px;align-items:start}
+.lockv h2{font-size:clamp(2rem,5vw,3.2rem)}
+.wheel{aspect-ratio:1;max-width:320px;width:100%;border-radius:50%;border:10px solid var(--brass-2);background:repeating-conic-gradient(var(--steel-2) 0 15deg,var(--steel) 15deg 30deg);display:grid;place-items:center;box-shadow:inset 0 0 0 14px #0006,0 0 40px #0008}
 .wheel .hub{width:42%;aspect-ratio:1;border-radius:50%;background:var(--brass);display:grid;place-items:center;font-family:var(--f-display);font-size:2.6rem;color:#1a1405}
 .wheel.spin{animation:spin 1.4s cubic-bezier(.4,1.6,.5,1)}
 @keyframes spin{to{transform:rotate(540deg)}}
 .keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:300px}
 .keypad button{border:2px solid var(--edge);background:var(--steel-2);border-radius:10px;padding:.8rem 0;font-family:var(--f-mono);font-weight:700;font-size:1.3rem}
 .keypad button:hover{border-color:var(--brass)}
-.code{display:flex;gap:8px;margin-block:10px 14px}
+.code{display:flex;flex-wrap:wrap;gap:8px;margin-block:10px 14px}
+.dials{display:flex;gap:10px;margin-block:12px 16px}
+.dial{display:grid;gap:4px;justify-items:center}
+.dial button{border:2px solid var(--edge);background:var(--steel-2);border-radius:8px;width:3.4rem;padding:.2rem 0;font-size:1rem}
+.dial .face{width:3.4rem;height:4rem;border-radius:10px;border:3px solid var(--brass-2);background:linear-gradient(#000,#1d2f3e 45%,#1d2f3e 55%,#000);display:grid;place-items:center;font-family:var(--f-mono);font-weight:700;font-size:2rem;color:var(--brass)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;margin-block:12px}
+.tile{width:3rem;height:3.4rem;border-radius:8px;border:2px solid var(--brass-2);background:#F3EEDF;color:#1C1A14;font-family:var(--f-mono);font-weight:700;font-size:1.6rem}
+.tile:disabled{opacity:.2}
 
 /* final */
 .end{display:grid;gap:14px;max-width:720px}
@@ -130,12 +166,13 @@ p{margin:0}
 @keyframes fl{0%{opacity:.35}100%{opacity:0}}
 
 @media (max-width:900px){
-  .intro,.door{grid-template-columns:1fr}
+  .intro,.lockv{grid-template-columns:1fr}
   .boxes{grid-template-columns:repeat(2,minmax(0,1fr))}
   .box{min-height:10rem}
-  .box:last-child{grid-column:span 2}
+  .plan{grid-template-columns:1fr}
+  .doc{padding:16px;font-size:1rem}
 }
-@media (prefers-reduced-motion:reduce){.chip.bad,.wheel.spin,.clock.low,.flash.go{animation:none}}
+@media (prefers-reduced-motion:reduce){.chip.bad,.group.bad,.wheel.spin,.clock.low,.flash.go{animation:none}}
 </style>
 
 <div class="app" lang="es">
@@ -150,92 +187,179 @@ p{margin:0}
 <script>
 (function(){
 'use strict';
-/* ---------- CONTENIDO (temario UP 1: El Euromercado) ---------- */
+/* ---------- NIVELES ---------- */
+const HINT_WAIT=60; // segundos dentro de una prueba antes de poder pedir su pista
 const LEVELS={
-  facil:{name:'Fácil',time:25*60,pen:20,hints:2,hintCost:0,showWrong:true,desc:'25 minutos · menos tarjetas · se marcan las tarjetas mal colocadas · 2 pistas gratis por caja'},
-  dificil:{name:'Difícil',time:20*60,pen:45,hints:1,hintCost:90,showWrong:false,desc:'20 minutos · más tarjetas · solo se dice cuántos errores hay · cada pista cuesta 90 s'}
+  facil:{name:'Fácil',time:25*60,pen:20,hintCost:0,showWrong:true,desc:'25 minutos · menos tarjetas · se marcan los errores · la pista no cuesta tiempo'},
+  dificil:{name:'Difícil',time:20*60,pen:45,hintCost:60,showWrong:false,desc:'20 minutos · más tarjetas · solo se dice cuántos errores hay · la pista cuesta 60 s'}
 };
-// lv: 'b' = los dos niveles, 'd' = solo en el nivel difícil.
-const PUZZLES=[
- {n:1,title:'El expediente',sub:'Definición, características y conceptos',digit:6,why:'El Euromercado tiene 6 características.',
-  task:'Clasifica cada afirmación como verdadera o falsa.',
-  buckets:[{id:'V',t:'Verdadero'},{id:'F',t:'Falso'}],
-  items:[
-   {t:'En el Euromercado se opera en divisas distintas a las del país donde está el mercado.',a:'V',lv:'b'},
-   {t:'El Euromercado es un mercado minorista para pequeños ahorradores.',a:'F',lv:'b',why:'Es mayorista: gobiernos, instituciones y grandes empresas.'},
-   {t:'Pueden participar tanto residentes como no residentes.',a:'V',lv:'b'},
-   {t:'Uno de sus objetivos es concentrar todo el riesgo en un solo país.',a:'F',lv:'b',why:'Busca la distribución del riesgo.'},
-   {t:'El mercado de divisas es un mercado no organizado (OTC).',a:'V',lv:'b'},
-   {t:'En el mercado secundario los títulos se compran a precio de emisión.',a:'F',lv:'b',why:'Se compran a precio de mercado.'},
-   {t:'El Euromercado está autorizado por el Banco Central de cada país.',a:'V',lv:'d'},
-   {t:'La solvencia es la capacidad de pagar solo las deudas a corto plazo.',a:'F',lv:'d',why:'Eso es la liquidez. La solvencia es pagar todas las deudas con todos los activos.'}
-  ],
-  hint:'Fíjate en las palabras «minorista», «concentrar» y «precio de emisión»: suelen esconder el error.'},
- {n:2,title:'El mapa offshore',sub:'Áreas geográficas del Euromercado',digit:5,why:'El Euromercado se reparte en 5 áreas geográficas.',
-  task:'Lleva cada centro financiero a su área geográfica.',
-  buckets:[{id:'EU',t:'Europa Occidental'},{id:'CA',t:'El Caribe y América Central'},{id:'OM',t:'Oriente Medio'},{id:'LO',t:'Lejano Oriente'},{id:'US',t:'Estados Unidos'}],
-  items:[
-   {t:'Londres',a:'EU',lv:'b'},{t:'Luxemburgo',a:'EU',lv:'b'},{t:'Zúrich',a:'EU',lv:'d'},
-   {t:'Bahamas',a:'CA',lv:'b'},{t:'Islas Caimán',a:'CA',lv:'b'},{t:'Panamá',a:'CA',lv:'d'},
-   {t:'Qatar',a:'OM',lv:'b'},{t:'Emiratos Árabes Unidos',a:'OM',lv:'d'},
-   {t:'Tokio',a:'LO',lv:'b'},{t:'Singapur',a:'LO',lv:'d'},{t:'Hong Kong',a:'LO',lv:'d'},
-   {t:'Nueva York',a:'US',lv:'b'}
-  ],
-  hint:'Zúrich, Ámsterdam y Luxemburgo están en Europa. Bahamas, Caimán y Panamá, en el Caribe y Centroamérica.'},
- {n:3,title:'Fija o variable',sub:'Renta fija frente a renta variable',digit:2,why:'Hay 2 tipos de renta: fija y variable.',
-  task:'¿Esta característica es de la renta fija o de la renta variable?',
-  buckets:[{id:'RF',t:'Renta fija (bono)'},{id:'RV',t:'Renta variable (acción)'}],
-  items:[
-   {t:'Sabes de antemano la rentabilidad que vas a obtener',a:'RF',lv:'b'},
-   {t:'Cobras un cupón o interés periódico',a:'RF',lv:'b'},
-   {t:'Al vencimiento recuperas el nominal',a:'RF',lv:'b'},
-   {t:'Riesgo bajo, perfil de inversor conservador',a:'RF',lv:'b'},
-   {t:'La rentabilidad es incierta: depende de cómo vaya la empresa',a:'RV',lv:'b'},
-   {t:'Puedes cobrar dividendos, pero no son fijos',a:'RV',lv:'b'},
-   {t:'No tiene vencimiento: pasas a ser socio de la empresa',a:'RV',lv:'b'},
-   {t:'Riesgo alto, perfil de inversor arriesgado',a:'RV',lv:'b'},
-   {t:'Te pagan un cupón fijo cada año',a:'RF',lv:'d'},
-   {t:'Te conviertes en accionista',a:'RV',lv:'d'}
-  ],
-  hint:'Piensa en un bono: prestas dinero y te lo devuelven con intereses. Con una acción compras un trozo de la empresa.'},
- {n:4,title:'Cada producto a su sector',sub:'Sectores del Euromercado',digit:4,why:'El Euromercado tiene 4 sectores.',
-  task:'Coloca cada producto en el sector del Euromercado donde se negocia.',
-  buckets:[{id:'MO',t:'Monetario (corto plazo)'},{id:'CP',t:'Capitales (medio y largo plazo)'},{id:'CR',t:'Crédito (eurocréditos)'},{id:'DI',t:'Divisas'}],
-  items:[
-   {t:'Letras del Tesoro',a:'MO',lv:'b'},
-   {t:'Pagarés de empresa (europapel)',a:'MO',lv:'b'},
-   {t:'FRA: derivado a corto plazo sobre tipos de interés',a:'MO',lv:'d'},
-   {t:'Eurobono',a:'CP',lv:'b'},
-   {t:'Euroacción',a:'CP',lv:'b'},
-   {t:'Bono convertible en acciones',a:'CP',lv:'d'},
-   {t:'Préstamo bancario a largo plazo a un gobierno, en euromonedas',a:'CR',lv:'b'},
-   {t:'Crédito internacional simple',a:'CR',lv:'b'},
-   {t:'Cambiar dólares por yenes',a:'DI',lv:'b'},
-   {t:'Comprar libras con francos suizos',a:'DI',lv:'d'}
-  ],
-  hint:'Corto plazo (máximo 12-18 meses) = monetario. Bonos y acciones a largo plazo = capitales. Préstamos de bancos = crédito.'},
- {n:5,title:'La emisión del eurobono',sub:'Quién hace qué en el sindicato bancario',digit:3,why:'El sindicato bancario tiene 3 piezas: director principal, aseguradores y bancos de venta.',
-  task:'Une cada participante con lo que hace en la emisión de un eurobono.',
-  cap:1,
-  buckets:[
-   {id:'EM',t:'Necesita los fondos y emite los eurobonos.'},
-   {id:'LM',t:'Diseña la operación y elige a los bancos aseguradores.'},
-   {id:'UW',t:'Garantiza la colocación y suscribe un porcentaje de la emisión.'},
-   {id:'BV',t:'Coloca los bonos entre los inversores del Euromercado.'},
-   {id:'CO',t:'Vigila y controla la emisión en nombre de los bonistas.'},
-   {id:'AG',t:'Paga los cupones y presenta los títulos al emisor al amortizarlos.'}
-  ],
-  items:[
-   {t:'Emisor',a:'EM',lv:'b'},
-   {t:'Director principal',a:'LM',lv:'b'},
-   {t:'Bancos aseguradores',a:'UW',lv:'b'},
-   {t:'Bancos de venta',a:'BV',lv:'b'},
-   {t:'Comisario del sindicato de bonistas',a:'CO',lv:'b'},
-   {t:'Agente del servicio financiero',a:'AG',lv:'b'}
-  ],
-  hint:'El que «dirige» diseña la operación. Los que «aseguran» garantizan la colocación. El «agente» es el que paga.'}
+
+/* ---------- CONTENIDO (temario UP 1: El Euromercado) ----------
+   Tipos de prueba: sort (clasificar), fill (rellenar huecos), order (ordenar pasos), pick (elegir una opción por grupo).
+   lv: 'b' = los dos niveles, 'd' = solo en el nivel difícil. */
+const ROOMS=[
+ {n:1,name:'La recepción',sub:'Definición, características, objetivos y áreas',lock:'num',
+  lockText:'Candado de números: los dígitos de las pruebas 1 a 4, en orden.',
+  puzzles:[
+   {id:'1a',kind:'Rellenar huecos',type:'fill',title:'La ficha del cliente',sub:'Definición y características',reward:'6',why:'El Euromercado tiene 6 características.',
+    task:'Completa la ficha del Euromercado con las palabras que faltan.',
+    text:'El Euromercado pertenece al mercado financiero {internacional}, donde se realizan operaciones en {divisas} distintas a las del {país} donde está situado el mercado. Es un mercado {mayorista}: operan gobiernos, instituciones y grandes empresas, tanto {residentes} como no residentes. Está autorizado por el {Banco Central} de cada país.',
+    distract:['minorista','nacional','Tesoro'],
+    hint:'Si es un mercado de gobiernos y grandes empresas, no puede ser «minorista».'},
+   {id:'1b',kind:'Verdadero o falso',type:'sort',title:'El expediente',sub:'Objetivos y características',reward:'3',why:'El Euromercado tiene 3 objetivos: diversificar las fuentes de financiación, eludir la jurisdicción y distribuir el riesgo.',
+    task:'Clasifica cada afirmación como verdadera o falsa.',
+    buckets:[{id:'V',t:'Verdadero'},{id:'F',t:'Falso'}],
+    items:[
+     {t:'Uno de sus objetivos es diversificar las fuentes de financiación.',a:'V',lv:'b'},
+     {t:'Uno de sus objetivos es concentrar todo el riesgo en un solo país.',a:'F',lv:'b',why:'Busca distribuir el riesgo.'},
+     {t:'Busca eludir la jurisdicción de un único país.',a:'V',lv:'b'},
+     {t:'Funciona mediante un sistema informático desarrollado.',a:'V',lv:'b'},
+     {t:'Le favorecen una regulación fiscal dura y la inestabilidad política.',a:'F',lv:'b',why:'Necesita regulación favorable, estabilidad política y buenas comunicaciones.'},
+     {t:'Está compuesto por el mercado financiero nacional de cada país.',a:'V',lv:'b'},
+     {t:'Solo pueden participar residentes del país del mercado.',a:'F',lv:'d',why:'Participan residentes y no residentes.'},
+     {t:'Es un mercado para pequeños ahorradores.',a:'F',lv:'d',why:'Es mayorista.'}
+    ],
+    hint:'Las frases con «concentrar», «dura» o «inestabilidad» esconden el error: el Euromercado busca lo contrario.'},
+   {id:'1c',kind:'Mapa',type:'sort',title:'El mapa offshore',sub:'Áreas geográficas',reward:'5',why:'El Euromercado se reparte en 5 áreas geográficas.',
+    task:'Lleva cada centro financiero a su área geográfica.',
+    buckets:[{id:'EU',t:'Europa Occidental'},{id:'CA',t:'El Caribe y América Central'},{id:'OM',t:'Oriente Medio'},{id:'LO',t:'Lejano Oriente'},{id:'US',t:'Estados Unidos'}],
+    items:[
+     {t:'Londres',a:'EU',lv:'b'},{t:'Luxemburgo',a:'EU',lv:'b'},{t:'Zúrich',a:'EU',lv:'d'},{t:'Ámsterdam',a:'EU',lv:'d'},
+     {t:'Bahamas',a:'CA',lv:'b'},{t:'Islas Caimán',a:'CA',lv:'b'},{t:'Panamá',a:'CA',lv:'d'},
+     {t:'Qatar',a:'OM',lv:'b'},{t:'Emiratos Árabes Unidos',a:'OM',lv:'d'},
+     {t:'Tokio',a:'LO',lv:'b'},{t:'Singapur',a:'LO',lv:'b'},{t:'Hong Kong',a:'LO',lv:'d'},
+     {t:'Nueva York',a:'US',lv:'b'}
+    ],
+    hint:'Bahamas, Caimán y Panamá están en el Caribe y Centroamérica. Tokio, Singapur y Hong Kong, en el Lejano Oriente.'},
+   {id:'1d',kind:'El intruso',type:'pick',title:'El intruso',sub:'Lo que encaja y lo que no',reward:'2',why:'Participan 2 tipos de inversores: residentes y no residentes.',
+    task:'En cada grupo hay una opción que no encaja. Encuéntrala.',
+    groups:[
+     {q:'Objetivos del Euromercado',o:['Diversificar las fuentes de financiación','Eludir la jurisdicción','Distribuir el riesgo','Fijar los tipos de interés del euro'],a:3,lv:'b'},
+     {q:'Quién opera en este mercado mayorista',o:['Gobiernos','Instituciones','Grandes empresas','Pequeños ahorradores'],a:3,lv:'b'},
+     {q:'Características del Euromercado',o:['Sistema informático desarrollado','Autorizado por el Banco Central de cada país','Mercado mayorista','Solo opera con la moneda del propio país'],a:3,lv:'b'},
+     {q:'Lo que hace atractivo un centro offshore',o:['Ventajas fiscales','Estabilidad política','Buenas infraestructuras de comunicaciones','Controles de capital muy estrictos'],a:3,lv:'d'}
+    ],
+    hint:'Fijar los tipos de interés del euro es cosa del BCE, no un objetivo del Euromercado.'}
+  ]},
+ {n:2,name:'La sala de mercados',sub:'Renta fija y variable, liquidez y solvencia, tipos de mercado',lock:'dial',
+  lockText:'Candado de letras: ordenad las 4 letras para formar una palabra del temario.',
+  puzzles:[
+   {id:'2a',kind:'Clasificar',type:'sort',title:'Fija o variable',sub:'Renta fija frente a renta variable',reward:'O',why:'Primera letra para el candado de la sala.',
+    task:'¿Esta característica es de la renta fija o de la renta variable?',
+    buckets:[{id:'RF',t:'Renta fija (bono)'},{id:'RV',t:'Renta variable (acción)'}],
+    items:[
+     {t:'Sabes de antemano la rentabilidad que vas a obtener',a:'RF',lv:'b'},
+     {t:'Cobras un cupón o interés periódico',a:'RF',lv:'b'},
+     {t:'Al vencimiento recuperas el nominal',a:'RF',lv:'b'},
+     {t:'Riesgo bajo, perfil de inversor conservador',a:'RF',lv:'b'},
+     {t:'La rentabilidad es incierta: depende de cómo vaya la empresa',a:'RV',lv:'b'},
+     {t:'Puedes cobrar dividendos, pero no son fijos',a:'RV',lv:'b'},
+     {t:'No tiene vencimiento: pasas a ser socio de la empresa',a:'RV',lv:'b'},
+     {t:'Riesgo alto, perfil de inversor arriesgado',a:'RV',lv:'b'},
+     {t:'Te pagan un cupón fijo cada año',a:'RF',lv:'d'},
+     {t:'Te conviertes en accionista',a:'RV',lv:'d'}
+    ],
+    hint:'Con un bono prestas dinero y te lo devuelven con intereses. Con una acción compras un trozo de la empresa.'},
+   {id:'2b',kind:'Clasificar',type:'sort',title:'Liquidez o solvencia',sub:'Dos conceptos que se confunden',reward:'N',why:'Segunda letra para el candado de la sala.',
+    task:'¿Cada situación habla de liquidez o de solvencia?',
+    buckets:[{id:'L',t:'Liquidez'},{id:'S',t:'Solvencia'}],
+    items:[
+     {t:'Tener dinero en efectivo para pagar una factura que vence mañana',a:'L',lv:'b'},
+     {t:'Poder vender un activo rápido y sin perder casi valor',a:'L',lv:'b'},
+     {t:'Un mercado donde se hacen muchas transacciones',a:'L',lv:'b'},
+     {t:'Poder pagar todas las deudas con todos los activos, sin importar el plazo',a:'S',lv:'b'},
+     {t:'Lo que estudia el banco antes de prestarte a medio y largo plazo',a:'S',lv:'b'},
+     {t:'Capacidad de hacer frente a las deudas a corto plazo',a:'L',lv:'d'},
+     {t:'Que todo lo que tienes valga más que todo lo que debes',a:'S',lv:'d'}
+    ],
+    hint:'Liquidez = corto plazo y rapidez. Solvencia = todas las deudas, con todos los activos y sin importar el tiempo.'},
+   {id:'2c',kind:'Clasificar',type:'sort',title:'Primario o secundario',sub:'Dónde se compran los títulos',reward:'B',why:'Tercera letra para el candado de la sala.',
+    task:'¿Esto pasa en el mercado primario o en el secundario?',
+    buckets:[{id:'P',t:'Mercado primario'},{id:'S',t:'Mercado secundario'}],
+    items:[
+     {t:'Se emiten títulos nuevos',a:'P',lv:'b'},
+     {t:'Se compran a precio de emisión',a:'P',lv:'b'},
+     {t:'El comprador se los compra a la entidad emisora',a:'P',lv:'b'},
+     {t:'Se negocian títulos ya emitidos',a:'S',lv:'b'},
+     {t:'Se compran a precio de mercado',a:'S',lv:'b'},
+     {t:'El comprador se los compra a sus propietarios',a:'S',lv:'b'},
+     {t:'Los títulos están calificados por agencias de rating',a:'P',lv:'d'},
+     {t:'Puede ser un mercado organizado o no organizado',a:'S',lv:'d'}
+    ],
+    hint:'Primario = primera colocación, cuando el título nace. Secundario = segunda mano.'},
+   {id:'2d',kind:'Clasificar',type:'sort',title:'¿Bolsa o a medida?',sub:'Mercado organizado frente a no organizado',reward:'O',why:'Cuarta letra para el candado de la sala.',
+    task:'¿Es propio de un mercado organizado o de uno no organizado (OTC)?',
+    buckets:[{id:'OR',t:'Mercado organizado (como la Bolsa)'},{id:'OT',t:'Mercado no organizado (OTC)'}],
+    items:[
+     {t:'Regulado y controlado por instituciones',a:'OR',lv:'b'},
+     {t:'Mucha transparencia',a:'OR',lv:'b'},
+     {t:'Productos normalizados o estandarizados',a:'OR',lv:'b'},
+     {t:'Productos hechos a medida',a:'OT',lv:'b'},
+     {t:'Negociación directa entre dos partes',a:'OT',lv:'b'},
+     {t:'Ejemplo: el mercado de divisas',a:'OT',lv:'b'},
+     {t:'Liquidez garantizada',a:'OR',lv:'d'},
+     {t:'Extrabursátil, con poca transparencia y poca liquidez',a:'OT',lv:'d'}
+    ],
+    hint:'La Bolsa es el ejemplo de mercado organizado. El de divisas es el ejemplo de mercado no organizado.'}
+  ]},
+ {n:3,name:'El despacho del director',sub:'Sectores, bonos, eurocréditos y emisión de eurobonos',lock:'tiles',
+  lockText:'Puerta final: unid las letras del despacho con la palabra de la sala de mercados.',
+  puzzles:[
+   {id:'3a',kind:'Clasificar',type:'sort',title:'Cada producto a su sector',sub:'Sectores del Euromercado',reward:'E',why:'Primera letra para la puerta final.',
+    task:'Coloca cada producto en el sector del Euromercado donde se negocia.',
+    buckets:[{id:'MO',t:'Monetario (corto plazo)'},{id:'CP',t:'Capitales (medio y largo plazo)'},{id:'CR',t:'Crédito (eurocréditos)'},{id:'DI',t:'Divisas'}],
+    items:[
+     {t:'Letras del Tesoro',a:'MO',lv:'b'},
+     {t:'Pagarés de empresa (europapel)',a:'MO',lv:'b'},
+     {t:'Derivado a corto plazo sobre tipos de interés',a:'MO',lv:'d'},
+     {t:'Eurobono',a:'CP',lv:'b'},
+     {t:'Euroacción',a:'CP',lv:'b'},
+     {t:'Bono convertible en acciones',a:'CP',lv:'d'},
+     {t:'Préstamo bancario a largo plazo a un gobierno, en euromonedas',a:'CR',lv:'b'},
+     {t:'Crédito internacional simple',a:'CR',lv:'b'},
+     {t:'Cambiar dólares por yenes',a:'DI',lv:'b'},
+     {t:'Comprar libras con francos suizos',a:'DI',lv:'d'}
+    ],
+    hint:'Corto plazo (máximo 12-18 meses) = monetario. Bonos y acciones = capitales. Préstamos de bancos = crédito.'},
+   {id:'3b',kind:'Clasificar',type:'sort',title:'Puros o híbridos',sub:'Tipos de eurobonos',reward:'U',why:'Segunda letra para la puerta final.',
+    task:'¿Es un bono puro o un bono híbrido?',
+    buckets:[{id:'PU',t:'Bono puro'},{id:'HI',t:'Bono híbrido'}],
+    items:[
+     {t:'Al vencimiento, el emisor devuelve el principal al bonista',a:'PU',lv:'b'},
+     {t:'Paga un cupón periódico a tipo fijo',a:'PU',lv:'b'},
+     {t:'Su cupón se actualiza con el tipo interbancario de Londres más un diferencial',a:'PU',lv:'b'},
+     {t:'Bono convertible: puedes cambiar el nominal por acciones',a:'HI',lv:'b'},
+     {t:'Bono con warrants: da derecho a comprar acciones a un precio fijo',a:'HI',lv:'b'},
+     {t:'Combina deuda con la posibilidad de tener acciones',a:'HI',lv:'d'},
+     {t:'Puede ser a tipo fijo o a tipo flotante',a:'PU',lv:'d'}
+    ],
+    hint:'Si en algún momento puedes acabar teniendo acciones, el bono es híbrido.'},
+   {id:'3c',kind:'Casos prácticos',type:'pick',title:'Los casos del director',sub:'Eurobonos y eurocréditos',reward:'R',why:'Tercera letra para la puerta final.',
+    task:'Lee cada caso y elige la respuesta correcta.',
+    groups:[
+     {q:'Una empresa de EE. UU. emite bonos en dólares y los vende a inversores de Japón. ¿Qué es?',o:['Un eurobono','Una euroacción','Un eurocrédito','Una letra del Tesoro'],a:0,lv:'b'},
+     {q:'Un banco de Londres presta dólares a largo plazo al gobierno de Brasil. ¿En qué sector estamos?',o:['Crédito (eurocréditos)','Monetario','Divisas','Valores'],a:0,lv:'b'},
+     {q:'Un banco deja dinero a otro banco hasta mañana para gestionar su tesorería. ¿Cómo se llama?',o:['Depósito overnight','Eurobono','Bono con warrants','Euroacción'],a:0,lv:'b'},
+     {q:'¿Con qué sistema se compensan y liquidan las operaciones de eurocréditos?',o:['CHIPS','SEBC','CNMV','BPI'],a:0,lv:'d'},
+     {q:'¿A qué plazo se emite un eurobono?',o:['A largo plazo: más de 5 años, o perpetuo','A un día','Como máximo 12 meses','Exactamente 1 año'],a:0,lv:'d'}
+    ],
+    hint:'Bono en dólares vendido fuera de EE. UU. = eurobono. Préstamo de un banco a largo plazo = eurocrédito. Hasta mañana = overnight.'},
+   {id:'3d',kind:'Ordenar',type:'order',title:'La emisión del eurobono',sub:'Quién hace qué y en qué orden',reward:'O',why:'Cuarta letra para la puerta final.',
+    task:'Ordena los pasos de la emisión de un eurobono, del primero al último.',
+    items:[
+     {t:'El emisor necesita fondos y decide emitir eurobonos.',a:'1',lv:'b'},
+     {t:'El director principal diseña la operación y elige a los bancos aseguradores.',a:'2',lv:'b'},
+     {t:'Los bancos aseguradores garantizan la colocación y suscriben un porcentaje de la emisión.',a:'3',lv:'b'},
+     {t:'Los bancos de venta colocan los bonos entre los inversores del Euromercado.',a:'4',lv:'b'},
+     {t:'El agente del servicio financiero paga los cupones a los bonistas.',a:'5',lv:'b'},
+     {t:'Al vencimiento, el agente presenta los títulos al emisor y se devuelve el principal.',a:'6',lv:'d'}
+    ],
+    hint:'Primero alguien necesita el dinero. Después se diseña, se asegura y se vende. Lo último es pagar.'}
+  ]}
 ];
-const CODE=PUZZLES.map(p=>p.digit).join('');
+const ALL=ROOMS.flatMap(r=>r.puzzles.map(p=>(p.room=r.n,p)));
+const CODE1=ROOMS[0].puzzles.map(p=>p.reward).join('');
+const WORD2='BONO', WORD3='EUROBONO';
 
 /* ---------- SONIDO ---------- */
 let soundOn=true; try{soundOn=localStorage.getItem('escape-snd')!=='off'}catch(e){}
@@ -247,6 +371,7 @@ const SFX={
   drop:()=>tone(330,.08,{type:'triangle',v:.1}),
   bad:()=>{tone(150,.35,{type:'sawtooth',v:.12});tone(110,.4,{type:'square',v:.06,at:.05});},
   open:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.25,{type:'triangle',v:.12,at:i*.09}));tone(90,.3,{v:.3,at:.45,f2:50});},
+  lock:()=>{tone(120,.15,{type:'square',v:.15});tone(80,.4,{v:.3,at:.12,f2:40});[392,523,784].forEach((f,i)=>tone(f,.3,{type:'triangle',v:.1,at:.3+i*.1}));},
   alarm:()=>{[0,.3,.6].forEach(at=>{tone(880,.22,{type:'square',v:.07,at});tone(660,.22,{type:'square',v:.07,at:at+.15});});},
   win:()=>{[392,523,659,784,1047].forEach((f,i)=>tone(f,.4,{type:'sawtooth',v:.08,at:i*.12}));[523,659,784].forEach(f=>tone(f,1.4,{type:'triangle',v:.06,at:.7}));}
 };
@@ -257,28 +382,60 @@ const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const fmt=s=>{s=Math.max(0,Math.ceil(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');};
 let G=null, ticker=null, pick={level:'facil',mode:'grupo'};
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function txt(o){return G&&G.level==='dificil'&&o.en?o.en:o.t;}
-function itemsFor(p){return p.items.filter(it=>G.level==='dificil'||it.lv==='b');}
+const inLevel=x=>G.level==='dificil'||x.lv==='b';
+// Prepara cada prueba para el nivel elegido: tarjetas, casillas y grupos
+function build(p){
+  if(p.type==='fill'){
+    const words=[];const html=p.text.replace(/\{([^}]+)\}/g,(m,w)=>{words.push(w);return '\u0000'+(words.length-1)+'\u0000';});
+    const items=words.map((w,i)=>({t:w,a:'h'+i}));
+    if(G.level==='dificil') p.distract.forEach(w=>items.push({t:w,a:null}));
+    return {items,buckets:words.map((w,i)=>({id:'h'+i,t:''})),cap:true,parts:html.split('\u0000')};
+  }
+  if(p.type==='order'){
+    const items=p.items.filter(inLevel);
+    return {items,buckets:items.map((x,i)=>({id:String(i+1),t:(i+1)+'º'})),cap:true};
+  }
+  if(p.type==='pick'){
+    return {groups:p.groups.filter(inLevel).map(g=>{const idx=shuffle(g.o.map((o,i)=>i));return {q:g.q,o:idx.map(i=>g.o[i]),a:idx.indexOf(g.a)};})};
+  }
+  return {items:p.items.filter(inLevel),buckets:p.buckets,cap:false};
+}
 function newGame(){
-  const L=LEVELS[pick.level];
-  G={level:pick.level,mode:pick.mode,team:(($('#team')||{}).value||'').trim(),t0:Date.now(),extra:0,pen:0,errors:0,hints:0,solved:{},state:{},hintsLeft:{},msg:{},alarmed:false,over:false,entered:''};
-  PUZZLES.forEach(p=>{const its=shuffle(itemsFor(p).map((it,i)=>({...it,k:p.n+'-'+i})));G.state[p.n]={order:its,place:{},sel:null,bad:{}};G.hintsLeft[p.n]=L.hints;});
+  G={level:pick.level,mode:pick.mode,team:(($('#team')||{}).value||'').trim(),t0:Date.now(),extra:0,pen:0,errors:0,hints:0,
+     room:1,opened:{},solved:{},st:{},msg:{},alarmed:false,over:false,entered:'',dial:[0,0,0,0],tiles:[],cur:null,enter:0};
+  ALL.forEach(p=>{
+    const b=build(p);
+    G.st[p.id]={...b,order:b.items?shuffle(b.items.map((it,i)=>({...it,k:p.id+'-'+i}))):null,place:{},sel:null,bad:{},choice:{},badg:{},hintUsed:false,hintShown:false,spent:0};
+  });
+  G.tiles=shuffle(WORD3.split('').map((c,i)=>({c,i})));
   clearInterval(ticker); ticker=setInterval(tick,250);
 }
 function remaining(){const L=LEVELS[G.level];return L.time+G.extra-(Date.now()-G.t0)/1000-G.pen;}
+function spent(id){const S=G.st[id];return S.spent+(G.cur===id?(Date.now()-G.enter)/1000:0);}
+function leave(){if(G&&G.cur){G.st[G.cur].spent=spent(G.cur);G.cur=null;}}
 function tick(){
   if(!G||G.over) return;
   const r=remaining(), c=$('#clock');
   if(c){c.textContent=fmt(r);c.classList.toggle('low',r<=60);}
   if(r<=60&&!G.alarmed){G.alarmed=true;SFX.alarm();}
-  if(r<=0){G.over=true;end(false);}
+  const h=$('#hint');
+  if(h&&G.cur){const S=G.st[G.cur], w=HINT_WAIT-spent(G.cur);
+    if(S.hintUsed){h.disabled=true;h.textContent='Pista usada';}
+    else if(w>0){h.disabled=true;h.textContent='Pista disponible en '+fmt(w);}
+    else {h.disabled=false;h.textContent='Pedir la pista'+(LEVELS[G.level].hintCost?' (−'+LEVELS[G.level].hintCost+' s)':'');}
+  }
+  if(r<=0){G.over=true;leave();end(false);}
 }
 function penalty(s){G.pen+=s;G.errors++;const f=$('#flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');tick();}
 function hud(){
   const L=G?LEVELS[G.level]:null;
-  $('#hud').innerHTML=(G?'<span class="pill">'+esc(G.team||(G.mode==='solo'?'En solitario':'Equipo'))+' · '+L.name+'</span><span class="pill">Cajas '+Object.keys(G.solved).length+'/5</span><span class="clock" id="clock">'+fmt(remaining())+'</span>':'')
+  $('#hud').innerHTML=(G?'<span class="pill">'+esc(G.team||(G.mode==='solo'?'En solitario':'Equipo'))+' · '+L.name+'</span><span class="pill">Sala '+Math.min(G.room,3)+'/3</span><span class="clock" id="clock">'+fmt(remaining())+'</span>':'')
     +'<button class="mute" id="mute" aria-pressed="'+soundOn+'">'+(soundOn?'Sonido: sí':'Sonido: no')+'</button>';
   $('#mute').onclick=()=>{soundOn=!soundOn;try{localStorage.setItem('escape-snd',soundOn?'on':'off')}catch(e){}hud();};
+}
+function plan(){
+  return '<div class="plan">'+ROOMS.map(r=>{const cls=G.opened[r.n]?'done':(r.n===G.room?'cur':(r.n>G.room?'locked':''));
+    return '<div class="room '+cls+'"><span class="eyebrow">Sala '+r.n+'</span><b>'+esc(r.name)+'</b><span>'+(G.opened[r.n]?'Superada':r.n===G.room?'Estáis aquí':'Cerrada')+'</span></div>';}).join('')+'</div>';
 }
 
 /* ---------- PANTALLAS ---------- */
@@ -287,132 +444,189 @@ function intro(){
   view.innerHTML='<section class="intro"><div>'
    +'<p class="eyebrow">Escape room · UP 1 El Euromercado</p>'
    +'<h1>Atrapados en el <span>paraíso fiscal</span></h1>'
-   +'<p class="story">Medianoche en George Town, <b>Islas Caimán</b>. Sois auditores del Banco Central y estáis revisando la cámara acorazada del <b>Offshore Bank</b> cuando la puerta se cierra sola. El sistema de seguridad solo se desactiva con un <b>código de 5 dígitos</b>, y cada dígito está dentro de una caja fuerte.</p>'
+   +'<p class="story">Medianoche en George Town, <b>Islas Caimán</b>. Sois auditores del Banco Central y estáis revisando el <b>Offshore Bank</b> cuando las puertas se bloquean. Para salir tenéis que atravesar <b>3 salas</b>: la recepción, la sala de mercados y el despacho del director. Cada sala tiene 4 pruebas y una cerradura distinta.</p>'
    +'<ul class="rules">'
-   +'<li><b>1</b><span>Abrid las 5 cajas en el orden que queráis. Cada una es una prueba del temario.</span></li>'
-   +'<li><b>2</b><span>Tocad una tarjeta y después el sitio donde va. Cuando estén todas, pulsad «Comprobar».</span></li>'
-   +'<li><b>3</b><span>Cada error resta tiempo. Las pistas ayudan, pero en el nivel difícil también cuestan tiempo.</span></li>'
-   +'<li><b>4</b><span>Con los 5 dígitos, id a la puerta y teclead el código antes de que llegue a 00:00.</span></li></ul>'
+   +'<li><b>1</b><span>Dentro de cada sala, haced las 4 pruebas en el orden que queráis. Cada una da un número o una letra.</span></li>'
+   +'<li><b>2</b><span>Con lo que consigáis, abrid la cerradura de la sala para pasar a la siguiente.</span></li>'
+   +'<li><b>3</b><span>Cada error resta tiempo. Si os atascáis, cada prueba tiene una pista, que se desbloquea al llevar 1 minuto en ella.</span></li>'
+   +'<li><b>4</b><span>Abrid la puerta final del despacho antes de que el reloj llegue a 00:00.</span></li></ul>'
    +'</div><div class="setup">'
    +'<label>Nivel</label><div class="choice" id="lv">'
    +Object.entries(LEVELS).map(([k,L])=>'<button data-k="'+k+'" aria-pressed="'+(pick.level===k)+'"><b>'+L.name+'</b><span>'+L.desc+'</span></button>').join('')+'</div>'
-   +'<label>Modo</label><div class="choice" id="md"><button data-k="grupo" aria-pressed="'+(pick.mode==='grupo')+'"><b>En grupo</b><span>Equipos de 3 a 5. Podéis repartiros las cajas.</span></button><button data-k="solo" aria-pressed="'+(pick.mode==='solo')+'"><b>En solitario</b><span>Una persona resuelve las 5 cajas.</span></button></div>'
-   +'<label for="team">Nombre del equipo o jugador</label><input id="team" maxlength="30" placeholder="Por ejemplo: Los Underwriters">'
-   +'<button class="btn" id="go">Entrar en la cámara</button></div></section>';
-  $('#lv').onclick=e=>{const b=e.target.closest('button');if(!b)return;pick.level=b.dataset.k;intro();};
-  $('#md').onclick=e=>{const b=e.target.closest('button');if(!b)return;pick.mode=b.dataset.k;const t=$('#team').value;intro();$('#team').value=t;};
-  $('#go').onclick=()=>{ctx();SFX.open();newGame();vault();};
+   +'<label>Modo</label><div class="choice" id="md"><button data-k="grupo" aria-pressed="'+(pick.mode==='grupo')+'"><b>En grupo</b><span>Equipos de 3 a 5. Podéis repartiros las pruebas de cada sala.</span></button><button data-k="solo" aria-pressed="'+(pick.mode==='solo')+'"><b>En solitario</b><span>Una persona resuelve todas las pruebas.</span></button></div>'
+   +'<label for="team">Nombre del equipo o jugador</label><input id="team" maxlength="30" placeholder="Por ejemplo: Los Aseguradores">'
+   +'<button class="btn" id="go">Entrar en el banco</button></div></section>';
+  $('#lv').onclick=e=>{const b=e.target.closest('button');if(!b)return;const t=$('#team').value;pick.level=b.dataset.k;intro();$('#team').value=t;};
+  $('#md').onclick=e=>{const b=e.target.closest('button');if(!b)return;const t=$('#team').value;pick.mode=b.dataset.k;intro();$('#team').value=t;};
+  $('#go').onclick=()=>{ctx();SFX.open();newGame();hall();};
 }
-function vault(){
-  hud();
-  const got=PUZZLES.map(p=>G.solved[p.n]?p.digit:'');
-  view.innerHTML='<section class="vault"><p class="eyebrow">Cámara acorazada · Offshore Bank</p><h2>Elegid una caja fuerte</h2>'
-   +'<div class="boxes">'+PUZZLES.map(p=>{const o=!!G.solved[p.n];return '<button class="box'+(o?' open':'')+'" data-n="'+p.n+'"><span class="lock">'+(o?'✓':'0'+p.n)+'</span><span class="plate">'+p.n+'</span><span class="t">'+esc(p.title)+'</span><span class="s">'+esc(p.sub)+'</span>'+(o?'<span class="digit">'+p.digit+'</span><span class="st">Abierta</span>':'<span class="st">Cerrada · '+itemsFor(p).length+' tarjetas</span>')+'</button>';}).join('')+'</div>'
-   +'<div class="doorcta"><div><p class="eyebrow">Código de la puerta</p><div class="slots">'+got.map(d=>'<span class="slot">'+(d===''?'·':d)+'</span>').join('')+'</div></div><button class="btn sea" id="door">Ir a la puerta</button></div></section>';
-  view.querySelector('.boxes').onclick=e=>{const b=e.target.closest('.box');if(!b)return;SFX.tap();puzzle(+b.dataset.n);};
-  $('#door').onclick=()=>{SFX.tap();door();};
+function hall(){
+  leave(); hud();
+  const R=ROOMS[G.room-1];
+  const got=R.puzzles.map(p=>G.solved[p.id]?p.reward:'·');
+  const all=R.puzzles.every(p=>G.solved[p.id]);
+  view.innerHTML='<section class="hall">'+plan()+'<p class="eyebrow" style="margin-top:16px">Sala '+R.n+' de 3 · '+esc(R.sub)+'</p><h2>'+esc(R.name)+'</h2>'
+   +'<div class="boxes">'+R.puzzles.map((p,i)=>{const o=!!G.solved[p.id];return '<button class="box'+(o?' open':'')+'" data-id="'+p.id+'"><span class="plate">'+(i+1)+'</span><span class="kind">'+esc(p.kind)+'</span><span class="t">'+esc(p.title)+'</span><span class="s">'+esc(p.sub)+'</span>'+(o?'<span class="reward">'+p.reward+'</span><span class="st">Resuelta</span>':'<span class="st">Sin resolver</span>')+'</button>';}).join('')+'</div>'
+   +'<div class="lockpanel"><div><p class="eyebrow">'+esc(R.lockText)+'</p><div class="slots" style="margin-top:8px">'+got.map(d=>'<span class="slot">'+d+'</span>').join('')+'</div></div><button class="btn sea" id="lockb"'+(all?'':' disabled')+'>'+(all?'Abrir la cerradura':'Resolved las 4 pruebas')+'</button></div></section>';
+  view.querySelector('.boxes').onclick=e=>{const b=e.target.closest('.box');if(!b)return;SFX.tap();puzzle(b.dataset.id);};
+  $('#lockb').onclick=()=>{SFX.tap();lock();};
   window.scrollTo({top:0});
 }
-function puzzle(n){
-  const p=PUZZLES[n-1], S=G.state[n], L=LEVELS[G.level];
-  if(G.solved[n]){solvedView(p);return;}
+function puzzle(id){
+  const p=ALL.find(x=>x.id===id), S=G.st[id];
+  if(G.solved[id]){solvedView(p);return;}
+  if(G.cur!==id){leave();G.cur=id;G.enter=Date.now();}
   hud();
-  const placed=k=>S.place[k];
-  const chip=it=>'<button class="chip'+(S.sel===it.k?' sel':'')+(S.bad[it.k]?' bad':'')+'" data-k="'+it.k+'">'+esc(txt(it))+'</button>';
-  const cost=L.hintCost?' (−'+L.hintCost+' s)':'';
-  view.innerHTML='<section class="pz"><div class="pz-head"><div><p class="eyebrow">Caja '+n+' · '+esc(p.sub)+'</p><h2>'+esc(p.title)+'</h2><p class="task">'+esc(p.task)+' Toca una tarjeta y después su casilla. Para devolver una tarjeta, tócala otra vez.</p></div>'
-   +'<button class="btn ghost" id="back">Volver a la cámara</button></div>'
-   +'<div class="pool" id="pool">'+S.order.filter(it=>!placed(it.k)).map(chip).join('')+'</div>'
-   +'<div class="buckets" id="bk">'+p.buckets.map(b=>'<div class="bucket'+(S.sel?' target':'')+'" data-b="'+b.id+'" role="button" tabindex="0"><h3>'+esc(txt(b))+'</h3><div class="in">'+S.order.filter(it=>placed(it.k)===b.id).map(chip).join('')+'</div></div>').join('')+'</div>'
-   +'<p class="msg '+((G.msg[n]||{}).c||'info')+'" id="msg">'+esc((G.msg[n]||{}).t||'')+'</p>'
-   +'<div class="actions"><button class="btn" id="chk">Comprobar</button><button class="btn ghost" id="hint"'+(G.hintsLeft[n]?'':' disabled')+'>Pista'+cost+' · quedan '+G.hintsLeft[n]+'</button></div>'
-   +(S.hintShown?'<p class="hintbox">'+esc(p.hint)+'</p>':'')+'</section>';
-  const sel=k=>{
-    if(S.place[k]){delete S.place[k];S.sel=null;SFX.drop();}
-    else S.sel=S.sel===k?null:k, SFX.tap();
-    S.bad={}; puzzle(n);
+  let body='';
+  const chip=it=>'<button class="chip'+(S.sel===it.k?' sel':'')+(S.bad[it.k]?' bad':'')+'" data-k="'+it.k+'">'+esc(it.t)+'</button>';
+  const inB=b=>S.order.filter(it=>S.place[it.k]===b.id).map(chip).join('');
+  const tg=S.sel?' target':'';
+  if(p.type==='pick'){
+    body='<div class="groups">'+S.groups.map((g,gi)=>'<div class="group'+(S.badg[gi]?' bad':'')+'"><h3>'+esc(g.q)+'</h3><div class="opts">'+g.o.map((o,oi)=>'<button class="opt" data-g="'+gi+'" data-o="'+oi+'" aria-pressed="'+(S.choice[gi]===oi)+'">'+esc(o)+'</button>').join('')+'</div></div>').join('')+'</div>';
+  } else {
+    const pool='<div class="pool" id="pool">'+S.order.filter(it=>!S.place[it.k]).map(chip).join('')+'</div>';
+    if(p.type==='fill') body=pool+'<div class="doc">'+S.parts.map((t,i)=>i%2===0?esc(t):'<span class="gap bucket'+tg+'" data-b="h'+t+'" role="button" tabindex="0"><span class="in">'+inB({id:'h'+t})+'</span></span>').join('')+'</div>';
+    else if(p.type==='order') body=pool+'<div class="steps">'+S.buckets.map(b=>'<div class="step bucket'+tg+'" data-b="'+b.id+'" role="button" tabindex="0"><span class="num">'+b.id+'</span><div class="in">'+inB(b)+'</div></div>').join('')+'</div>';
+    else body=pool+'<div class="buckets">'+S.buckets.map(b=>'<div class="bucket'+tg+'" data-b="'+b.id+'" role="button" tabindex="0"><h3>'+esc(b.t)+'</h3><div class="in">'+inB(b)+'</div></div>').join('')+'</div>';
+  }
+  const how=p.type==='pick'?'Toca una opción en cada grupo.':'Toca una tarjeta y después su sitio. Para devolverla, tócala otra vez.';
+  view.innerHTML='<section class="pz"><div class="pz-head"><div><p class="eyebrow">Sala '+p.room+' · '+esc(p.kind)+' · '+esc(p.sub)+'</p><h2>'+esc(p.title)+'</h2><p class="task">'+esc(p.task)+' '+how+'</p></div>'
+   +'<button class="btn ghost" id="back">Volver a la sala</button></div>'+body
+   +'<p class="msg '+((G.msg[id]||{}).c||'info')+'" id="msg">'+esc((G.msg[id]||{}).t||'')+'</p>'
+   +'<div class="actions"><button class="btn" id="chk">Comprobar</button><button class="btn ghost" id="hint" disabled>Pista</button></div>'
+   +(S.hintShown?'<p class="hintbox"><b>Pista:</b> '+esc(p.hint)+'</p>':'')+'</section>';
+  tick();
+  const root=view.querySelector('.pz');
+  root.onclick=e=>{
+    const o=e.target.closest('.opt'); if(o){const gi=+o.dataset.g;S.choice[gi]=+o.dataset.o;S.badg={};SFX.tap();puzzle(id);return;}
+    const c=e.target.closest('.chip');
+    if(c){e.stopPropagation();const k=c.dataset.k;
+      if(S.place[k]){delete S.place[k];S.sel=null;SFX.drop();} else {S.sel=S.sel===k?null:k;SFX.tap();}
+      S.bad={};puzzle(id);return;}
+    const b=e.target.closest('.bucket'); if(b) drop(b.dataset.b);
   };
   const drop=bid=>{
     if(!S.sel) return;
-    if(p.cap){Object.keys(S.place).forEach(k=>{if(S.place[k]===bid)delete S.place[k];});}
-    S.place[S.sel]=bid; S.sel=null; SFX.drop(); puzzle(n);
-  };
-  view.querySelector('.pz').onclick=e=>{
-    const c=e.target.closest('.chip'); if(c){e.stopPropagation();sel(c.dataset.k);return;}
-    const b=e.target.closest('.bucket'); if(b) drop(b.dataset.b);
+    if(S.cap) Object.keys(S.place).forEach(k=>{if(S.place[k]===bid)delete S.place[k];});
+    S.place[S.sel]=bid; S.sel=null; SFX.drop(); puzzle(id);
   };
   view.querySelectorAll('.bucket').forEach(b=>b.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();drop(b.dataset.b);}});
-  $('#back').onclick=e=>{e.stopPropagation();vault();};
+  $('#back').onclick=e=>{e.stopPropagation();hall();};
   $('#chk').onclick=e=>{e.stopPropagation();check(p);};
   $('#hint').onclick=e=>{e.stopPropagation();hint(p);};
 }
 function check(p){
-  const S=G.state[p.n], L=LEVELS[G.level];
-  const left=S.order.filter(it=>!S.place[it.k]).length;
-  if(left){G.msg[p.n]={c:'info',t:'Faltan '+left+(left===1?' tarjeta':' tarjetas')+' por colocar.'};puzzle(p.n);return;}
-  const wrong=S.order.filter(it=>S.place[it.k]!==it.a);
-  if(!wrong.length){G.solved[p.n]=true;G.msg[p.n]=null;SFX.open();solvedView(p);return;}
+  const S=G.st[p.id], L=LEVELS[G.level];
+  let left, wrong;
+  if(p.type==='pick'){
+    left=S.groups.filter((g,i)=>S.choice[i]===undefined).length;
+    wrong=S.groups.map((g,i)=>i).filter(i=>S.choice[i]!==S.groups[i].a);
+  } else if(S.cap){
+    const occ=b=>S.order.find(it=>S.place[it.k]===b.id);
+    left=S.buckets.filter(b=>!occ(b)).length;
+    wrong=S.buckets.filter(b=>occ(b)&&occ(b).a!==b.id).map(b=>occ(b));
+  } else {
+    left=S.order.filter(it=>!S.place[it.k]).length;
+    wrong=S.order.filter(it=>S.place[it.k]!==it.a);
+  }
+  if(left){G.msg[p.id]={c:'info',t:p.type==='pick'?'Falta elegir en '+left+(left===1?' grupo.':' grupos.'):'Faltan '+left+(left===1?' casilla':' casillas')+' por completar.'};puzzle(p.id);return;}
+  if(!wrong.length){G.solved[p.id]=true;G.msg[p.id]=null;leave();SFX.open();solvedView(p);return;}
   SFX.bad(); penalty(L.pen);
-  if(L.showWrong){S.bad={};wrong.forEach(it=>{delete S.place[it.k];S.bad[it.k]=true;});G.msg[p.n]={c:'bad',t:wrong.length+(wrong.length===1?' tarjeta estaba mal y ha vuelto':' tarjetas estaban mal y han vuelto')+' arriba. −'+L.pen+' s.'};}
-  else G.msg[p.n]={c:'bad',t:'Hay '+wrong.length+(wrong.length===1?' error':' errores')+'. No te decimos cuáles. −'+L.pen+' s.'};
-  puzzle(p.n);
+  const n=wrong.length;
+  if(L.showWrong){
+    if(p.type==='pick'){S.badg={};wrong.forEach(i=>{S.badg[i]=true;delete S.choice[i];});}
+    else {S.bad={};wrong.forEach(it=>{delete S.place[it.k];S.bad[it.k]=true;});}
+    G.msg[p.id]={c:'bad',t:(n===1?'1 respuesta estaba mal':n+' respuestas estaban mal')+(p.type==='pick'?(n===1?' (marcada en rojo).':' (marcadas en rojo).'):(n===1?' y ha vuelto arriba.':' y han vuelto arriba.'))+' −'+L.pen+' s.'};
+  } else G.msg[p.id]={c:'bad',t:'Hay '+n+(n===1?' error':' errores')+'. No os decimos cuáles. −'+L.pen+' s.'};
+  puzzle(p.id);
 }
 function hint(p){
-  const S=G.state[p.n], L=LEVELS[G.level];
-  if(!G.hintsLeft[p.n]) return;
-  G.hintsLeft[p.n]--; G.hints++; S.hintShown=true;
-  if(L.hintCost){G.pen+=L.hintCost;}
-  // coloca bien una tarjeta que esté sin colocar o mal colocada
-  const it=S.order.find(x=>S.place[x.k]!==x.a);
-  if(it){ if(p.cap) Object.keys(S.place).forEach(k=>{if(S.place[k]===it.a)delete S.place[k];}); S.place[it.k]=it.a; S.bad={}; }
-  G.msg[p.n]={c:'info',t:'Pista: «'+txt(it||{t:''})+'» ya está en su sitio.'+(L.hintCost?' −'+L.hintCost+' s.':'')};
-  SFX.tap(); tick(); puzzle(p.n);
+  const S=G.st[p.id], L=LEVELS[G.level];
+  if(S.hintUsed||spent(p.id)<HINT_WAIT) return;
+  S.hintUsed=true; S.hintShown=true; G.hints++;
+  if(L.hintCost) G.pen+=L.hintCost;
+  // además de la pista, deja bien colocada una respuesta
+  if(p.type==='pick'){const i=S.groups.findIndex((g,i)=>S.choice[i]!==g.a); if(i>=0){S.choice[i]=S.groups[i].a;S.badg={};}}
+  else {
+    const it=S.cap?S.order.find(x=>x.a&&S.place[x.k]!==x.a):S.order.find(x=>S.place[x.k]!==x.a);
+    if(it){ if(S.cap) Object.keys(S.place).forEach(k=>{if(S.place[k]===it.a)delete S.place[k];}); S.place[it.k]=it.a; S.bad={}; }
+  }
+  G.msg[p.id]={c:'info',t:'Pista usada: además, una respuesta ya está en su sitio.'+(L.hintCost?' −'+L.hintCost+' s.':'')};
+  SFX.tap(); puzzle(p.id);
 }
 function solvedView(p){
   hud();
-  const extra=itemsFor(p).filter(it=>it.why);
-  view.innerHTML='<section class="solved"><p class="eyebrow">Caja '+p.n+' abierta</p><h2>'+esc(p.title)+'</h2><p>Dentro de la caja hay un papel con un número:</p><span class="digit">'+p.digit+'</span><p>'+esc(p.why)+'</p>'
+  const R=ROOMS[p.room-1], all=R.puzzles.every(x=>G.solved[x.id]);
+  const extra=(p.items||[]).filter(it=>it.why&&inLevel(it));
+  const isNum=/\d/.test(p.reward);
+  view.innerHTML='<section class="solved"><p class="eyebrow">Sala '+p.room+' · prueba resuelta</p><h2>'+esc(p.title)+'</h2><p>Encontráis '+(isNum?'un papel con un número':'una ficha con una letra')+':</p><span class="reward">'+p.reward+'</span><p>'+esc(p.why)+'</p>'
    +(extra.length?'<div class="hintbox"><b>Para recordar:</b> '+extra.map(it=>esc(it.why)).join(' ')+'</div>':'')
-   +'<div class="actions"><button class="btn" id="back">Volver a la cámara</button>'+(Object.keys(G.solved).length===5?'<button class="btn sea" id="door">¡Ya tenéis los 5! Ir a la puerta</button>':'')+'</div></section>';
-  $('#back').onclick=vault; const d=$('#door'); if(d) d.onclick=door;
+   +'<div class="actions"><button class="btn" id="back">Volver a la sala</button>'+(all?'<button class="btn sea" id="lockb">Ya tenéis las 4. Abrir la cerradura</button>':'')+'</div></section>';
+  $('#back').onclick=hall; const d=$('#lockb'); if(d) d.onclick=lock;
   window.scrollTo({top:0});
 }
-function door(){
-  hud();
-  const got=PUZZLES.map(p=>G.solved[p.n]?p.digit:'·');
-  view.innerHTML='<section class="door"><div><p class="eyebrow">Puerta de la cámara</p><h2 style="font-size:clamp(2rem,5vw,3.2rem)">Introducid el código</h2>'
-   +'<p class="task">El código son los dígitos de las cajas 1 a 5, en orden. Dígitos encontrados: <b style="font-family:var(--f-mono);color:var(--sea)">'+got.join(' ')+'</b></p>'
-   +'<div class="code">'+[0,1,2,3,4].map(i=>'<span class="slot">'+(G.entered[i]||'')+'</span>').join('')+'</div>'
-   +'<div class="keypad" id="kp">'+[1,2,3,4,5,6,7,8,9,'Borrar',0,'Abrir'].map(k=>'<button data-k="'+k+'">'+k+'</button>').join('')+'</div>'
-   +'<p class="msg" id="msg"></p><button class="btn ghost" id="back">Volver a la cámara</button></div>'
-   +'<div class="wheel" id="wheel"><div class="hub">$</div></div></section>';
-  $('#kp').onclick=e=>{
-    const b=e.target.closest('button'); if(!b) return; const k=b.dataset.k;
-    if(k==='Borrar'){G.entered=G.entered.slice(0,-1);SFX.drop();door();return;}
-    if(k==='Abrir'){
-      if(G.entered.length<5){$('#msg').className='msg info';$('#msg').textContent='Faltan dígitos.';return;}
-      if(G.entered===CODE){G.over=true;clearInterval(ticker);SFX.win();$('#wheel').classList.add('spin');setTimeout(()=>end(true),1300);return;}
-      SFX.bad(); penalty(LEVELS[G.level].pen); G.entered=''; door(); $('#msg').className='msg bad'; $('#msg').textContent='Código incorrecto. La alarma suena: −'+LEVELS[G.level].pen+' s.'; return;
-    }
-    if(G.entered.length<5){G.entered+=k;SFX.tap();door();}
-  };
-  $('#back').onclick=vault;
+function lockFail(msg){SFX.bad();penalty(LEVELS[G.level].pen);const m=$('#msg');m.className='msg bad';m.textContent=msg+' −'+LEVELS[G.level].pen+' s.';}
+function lockOpen(){
+  const R=ROOMS[G.room-1]; G.opened[R.n]=true; SFX.lock();
+  const w=$('#wheel'); if(w) w.classList.add('spin');
+  setTimeout(()=>{ if(R.n===3){G.over=true;clearInterval(ticker);end(true);} else {G.room++;G.entered='';hall();} },1300);
+}
+function lock(){
+  leave(); hud();
+  const R=ROOMS[G.room-1];
+  const got=R.puzzles.map(p=>p.reward);
+  let ui='';
+  if(R.lock==='num'){
+    ui='<p class="task">Los dígitos de las pruebas 1 a 4 de esta sala, en orden. Tenéis: <b style="font-family:var(--f-mono);color:var(--sea)">'+got.join(' ')+'</b></p>'
+     +'<div class="code">'+[0,1,2,3].map(i=>'<span class="slot">'+(G.entered[i]||'')+'</span>').join('')+'</div>'
+     +'<div class="keypad" id="kp">'+[1,2,3,4,5,6,7,8,9,'Borrar',0,'Abrir'].map(k=>'<button data-k="'+k+'">'+k+'</button>').join('')+'</div>';
+  } else if(R.lock==='dial'){
+    const L='ABEINORSU';
+    ui='<p class="task">Habéis encontrado estas letras: <b style="font-family:var(--f-mono);color:var(--sea)">'+got.join(' ')+'</b>. Giradlas para formar una palabra del temario de 4 letras.</p>'
+     +'<div class="dials" id="dl">'+G.dial.map((v,i)=>'<div class="dial"><button data-i="'+i+'" data-d="-1" aria-label="Letra anterior">▲</button><span class="face">'+L[v]+'</span><button data-i="'+i+'" data-d="1" aria-label="Letra siguiente">▼</button></div>').join('')+'</div>'
+     +'<button class="btn" id="try">Probar la combinación</button>';
+  } else {
+    ui='<p class="task">Unid las 4 letras del despacho (<b style="font-family:var(--f-mono);color:var(--sea)">'+got.join(' ')+'</b>) con la palabra de la sala de mercados (<b style="font-family:var(--f-mono);color:var(--sea)">'+WORD2+'</b>). Es un bono emitido en una divisa distinta a la del país donde se vende.</p>'
+     +'<div class="code">'+WORD3.split('').map((c,i)=>'<span class="slot">'+(G.entered[i]||'')+'</span>').join('')+'</div>'
+     +'<div class="tiles" id="tl">'+G.tiles.map((t,j)=>'<button class="tile" data-j="'+j+'"'+(G.used&&G.used.includes(j)?' disabled':'')+'>'+t.c+'</button>').join('')+'</div>'
+     +'<div class="actions"><button class="btn ghost" id="del">Borrar</button><button class="btn sea" id="try">Abrir la puerta</button></div>';
+  }
+  view.innerHTML='<section class="lockv"><div>'+plan()+'<p class="eyebrow" style="margin-top:16px">Sala '+R.n+' · cerradura</p><h2>'+(R.n===3?'La puerta final':'La cerradura de '+esc(R.name.toLowerCase()))+'</h2>'+ui
+   +'<p class="msg" id="msg"></p><button class="btn ghost" id="back">Volver a la sala</button></div><div class="wheel" id="wheel"><div class="hub">'+(R.n===1?'123':R.n===2?'ABC':'$')+'</div></div></section>';
+  $('#back').onclick=hall;
+  if(R.lock==='num'){
+    $('#kp').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;
+      if(k==='Borrar'){G.entered=G.entered.slice(0,-1);SFX.drop();lock();return;}
+      if(k==='Abrir'){ if(G.entered.length<4){$('#msg').className='msg info';$('#msg').textContent='Faltan dígitos.';return;}
+        if(G.entered===CODE1){lockOpen();return;} G.entered='';lock();lockFail('Código incorrecto.');return;}
+      if(G.entered.length<4){G.entered+=k;SFX.tap();lock();}};
+  } else if(R.lock==='dial'){
+    const L='ABEINORSU';
+    $('#dl').onclick=e=>{const b=e.target.closest('button');if(!b)return;const i=+b.dataset.i;G.dial[i]=(G.dial[i]+(+b.dataset.d)+L.length)%L.length;SFX.tap();lock();};
+    $('#try').onclick=()=>{const w=G.dial.map(v=>L[v]).join(''); if(w===WORD2) lockOpen(); else lockFail('«'+w+'» no abre el candado.');};
+  } else {
+    G.used=G.used||[];
+    $('#tl').onclick=e=>{const b=e.target.closest('.tile');if(!b||G.entered.length>=WORD3.length)return;const j=+b.dataset.j;G.used.push(j);G.entered+=G.tiles[j].c;SFX.tap();lock();};
+    $('#del').onclick=()=>{G.used.pop();G.entered=G.entered.slice(0,-1);SFX.drop();lock();};
+    $('#try').onclick=()=>{ if(G.entered.length<WORD3.length){$('#msg').className='msg info';$('#msg').textContent='Faltan letras.';return;}
+      if(G.entered===WORD3) lockOpen(); else {const w=G.entered;G.entered='';G.used=[];lock();lockFail('«'+w+'» no abre la puerta.');}};
+  }
   window.scrollTo({top:0});
 }
 function end(win){
   clearInterval(ticker); hud();
   const r=Math.max(0,remaining()), used=LEVELS[G.level].time+G.extra-r;
-  const solved=Object.keys(G.solved).length;
-  const score=win?Math.round(r*(G.level==='dificil'?2:1))+solved*100:solved*100;
+  const solved=Object.keys(G.solved).length, rooms=Object.keys(G.opened).length;
+  const score=(win?Math.round(r*(G.level==='dificil'?2:1)):0)+solved*50+rooms*100;
   const name=G.team||(G.mode==='solo'?'Jugador':'Equipo');
-  const text=name+' '+(win?'escapó':'no escapó')+' de la cámara offshore (nivel '+LEVELS[G.level].name+') con '+score+' puntos.';
+  const text=name+' '+(win?'escapó':'no escapó')+' del banco offshore (nivel '+LEVELS[G.level].name+') con '+score+' puntos.';
   view.innerHTML='<section class="end"><p class="eyebrow">'+(win?'Puerta abierta':'Tiempo agotado')+'</p>'
-   +'<h1 class="'+(win?'win':'lose')+'">'+(win?'¡Habéis escapado!':'La puerta sigue cerrada')+'</h1>'
-   +'<p class="story" style="margin:0">'+(win?'El código '+CODE+' desactiva la seguridad y salís al aire caliente de George Town con el informe de auditoría bajo el brazo.':'La inspección llega antes de que deis con el código. Podéis seguir con 5 minutos extra o volver a empezar.')+'</p>'
-   +'<ul class="stats"><li><span>Equipo</span><span>'+esc(name)+'</span></li><li><span>Nivel</span><span>'+LEVELS[G.level].name+'</span></li><li><span>Cajas abiertas</span><span>'+solved+' / 5</span></li><li><span>Tiempo usado</span><span>'+fmt(used)+'</span></li><li><span>Errores</span><span>'+G.errors+'</span></li><li><span>Pistas</span><span>'+G.hints+'</span></li><li><span>Puntuación</span><span>'+score+'</span></li></ul>'
+   +'<h1 class="'+(win?'win':'lose')+'">'+(win?'¡Habéis escapado!':'Las puertas siguen cerradas')+'</h1>'
+   +'<p class="story" style="margin:0">'+(win?'La palabra EUROBONO desbloquea la puerta del despacho y salís al aire caliente de George Town con el informe de auditoría bajo el brazo.':'La inspección llega antes de que salgáis. Podéis seguir con 5 minutos extra o volver a empezar.')+'</p>'
+   +'<ul class="stats"><li><span>Equipo</span><span>'+esc(name)+'</span></li><li><span>Nivel</span><span>'+LEVELS[G.level].name+'</span></li><li><span>Salas superadas</span><span>'+rooms+' / 3</span></li><li><span>Pruebas resueltas</span><span>'+solved+' / '+ALL.length+'</span></li><li><span>Tiempo usado</span><span>'+fmt(used)+'</span></li><li><span>Errores</span><span>'+G.errors+'</span></li><li><span>Pistas</span><span>'+G.hints+'</span></li><li><span>Puntuación</span><span>'+score+'</span></li></ul>'
    +'<div class="actions">'+(win?'':'<button class="btn" id="more">Seguir 5 minutos más</button>')+'<button class="btn '+(win?'':'ghost')+'" id="again">Jugar otra vez</button><button class="btn ghost" id="cp">Copiar resultado</button></div><p class="toast" id="ts" role="status"></p></section>';
   if(win) SFX.win();
-  const m=$('#more'); if(m) m.onclick=()=>{G.extra+=300;G.over=false;G.alarmed=false;ticker=setInterval(tick,250);vault();};
+  const m=$('#more'); if(m) m.onclick=()=>{G.extra+=300;G.over=false;G.alarmed=false;ticker=setInterval(tick,250);hall();};
   $('#again').onclick=intro;
   $('#cp').onclick=()=>{try{navigator.clipboard.writeText(text).then(()=>{$('#ts').textContent='Resultado copiado.';},()=>{$('#ts').textContent=text;});}catch(e){$('#ts').textContent=text;}};
 }
