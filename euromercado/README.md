@@ -16,6 +16,7 @@ Escape room de la **UP 1 · El Euromercado**. Todo en español.
   3. **La sala de mercados, a oscuras con linterna** (renta fija y variable, liquidez y solvencia, primario y secundario). Candado de letras **BONO**.
   4. **El despacho del director** (sectores, bonos puros e híbridos, casos, emisión del eurobono) y **la reunión**: un interrogatorio en el que uno de los participantes miente y, al descubrirlo, da la llave. Cada persona tiene su cara y se le pincha por separado (en la sala 3D o con anterior/siguiente); en Fácil se apuntan solas sus respuestas y en Difícil hay que recordarlas. Caja fuerte con la llave y **EUROBONO**.
 - En 3D se anda en primera persona: WASD o flechas (o los botones de la pantalla en móvil y pizarra), arrastrar para mirar, rueda o pellizco para hacer zoom, y pinchar en el suelo o en un objeto para ir andando hasta él. No se atraviesan paredes ni muebles.
+- Botón «⛶ Pantalla completa» en la sala 3D: la sala ocupa toda la pantalla, con el tiempo arriba a la derecha y la cerradura abajo, y se mantiene así al volver de cada prueba. Se sale con el mismo botón o con Esc.
 - Decoración con chiste (no quita tiempo): galería de cuadros en la sala oscura, «Empleado del mes» en la recepción (4 fotos, cambia al pincharlo), máquina de café que sube de precio por la inflación y la pecera del «tiburón de las finanzas» en el despacho.
 - Tres bromas que repasan materia:
   - **Botón rojo «NO PULSAR»** (recepción, en 3D): alarma falsa y una pregunta; si se acierta, +10 s.

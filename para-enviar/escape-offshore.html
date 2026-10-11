@@ -230,6 +230,23 @@ p{margin:0}
 .stats span:last-child{font-family:var(--f-mono)}
 .toast{font-family:var(--f-mono);font-size:.8rem;color:var(--ok);min-height:1.2rem}
 .flash{position:fixed;inset:0;pointer-events:none;z-index:30;background:var(--bad);opacity:0}
+.fsbtn{position:absolute;left:10px;top:10px;z-index:3;border:1.5px solid var(--brass);background:#000c;color:var(--brass);border-radius:999px;padding:.3rem .8rem;font-size:.8rem;font-weight:800}
+.roomtag{display:none}
+body.imm.inhall{overflow:hidden}
+body.imm.inhall .hall .scene3d{position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;aspect-ratio:auto;margin:0;border:0;border-radius:0;z-index:20}
+body.imm.inhall .hall>*:not(.scene3d):not(.lockpanel):not(.msg){display:none}
+body.imm.inhall .roomtag{display:block;position:absolute;left:10px;top:48px;z-index:3;background:#000b;color:var(--text);font-family:var(--f-display);font-size:1.2rem;letter-spacing:.03em;padding:.15rem .6rem;border-radius:8px;pointer-events:none}
+body.imm.inhall .hint3d{display:none}
+body.imm.inhall .bar{position:fixed;top:10px;right:10px;z-index:22;padding:0;border:0;background:none;margin:0}
+body.imm.inhall .bar .brand,body.imm.inhall .hud .pill:first-child{display:none}
+body.imm.inhall .hall .lockpanel{position:fixed;left:50%;bottom:12px;transform:translateX(-50%);z-index:21;margin:0;background:#000d;border-style:solid;padding:8px 12px;gap:10px;flex-wrap:nowrap;max-width:calc(100vw - 24px)}
+body.imm.inhall .hall .lockpanel .eyebrow{display:none}
+body.imm.inhall .hall .slots{flex-wrap:nowrap;margin-top:0!important;gap:6px}
+body.imm.inhall .hall .lockpanel .slot{width:2.1rem;height:2.6rem;font-size:1.2rem}
+body.imm.inhall .hall .msg{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);z-index:21;margin:0;max-width:calc(100vw - 24px)}
+body.imm.inhall .hall .msg:empty{display:none}
+body.imm.inhall .hall .msg:not(:empty){background:#000d;padding:.4rem .8rem;border-radius:10px}
+@media (max-width:700px){body.imm.inhall .hud .pill,body.imm.inhall .hud .mute{display:none}body.imm.inhall .hall .lockpanel{top:58px;bottom:auto;padding:6px 8px}body.imm.inhall .hall .lockpanel .btn{font-size:.72rem;padding:.35rem .55rem;max-width:150px;line-height:1.2}body.imm.inhall .hall .lockpanel .slot{width:1.6rem;height:2.1rem;font-size:1rem}body.imm.inhall .roomtag{top:auto;bottom:100px;font-size:1rem}body.imm.inhall .vbtns{top:auto;bottom:10px;max-width:calc(100% - 140px)}body.imm.inhall .hall .msg{bottom:auto;top:130px}}
 .tov{position:fixed;inset:0;z-index:40;background:#000c;display:grid;place-items:center;padding:16px}
 .tbox{background:var(--steel);border:2px solid var(--brass);border-radius:16px;padding:1.4rem;max-width:520px;width:100%;text-align:center;display:flex;flex-direction:column;gap:.6rem;max-height:calc(100vh - 32px);overflow:auto}
 .tbox h3{margin:0;font-family:var(--f-display);font-size:1.9rem;letter-spacing:.02em}
@@ -1013,6 +1030,19 @@ function trollPez(){
 }
 function troll(id){ if(id==='xboton') trollButton(); else if(id==='xcaja') trollSafe(); else if(id==='xcafe') trollCafe(); else if(id==='xpez') trollPez(); else if(id==='xemp') trollEmp(); }
 
+/* ---------- PANTALLA COMPLETA: la sala ocupa toda la pantalla y se queda así al volver de cada prueba ---------- */
+let imm=false, immNative=false;
+function setImm(on){
+  imm=on; document.body.classList.toggle('imm',on);
+  const d=document;
+  try{ if(on&&!d.fullscreenElement&&d.documentElement.requestFullscreen) d.documentElement.requestFullscreen().catch(()=>{});
+       else if(!on&&d.fullscreenElement&&d.exitFullscreen) d.exitFullscreen().catch(()=>{}); }catch(e){}
+  const b=$('#fs'); if(b) b.textContent=on?'✕ Salir de pantalla completa':'⛶ Pantalla completa';
+  window.scrollTo({top:0});
+}
+document.addEventListener('fullscreenchange',()=>{ if(document.fullscreenElement) immNative=true; else if(immNative){immNative=false; if(imm) setImm(false);} });
+addEventListener('keydown',e=>{ if(e.key==='Escape'&&imm&&!document.getElementById('tov')&&!document.fullscreenElement) setImm(false); });
+new MutationObserver(()=>document.body.classList.toggle('inhall',!!view.querySelector('.hall'))).observe(view,{childList:true});
 /* ---------- PANTALLAS ---------- */
 function intro(){
   if(G) trollClose(); G=null; clearInterval(ticker); hud();
@@ -1054,7 +1084,7 @@ function hall(noScroll){
     if(RM3){const S3=G.st['3e'];for(let i=0;i<6;i++){const h=RM3.hot['3e@'+i];if(i<S3.cast.length){names['3e@'+i]=(S3.cleared[i]?'✓ ':'')+S3.cast[i].n;RM3.g.add(h.g);h.g.userData.body.material.color.set(S3.cast[i].c);}else RM3.g.remove(h.g);}}}
   if(R.n===2&&!G.callAt) G.callAt=Date.now()+25000;
   const sceneHTML=use3D
-    ?'<div class="scene3d" id="scene"><div class="vbtns">'+RM3.views.map((v,i)=>'<button data-view="'+i+'">'+esc(v.n)+'</button>').join('')+'</div><div class="pad3d"><button data-z="-" aria-label="Alejar">－</button><button data-k="f" aria-label="Avanzar">▲</button><button data-z="+" aria-label="Acercar">＋</button><button data-k="tl" aria-label="Girar a la izquierda">↺</button><button data-k="b" aria-label="Retroceder">▼</button><button data-k="tr" aria-label="Girar a la derecha">↻</button></div><span class="toast3d" aria-live="polite"></span><span class="hint3d">WASD o flechas: andar · arrastrar: mirar · rueda: zoom · pinchad en el suelo o en los objetos'+(SC.dark?' · la linterna apunta adonde señaláis':'')+'</span></div>'
+    ?'<div class="scene3d" id="scene"><button class="fsbtn" id="fs">'+(imm?'✕ Salir de pantalla completa':'⛶ Pantalla completa')+'</button><span class="roomtag">Sala '+R.n+' · '+esc(R.name)+'</span><div class="vbtns">'+RM3.views.map((v,i)=>'<button data-view="'+i+'">'+esc(v.n)+'</button>').join('')+'</div><div class="pad3d"><button data-z="-" aria-label="Alejar">－</button><button data-k="f" aria-label="Avanzar">▲</button><button data-z="+" aria-label="Acercar">＋</button><button data-k="tl" aria-label="Girar a la izquierda">↺</button><button data-k="b" aria-label="Retroceder">▼</button><button data-k="tr" aria-label="Girar a la derecha">↻</button></div><span class="toast3d" aria-live="polite"></span><span class="hint3d">WASD o flechas: andar · arrastrar: mirar · rueda: zoom · pinchad en el suelo o en los objetos'+(SC.dark?' · la linterna apunta adonde señaláis':'')+'</span></div>'
     :'<div class="scene'+(SC.dark?' dark':'')+'" id="scene">'+SC.svg+spots+'</div>';
   const toggle=HAS3D?'<button class="mute vtoggle" id="v3">'+(use3D?'Ver la sala en 2D':'Ver la sala en 3D')+'</button>':'';
   const help=SC.dark?(use3D?'Se ha ido la luz. Mirad alrededor y apuntad con la linterna para encontrar los objetos de la sala.':'Se ha ido la luz. Moved el ratón (o el dedo) para alumbrar con la linterna y encontrad los objetos de la sala.'):'Pinchad en los objetos de la sala para encontrar las pruebas. '+(R.n===3?'La caja fuerte está en la pared.':'La cerradura está en la puerta.');
@@ -1070,6 +1100,7 @@ function hall(noScroll){
   };
   view.querySelector('.hall').addEventListener('click',e=>{const b=e.target.closest('.found button'); if(b) open(b.dataset.id);});
   $('#lockb').onclick=()=>{SFX.tap();lock();};
+  const fsb=$('#fs'); if(fsb) fsb.onclick=()=>{SFX.tap();setImm(!imm);};
   const tg=$('#v3'); if(tg) tg.onclick=()=>{view3d=!view3d;try{localStorage.setItem('escape-3d',view3d?'on':'off')}catch(e){}hall(true);};
   if(use3D){
     mount3D(R,sc,names,open,()=>{const f=view.querySelector('.found'); if(f){f.outerHTML=listHTML();} SFX.tap();});
