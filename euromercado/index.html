@@ -153,6 +153,48 @@ p{margin:0}
 .tile{width:3rem;height:3.4rem;border-radius:8px;border:2px solid var(--brass-2);background:#F3EEDF;color:#1C1A14;font-family:var(--f-mono);font-weight:700;font-size:1.6rem}
 .tile:disabled{opacity:.2}
 
+/* escenas dibujadas */
+.scene{position:relative;width:100%;aspect-ratio:1000/560;border-radius:16px;overflow:hidden;border:2px solid var(--edge);margin-top:12px;background:#0A1620;touch-action:none}
+.scene svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.spot{position:absolute;border:2px dashed transparent;border-radius:12px;background:transparent;padding:0;z-index:1}
+.spot:hover,.spot:focus-visible{border-color:var(--brass);background:color-mix(in srgb,var(--brass) 14%,transparent)}
+.spot .lab{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);font-size:clamp(.6rem,1.4vw,.8rem);font-weight:800;background:#000d;color:var(--text);padding:.15rem .5rem;border-radius:6px;white-space:nowrap;pointer-events:none}
+.spot.done{border:2px solid var(--sea);background:color-mix(in srgb,var(--sea) 12%,transparent)}
+.spot.done .lab{color:var(--sea)}
+.spot.door .lab{color:var(--brass);left:auto;right:2px;transform:none}
+.scene.dark::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:2;background:radial-gradient(circle var(--r,120px) at var(--x,12%) var(--y,80%),transparent 0,rgba(2,6,10,.45) 55%,rgba(2,6,10,.985) 100%)}
+.scene.dark .spot:not(.lit):not(.done){border-color:transparent;background:transparent}
+.scene.dark .spot:not(.lit):not(.done) .lab{display:none}
+.scene.dark .spot.done{z-index:3}
+.found{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.found button,.found span{border:1.5px solid var(--edge);background:var(--steel);border-radius:999px;padding:.3rem .8rem;font-size:.82rem;font-weight:700}
+.found .ok{border-color:var(--sea);color:var(--sea)}
+.found .no{color:var(--muted);font-weight:500}
+/* pasillo de láseres */
+.corr{position:relative;width:100%;max-width:900px;aspect-ratio:900/300;border-radius:14px;overflow:hidden;border:2px solid var(--edge);background:#060D13}
+.corr svg{width:100%;height:100%;display:block}
+.beam{stroke:#FF3B3B;stroke-width:4;filter:drop-shadow(0 0 6px #FF3B3B);transition:opacity .4s}
+.beam.off{opacity:.06}
+.lq{display:grid;gap:12px;max-width:900px}
+.lq .q{font-size:clamp(1.2rem,3vw,1.7rem);font-weight:800;line-height:1.25;min-height:4.2rem}
+.lq .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lq .row button{font-size:1.2rem;padding:1rem}
+.lbar{height:10px;border-radius:99px;background:var(--steel-2);overflow:hidden;max-width:900px}
+.lbar i{display:block;height:100%;background:var(--bad);width:100%;transition:width .25s linear}
+/* personajes */
+.cast{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}
+.who{border:2px solid var(--edge);border-radius:14px;background:var(--steel);padding:14px;display:grid;gap:8px;align-content:start}
+.who.ok{border-color:var(--sea)}
+.who .top{display:flex;gap:10px;align-items:center}
+.ava{width:3.2rem;height:3.2rem;border-radius:50%;display:grid;place-items:center;font-family:var(--f-display);font-size:1.4rem;color:#0C1822;background:var(--c);flex:none;border:3px solid #0006}
+.who b{display:block;font-size:1rem}
+.who small{display:block;color:var(--muted);font-size:.8rem;line-height:1.25}
+.bubble{background:#F3EEDF;color:#1C1A14;border-radius:12px;padding:10px 12px;font-size:.92rem;line-height:1.35;position:relative;font-weight:600}
+.bubble::before{content:"";position:absolute;left:18px;top:-8px;border:8px solid transparent;border-top:0;border-bottom-color:#F3EEDF}
+.truth{font-family:var(--f-mono);font-size:.72rem;color:var(--sea)}
+.who .row{display:flex;gap:8px;flex-wrap:wrap}
+.who .row .btn{padding:.45rem .9rem;font-size:.85rem}
+
 /* final */
 .end{display:grid;gap:14px;max-width:720px}
 .end h1{font-size:clamp(3rem,9vw,5.5rem)}
@@ -169,7 +211,11 @@ p{margin:0}
   .intro,.lockv{grid-template-columns:1fr}
   .boxes{grid-template-columns:repeat(2,minmax(0,1fr))}
   .box{min-height:10rem}
-  .plan{grid-template-columns:1fr}
+  .plan{gap:6px}
+  .room{padding:8px 10px}
+  .room b{font-size:1rem}
+  .room span{font-size:.7rem}
+  .room .eyebrow{display:none}
   .doc{padding:16px;font-size:1rem}
 }
 @media (prefers-reduced-motion:reduce){.chip.bad,.group.bad,.wheel.spin,.clock.low,.flash.go{animation:none}}
@@ -241,10 +287,30 @@ const ROOMS=[
     ],
     hint:'Fijar los tipos de interés del euro es cosa del BCE, no un objetivo del Euromercado.'}
   ]},
- {n:2,name:'La sala de mercados',sub:'Renta fija y variable, liquidez y solvencia, tipos de mercado',lock:'dial',
-  lockText:'Candado de letras: ordenad las 4 letras para formar una palabra del temario.',
+ {n:2,name:'La sala de mercados',sub:'Renta fija y variable, liquidez y solvencia, mercado primario y secundario',lock:'dial',
+  lockText:'Candado de letras: ordenad las 4 letras (una del pasillo y tres de la sala) para formar una palabra del temario.',
   puzzles:[
-   {id:'2a',kind:'Clasificar',type:'sort',title:'Fija o variable',sub:'Renta fija frente a renta variable',reward:'O',why:'Primera letra para el candado de la sala.',
+   {id:'2l',kind:'Contrarreloj',type:'laser',title:'El pasillo de láseres',sub:'Verdadero o falso a toda velocidad',reward:'O',why:'Al cruzar el pasillo encontráis una ficha con una letra para la sala de mercados.',
+    task:'Saltan las alarmas. Cada respuesta correcta apaga un láser. Apagadlos todos antes de que se acabe el tiempo.',
+    qs:[
+     {t:'El mercado de divisas es un mercado no organizado (OTC).',a:true},
+     {t:'En un mercado OTC los productos se hacen a medida.',a:true},
+     {t:'La Bolsa es un ejemplo de mercado no organizado.',a:false},
+     {t:'Un mercado organizado tiene poca transparencia.',a:false},
+     {t:'En un mercado organizado la liquidez está garantizada.',a:true},
+     {t:'El mercado monetario negocia activos a corto plazo, de 12 a 18 meses como máximo.',a:true},
+     {t:'El mercado monetario tiene bajo riesgo y alta liquidez.',a:true},
+     {t:'Los eurocréditos son préstamos bancarios a corto plazo.',a:false},
+     {t:'Un eurobono es un empréstito a largo plazo.',a:true},
+     {t:'En el Euromercado operan sobre todo pequeños ahorradores.',a:false},
+     {t:'Londres y Luxemburgo son centros del Euromercado en Europa Occidental.',a:true},
+     {t:'La renta variable tiene menos riesgo que la renta fija.',a:false},
+     {t:'Las euroacciones se negocian en un mercado descentralizado, sin un lugar fijo.',a:true},
+     {t:'Los eurobonos se emiten con impuestos y retenciones para el inversor.',a:false},
+     {t:'El mercado de divisas sirve para facilitar el comercio internacional.',a:true},
+     {t:'Un depósito overnight vence en un mes.',a:false}
+    ]},
+   {id:'2a',kind:'Clasificar',type:'sort',title:'Fija o variable',sub:'Renta fija frente a renta variable',reward:'O',why:'Otra letra para el candado de la sala.',
     task:'¿Esta característica es de la renta fija o de la renta variable?',
     buckets:[{id:'RF',t:'Renta fija (bono)'},{id:'RV',t:'Renta variable (acción)'}],
     items:[
@@ -260,7 +326,7 @@ const ROOMS=[
      {t:'Te conviertes en accionista',a:'RV',lv:'d'}
     ],
     hint:'Con un bono prestas dinero y te lo devuelven con intereses. Con una acción compras un trozo de la empresa.'},
-   {id:'2b',kind:'Clasificar',type:'sort',title:'Liquidez o solvencia',sub:'Dos conceptos que se confunden',reward:'N',why:'Segunda letra para el candado de la sala.',
+   {id:'2b',kind:'Clasificar',type:'sort',title:'Liquidez o solvencia',sub:'Dos conceptos que se confunden',reward:'N',why:'Otra letra para el candado de la sala.',
     task:'¿Cada situación habla de liquidez o de solvencia?',
     buckets:[{id:'L',t:'Liquidez'},{id:'S',t:'Solvencia'}],
     items:[
@@ -273,7 +339,7 @@ const ROOMS=[
      {t:'Que todo lo que tienes valga más que todo lo que debes',a:'S',lv:'d'}
     ],
     hint:'Liquidez = corto plazo y rapidez. Solvencia = todas las deudas, con todos los activos y sin importar el tiempo.'},
-   {id:'2c',kind:'Clasificar',type:'sort',title:'Primario o secundario',sub:'Dónde se compran los títulos',reward:'B',why:'Tercera letra para el candado de la sala.',
+   {id:'2c',kind:'Clasificar',type:'sort',title:'Primario o secundario',sub:'Dónde se compran los títulos',reward:'B',why:'Otra letra para el candado de la sala.',
     task:'¿Esto pasa en el mercado primario o en el secundario?',
     buckets:[{id:'P',t:'Mercado primario'},{id:'S',t:'Mercado secundario'}],
     items:[
@@ -287,23 +353,9 @@ const ROOMS=[
      {t:'Puede ser un mercado organizado o no organizado',a:'S',lv:'d'}
     ],
     hint:'Primario = primera colocación, cuando el título nace. Secundario = segunda mano.'},
-   {id:'2d',kind:'Clasificar',type:'sort',title:'¿Bolsa o a medida?',sub:'Mercado organizado frente a no organizado',reward:'O',why:'Cuarta letra para el candado de la sala.',
-    task:'¿Es propio de un mercado organizado o de uno no organizado (OTC)?',
-    buckets:[{id:'OR',t:'Mercado organizado (como la Bolsa)'},{id:'OT',t:'Mercado no organizado (OTC)'}],
-    items:[
-     {t:'Regulado y controlado por instituciones',a:'OR',lv:'b'},
-     {t:'Mucha transparencia',a:'OR',lv:'b'},
-     {t:'Productos normalizados o estandarizados',a:'OR',lv:'b'},
-     {t:'Productos hechos a medida',a:'OT',lv:'b'},
-     {t:'Negociación directa entre dos partes',a:'OT',lv:'b'},
-     {t:'Ejemplo: el mercado de divisas',a:'OT',lv:'b'},
-     {t:'Liquidez garantizada',a:'OR',lv:'d'},
-     {t:'Extrabursátil, con poca transparencia y poca liquidez',a:'OT',lv:'d'}
-    ],
-    hint:'La Bolsa es el ejemplo de mercado organizado. El de divisas es el ejemplo de mercado no organizado.'}
   ]},
  {n:3,name:'El despacho del director',sub:'Sectores, bonos, eurocréditos y emisión de eurobonos',lock:'tiles',
-  lockText:'Puerta final: unid las letras del despacho con la palabra de la sala de mercados.',
+  lockText:'Caja fuerte del director: hace falta la llave y una palabra formada con las letras del despacho y la palabra de la sala de mercados.',
   puzzles:[
    {id:'3a',kind:'Clasificar',type:'sort',title:'Cada producto a su sector',sub:'Sectores del Euromercado',reward:'E',why:'Primera letra para la puerta final.',
     task:'Coloca cada producto en el sector del Euromercado donde se negocia.',
@@ -354,9 +406,58 @@ const ROOMS=[
      {t:'El agente del servicio financiero paga los cupones a los bonistas.',a:'5',lv:'b'},
      {t:'Al vencimiento, el agente presenta los títulos al emisor y se devuelve el principal.',a:'6',lv:'d'}
     ],
-    hint:'Primero alguien necesita el dinero. Después se diseña, se asegura y se vende. Lo último es pagar.'}
+    hint:'Primero alguien necesita el dinero. Después se diseña, se asegura y se vende. Lo último es pagar.'},
+   {id:'3e',kind:'Interrogatorio',type:'talk',title:'La reunión',sub:'Uno de los presentes miente',reward:'LLAVE',why:'El mentiroso confiesa y os entrega la llave de la caja fuerte del director.',
+    task:'Escuchad a cada participante en la emisión del eurobono. Uno se está atribuyendo el trabajo de otro: acusadlo.',
+    cast:[
+     {n:'Marta Ríos',r:'Emisora · directora financiera de Atlantic Corp',c:'#D2AE57',v:'Mi empresa necesita fondos, así que emitimos los eurobonos.',f:'Yo garantizo la colocación de la emisión y suscribo un porcentaje.',lv:'b'},
+     {n:'Javier Soto',r:'Director principal',c:'#33C2BC',v:'Diseño la operación y elijo a los bancos aseguradores.',f:'Yo pago los cupones a los bonistas cada año.',lv:'b'},
+     {n:'Lucía Paredes',r:'Banco asegurador',c:'#62D394',v:'Garantizo que la emisión se coloca y suscribo un porcentaje de ella.',f:'Yo diseño toda la operación y elijo a los demás bancos.',lv:'b'},
+     {n:'Tomás Vidal',r:'Banco de venta',c:'#F2766B',v:'Coloco los bonos entre los inversores del Euromercado.',f:'Yo vigilo y controlo la emisión en nombre de los bonistas.',lv:'b'},
+     {n:'Elena Mora',r:'Agente del servicio financiero',c:'#93A8B8',v:'Pago los cupones y presento los títulos al emisor al amortizarlos.',f:'Yo necesito los fondos y por eso emito los bonos.',lv:'b'},
+     {n:'Andrés Gil',r:'Comisario del sindicato de bonistas',c:'#B9A2F0',v:'Vigilo y controlo la emisión en nombre de los bonistas.',f:'Yo coloco los bonos entre los pequeños ahorradores del barrio.',lv:'d'}
+    ],
+    hint:'Comparad lo que dice cada uno con su cargo: el mentiroso describe el trabajo de otro participante.'}
   ]}
 ];
+/* ---------- ESCENAS (dibujos de cada sala, viewBox 1000×560) ---------- */
+const SCENES={
+1:{svg:`<svg viewBox="0 0 1000 560" aria-hidden="true"><defs><linearGradient id="w1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1F3747"/><stop offset="1" stop-color="#142735"/></linearGradient></defs>
+<rect width="1000" height="410" fill="url(#w1)"/><rect y="410" width="1000" height="150" fill="#0D1B26"/>
+<g stroke="#1E3446" stroke-width="2"><line x1="0" y1="470" x2="1000" y2="470"/><line x1="0" y1="520" x2="1000" y2="520"/><line x1="200" y1="410" x2="120" y2="560"/><line x1="500" y1="410" x2="500" y2="560"/><line x1="800" y1="410" x2="880" y2="560"/></g>
+<text x="560" y="58" text-anchor="middle" fill="#D2AE57" font-family="Big Shoulders Stencil Display,Impact,sans-serif" font-size="40" letter-spacing="8">OFFSHORE BANK · CAYMAN</text>
+<rect x="80" y="95" width="240" height="150" fill="#0A1620" stroke="#8C6F2A" stroke-width="9"/>
+<g fill="#2C8C86"><ellipse cx="140" cy="150" rx="34" ry="22"/><ellipse cx="160" cy="205" rx="16" ry="24"/><ellipse cx="225" cy="140" rx="30" ry="18"/><ellipse cx="235" cy="195" rx="18" ry="26"/><ellipse cx="285" cy="160" rx="22" ry="20"/><ellipse cx="290" cy="215" rx="12" ry="8"/></g>
+<g fill="#D2AE57"><circle cx="128" cy="168" r="4"/><circle cx="222" cy="134" r="4"/><circle cx="276" cy="166" r="4"/><circle cx="268" cy="152" r="4"/></g>
+<rect x="320" y="290" width="440" height="18" fill="#D2AE57"/><rect x="332" y="306" width="416" height="134" fill="#1E3446" stroke="#2E4A60" stroke-width="3"/>
+<g stroke="#2E4A60" stroke-width="3"><line x1="470" y1="306" x2="470" y2="440"/><line x1="610" y1="306" x2="610" y2="440"/></g>
+<rect x="398" y="198" width="134" height="88" rx="6" fill="#0A1620" stroke="#93A8B8" stroke-width="5"/><rect x="412" y="211" width="106" height="62" fill="#33C2BC" opacity=".35"/><rect x="455" y="286" width="20" height="6" fill="#93A8B8"/>
+<g transform="rotate(-5 655 276)"><rect x="600" y="262" width="112" height="30" fill="#C9A44C"/><rect x="600" y="262" width="112" height="7" fill="#8C6F2A"/></g>
+<path d="M792 422 L872 422 L860 502 L804 502 Z" fill="#2E4A60" stroke="#93A8B8" stroke-width="3"/><circle cx="815" cy="416" r="13" fill="#E9EFF3"/><circle cx="846" cy="411" r="11" fill="#D9DEE2"/><circle cx="832" cy="404" r="9" fill="#E9EFF3"/>
+<rect x="38" y="432" width="52" height="62" fill="#8C6F2A"/><circle cx="64" cy="404" r="42" fill="#2C8C86" opacity=".75"/><circle cx="40" cy="380" r="22" fill="#2C8C86" opacity=".6"/>
+<rect x="880" y="138" width="100" height="272" fill="#152634" stroke="#D2AE57" stroke-width="5"/><circle cx="902" cy="275" r="8" fill="#D2AE57"/><rect x="915" y="292" width="34" height="28" rx="4" fill="#D2AE57"/><path d="M921 292 v-10 a11 11 0 0 1 22 0 v10" fill="none" stroke="#D2AE57" stroke-width="5"/></svg>`,
+ spots:{'1c':[8,16,24,28,'Cuadro del mapa'],'1a':[39.5,35,14,18,'Ordenador'],'1b':[59,44,13,9,'Expediente'],'1d':[78,70,10,21,'Papelera']},door:[87.5,24,11,50,'Puerta · candado']},
+2:{dark:true,svg:`<svg viewBox="0 0 1000 560" aria-hidden="true"><rect width="1000" height="410" fill="#17283A"/><rect y="410" width="1000" height="150" fill="#0D1A24"/>
+<g><rect x="60" y="60" width="170" height="100" fill="#06121B" stroke="#93A8B8" stroke-width="4"/><polyline points="70,140 100,120 130,128 160,95 190,105 220,80" fill="none" stroke="#62D394" stroke-width="4"/>
+<rect x="245" y="60" width="170" height="100" fill="#06121B" stroke="#93A8B8" stroke-width="4"/><polyline points="255,90 285,110 315,100 345,130 375,120 405,140" fill="none" stroke="#F2766B" stroke-width="4"/>
+<rect x="60" y="172" width="355" height="60" fill="#06121B" stroke="#93A8B8" stroke-width="4"/><text x="72" y="210" fill="#D2AE57" font-family="JetBrains Mono,monospace" font-size="22">BONO 3A ▲2,1  ACC ▼0,8  EUR/USD 1,08</text></g>
+<rect x="300" y="330" width="400" height="16" fill="#8C6F2A"/><rect x="320" y="346" width="360" height="90" fill="#1E3446"/>
+<rect x="470" y="282" width="120" height="50" rx="6" fill="#2E4A60" stroke="#D2AE57" stroke-width="4"/><circle cx="530" cy="307" r="10" fill="#D2AE57"/>
+<rect x="650" y="80" width="190" height="170" fill="#8C6F2A"/><rect x="662" y="92" width="166" height="146" fill="#C9A44C"/><text x="745" y="125" text-anchor="middle" fill="#1C1A14" font-family="Manrope,sans-serif" font-weight="800" font-size="18">NUEVAS EMISIONES</text><rect x="680" y="140" width="60" height="44" fill="#F3EEDF"/><rect x="752" y="150" width="58" height="66" fill="#F3EEDF"/><rect x="690" y="194" width="50" height="34" fill="#E9EFF3"/>
+<rect x="120" y="380" width="70" height="90" fill="#2E4A60"/><rect x="110" y="360" width="90" height="24" fill="#2E4A60"/>
+<circle cx="560" cy="120" r="34" fill="#E9EFF3" stroke="#93A8B8" stroke-width="5"/><line x1="560" y1="120" x2="560" y2="98" stroke="#0C1822" stroke-width="4"/><line x1="560" y1="120" x2="578" y2="128" stroke="#0C1822" stroke-width="4"/>
+<rect x="880" y="138" width="100" height="272" fill="#152634" stroke="#D2AE57" stroke-width="5"/><g fill="#D2AE57"><rect x="900" y="250" width="14" height="22" rx="3"/><rect x="918" y="250" width="14" height="22" rx="3"/><rect x="936" y="250" width="14" height="22" rx="3"/><rect x="954" y="250" width="14" height="22" rx="3"/></g></svg>`,
+ spots:{'2a':[5.5,10,36,32,'Pantallas de cotizaciones'],'2b':[46,49,13,12,'Caja de tesorería'],'2c':[64.5,13.5,20,32,'Tablón de emisiones']},door:[87.5,24,11,50,'Puerta · ruedas de letras']},
+3:{svg:`<svg viewBox="0 0 1000 560" aria-hidden="true"><rect width="1000" height="410" fill="#2A2320"/><rect y="410" width="1000" height="150" fill="#1A1412"/>
+<rect x="40" y="70" width="190" height="340" fill="#4A3426"/><g fill="#6B4A33"><rect x="40" y="150" width="190" height="10"/><rect x="40" y="240" width="190" height="10"/><rect x="40" y="330" width="190" height="10"/></g>
+<g><rect x="55" y="95" width="18" height="55" fill="#1F5F8B"/><rect x="76" y="100" width="16" height="50" fill="#A53B48"/><rect x="95" y="92" width="20" height="58" fill="#2C8C86"/><rect x="120" y="105" width="14" height="45" fill="#D2AE57"/><rect x="60" y="180" width="22" height="60" fill="#D2AE57"/><rect x="86" y="186" width="16" height="54" fill="#1F5F8B"/><rect x="106" y="178" width="20" height="62" fill="#A53B48"/><rect x="150" y="270" width="24" height="60" fill="#2C8C86"/><rect x="178" y="276" width="18" height="54" fill="#D2AE57"/></g>
+<rect x="270" y="120" width="130" height="190" fill="#F3EEDF" stroke="#93A8B8" stroke-width="4"/><g stroke="#A53B48" stroke-width="5" fill="none"><path d="M290 160 h40 l10 10 l-10 10 h-40"/><path d="M300 210 h50 l10 10 l-10 10 h-50"/><path d="M290 260 h60 l10 10 l-10 10 h-60"/></g><line x1="290" y1="310" x2="270" y2="400" stroke="#93A8B8" stroke-width="5"/><line x1="380" y1="310" x2="400" y2="400" stroke="#93A8B8" stroke-width="5"/>
+<ellipse cx="575" cy="370" rx="150" ry="40" fill="#6B4A33"/><g fill="#93A8B8"><circle cx="455" cy="300" r="22"/><rect x="433" y="322" width="44" height="40" rx="12"/><circle cx="525" cy="285" r="22"/><rect x="503" y="307" width="44" height="40" rx="12"/><circle cx="595" cy="282" r="22"/><rect x="573" y="304" width="44" height="40" rx="12"/><circle cx="665" cy="290" r="22"/><rect x="643" y="312" width="44" height="40" rx="12"/><circle cx="715" cy="308" r="20"/><rect x="695" y="328" width="40" height="36" rx="12"/></g>
+<rect x="750" y="340" width="120" height="14" fill="#6B4A33"/><rect x="770" y="314" width="80" height="26" fill="#C9A44C"/><rect x="770" y="314" width="80" height="6" fill="#8C6F2A"/>
+<rect x="770" y="440" width="96" height="62" rx="8" fill="#4A3426" stroke="#D2AE57" stroke-width="4"/><rect x="800" y="428" width="36" height="14" rx="4" fill="none" stroke="#D2AE57" stroke-width="4"/>
+<rect x="885" y="150" width="96" height="140" rx="6" fill="#3A4652" stroke="#D2AE57" stroke-width="6"/><circle cx="933" cy="220" r="30" fill="#152634" stroke="#D2AE57" stroke-width="5"/><line x1="933" y1="220" x2="933" y2="196" stroke="#D2AE57" stroke-width="5"/></svg>`,
+ spots:{'3a':[3.5,12,20,62,'Estantería de productos'],'3d':[26.5,20,14,52,'Rotafolio'],'3e':[42,46,33,32,'La reunión'],'3c':[76,54,13,9,'Carpeta de casos'],'3b':[76,75,11,17,'Maletín de bonos']},door:[88,25,10.5,29,'Caja fuerte']}
+};
 const ALL=ROOMS.flatMap(r=>r.puzzles.map(p=>(p.room=r.n,p)));
 const CODE1=ROOMS[0].puzzles.map(p=>p.reward).join('');
 const WORD2='BONO', WORD3='EUROBONO';
@@ -395,6 +496,8 @@ function build(p){
     const items=p.items.filter(inLevel);
     return {items,buckets:items.map((x,i)=>({id:String(i+1),t:(i+1)+'º'})),cap:true};
   }
+  if(p.type==='laser') return {deck:p.qs,need:G.level==='dificil'?8:6,secs:G.level==='dificil'?40:50};
+  if(p.type==='talk'){const cast=p.cast.filter(inLevel);return {cast,liar:Math.floor(Math.random()*cast.length),heard:{},cleared:{}};}
   if(p.type==='pick'){
     return {groups:p.groups.filter(inLevel).map(g=>{const idx=shuffle(g.o.map((o,i)=>i));return {q:g.q,o:idx.map(i=>g.o[i]),a:idx.indexOf(g.a)};})};
   }
@@ -402,7 +505,7 @@ function build(p){
 }
 function newGame(){
   G={level:pick.level,mode:pick.mode,team:(($('#team')||{}).value||'').trim(),t0:Date.now(),extra:0,pen:0,errors:0,hints:0,
-     room:1,opened:{},solved:{},st:{},msg:{},alarmed:false,over:false,entered:'',dial:[0,0,0,0],tiles:[],cur:null,enter:0};
+     room:1,opened:{},solved:{},seen:{},lz:null,st:{},msg:{},alarmed:false,over:false,entered:'',dial:[0,0,0,0],tiles:[],cur:null,enter:0};
   ALL.forEach(p=>{
     const b=build(p);
     G.st[p.id]={...b,order:b.items?shuffle(b.items.map((it,i)=>({...it,k:p.id+'-'+i}))):null,place:{},sel:null,bad:{},choice:{},badg:{},hintUsed:false,hintShown:false,spent:0};
@@ -424,7 +527,10 @@ function tick(){
     else if(w>0){h.disabled=true;h.textContent='Pista disponible en '+fmt(w);}
     else {h.disabled=false;h.textContent='Pedir la pista'+(LEVELS[G.level].hintCost?' (−'+LEVELS[G.level].hintCost+' s)':'');}
   }
-  if(r<=0){G.over=true;leave();end(false);}
+  if(G.lz&&G.lz.running){const lr=(G.lz.end-Date.now())/1000,S=G.st['2l'],bar=$('#lbar'),lt=$('#lt');
+    if(bar) bar.style.width=Math.max(0,lr/S.secs*100)+'%'; if(lt) lt.textContent='Tiempo del pasillo: '+Math.max(0,Math.ceil(lr))+' s';
+    if(lr<=0){laserFail();}}
+  if(r<=0){G.over=true;G.lz=null;leave();end(false);}
 }
 function penalty(s){G.pen+=s;G.errors++;const f=$('#flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');tick();}
 function hud(){
@@ -444,12 +550,12 @@ function intro(){
   view.innerHTML='<section class="intro"><div>'
    +'<p class="eyebrow">Escape room · UP 1 El Euromercado</p>'
    +'<h1>Atrapados en el <span>paraíso fiscal</span></h1>'
-   +'<p class="story">Medianoche en George Town, <b>Islas Caimán</b>. Sois auditores del Banco Central y estáis revisando el <b>Offshore Bank</b> cuando las puertas se bloquean. Para salir tenéis que atravesar <b>3 salas</b>: la recepción, la sala de mercados y el despacho del director. Cada sala tiene 4 pruebas y una cerradura distinta.</p>'
+   +'<p class="story">Medianoche en George Town, <b>Islas Caimán</b>. Sois auditores del Banco Central y estáis revisando el <b>Offshore Bank</b> cuando las puertas se bloquean. Para salir tenéis que atravesar <b>3 salas</b>: la recepción, la sala de mercados y el despacho del director. Cada sala esconde pruebas del temario y una cerradura distinta.</p>'
    +'<ul class="rules">'
-   +'<li><b>1</b><span>Dentro de cada sala, haced las 4 pruebas en el orden que queráis. Cada una da un número o una letra.</span></li>'
-   +'<li><b>2</b><span>Con lo que consigáis, abrid la cerradura de la sala para pasar a la siguiente.</span></li>'
+   +'<li><b>1</b><span>Pinchad en los objetos de cada sala para encontrar las pruebas. Cada prueba resuelta da un número o una letra.</span></li>'
+   +'<li><b>2</b><span>Con lo que consigáis, abrid la cerradura de la sala. Por el camino os esperan un pasillo de láseres, una sala a oscuras y una reunión con un mentiroso.</span></li>'
    +'<li><b>3</b><span>Cada error resta tiempo. Si os atascáis, cada prueba tiene una pista, que se desbloquea al llevar 1 minuto en ella.</span></li>'
-   +'<li><b>4</b><span>Abrid la puerta final del despacho antes de que el reloj llegue a 00:00.</span></li></ul>'
+   +'<li><b>4</b><span>Abrid la caja fuerte del director antes de que el reloj llegue a 00:00.</span></li></ul>'
    +'</div><div class="setup">'
    +'<label>Nivel</label><div class="choice" id="lv">'
    +Object.entries(LEVELS).map(([k,L])=>'<button data-k="'+k+'" aria-pressed="'+(pick.level===k)+'"><b>'+L.name+'</b><span>'+L.desc+'</span></button>').join('')+'</div>'
@@ -460,21 +566,122 @@ function intro(){
   $('#md').onclick=e=>{const b=e.target.closest('button');if(!b)return;const t=$('#team').value;pick.mode=b.dataset.k;intro();$('#team').value=t;};
   $('#go').onclick=()=>{ctx();SFX.open();newGame();hall();};
 }
-function hall(){
+function hall(noScroll){
   leave(); hud();
-  const R=ROOMS[G.room-1];
-  const got=R.puzzles.map(p=>G.solved[p.id]?p.reward:'·');
+  const R=ROOMS[G.room-1], SC=SCENES[R.n];
+  if(R.n===2&&!G.solved['2l']){corridor();return;}
+  const letters=R.puzzles.filter(p=>p.reward.length===1);
+  const got=letters.map(p=>G.solved[p.id]?p.reward:'·');
   const all=R.puzzles.every(p=>G.solved[p.id]);
-  view.innerHTML='<section class="hall">'+plan()+'<p class="eyebrow" style="margin-top:16px">Sala '+R.n+' de 3 · '+esc(R.sub)+'</p><h2>'+esc(R.name)+'</h2>'
-   +'<div class="boxes">'+R.puzzles.map((p,i)=>{const o=!!G.solved[p.id];return '<button class="box'+(o?' open':'')+'" data-id="'+p.id+'"><span class="plate">'+(i+1)+'</span><span class="kind">'+esc(p.kind)+'</span><span class="t">'+esc(p.title)+'</span><span class="s">'+esc(p.sub)+'</span>'+(o?'<span class="reward">'+p.reward+'</span><span class="st">Resuelta</span>':'<span class="st">Sin resolver</span>')+'</button>';}).join('')+'</div>'
-   +'<div class="lockpanel"><div><p class="eyebrow">'+esc(R.lockText)+'</p><div class="slots" style="margin-top:8px">'+got.map(d=>'<span class="slot">'+d+'</span>').join('')+'</div></div><button class="btn sea" id="lockb"'+(all?'':' disabled')+'>'+(all?'Abrir la cerradura':'Resolved las 4 pruebas')+'</button></div></section>';
-  view.querySelector('.boxes').onclick=e=>{const b=e.target.closest('.box');if(!b)return;SFX.tap();puzzle(b.dataset.id);};
+  const spot=(id,c,cls,lab)=>'<button class="spot'+cls+'" data-id="'+id+'" style="left:'+c[0]+'%;top:'+c[1]+'%;width:'+c[2]+'%;height:'+c[3]+'%" aria-label="'+esc(lab)+'"><span class="lab">'+esc(lab)+'</span></button>';
+  const spots=Object.entries(SC.spots).map(([id,c])=>{const p=ALL.find(x=>x.id===id),d=G.solved[id];return spot(id,c,d?' done':'',(d?'✓ ':'')+c[4]+(d?' · '+p.reward:''));}).join('')+spot('door',SC.door,' door',SC.door[4]);
+  const items=Object.entries(SC.spots).map(([id,c])=>({id,name:c[4],p:ALL.find(x=>x.id===id)}));
+  const list=SC.dark
+    ? '<div class="found"><span class="no">Objetos encontrados: '+items.filter(it=>G.seen[it.id]).length+' de '+items.length+'</span>'+items.filter(it=>G.seen[it.id]).map(it=>'<button class="'+(G.solved[it.id]?'ok':'')+'" data-id="'+it.id+'">'+esc(it.name)+(G.solved[it.id]?' · '+it.p.reward:'')+'</button>').join('')+'</div>'
+    : '<div class="found">'+items.map(it=>'<button class="'+(G.solved[it.id]?'ok':'')+'" data-id="'+it.id+'">'+esc(it.name)+' · '+esc(it.p.title)+(G.solved[it.id]?' · '+it.p.reward:'')+'</button>').join('')+'</div>';
+  const keyInfo=R.n===3?'<span class="pill" style="margin-left:8px">Llave: '+(G.solved['3e']?'sí':'no')+'</span>':'';
+  const help=SC.dark?'Se ha ido la luz. Moved el ratón (o el dedo) para alumbrar con la linterna y encontrad los objetos de la sala.':'Pinchad en los objetos de la sala para encontrar las pruebas. '+(R.n===3?'La caja fuerte está en la pared.':'La cerradura está en la puerta.');
+  view.innerHTML='<section class="hall">'+plan()+'<p class="eyebrow" style="margin-top:16px">Sala '+R.n+' de 3 · '+esc(R.sub)+'</p><h2>'+esc(R.name)+'</h2><p class="task">'+help+'</p>'
+   +'<div class="scene'+(SC.dark?' dark':'')+'" id="scene">'+SC.svg+spots+'</div>'+list
+   +'<div class="lockpanel"><div><p class="eyebrow">'+esc(R.lockText)+'</p><div class="slots" style="margin-top:8px">'+got.map(d=>'<span class="slot">'+d+'</span>').join('')+keyInfo+'</div></div><button class="btn sea" id="lockb"'+(all?'':' disabled')+'>'+(all?'Ir a la cerradura':'Resolved todas las pruebas de la sala')+'</button></div><p class="msg info" id="msg"></p></section>';
+  const sc=$('#scene');
+  const open=id=>{
+    if(id==='door'){ if(all){SFX.tap();lock();} else {$('#msg').textContent='La cerradura no se abre todavía: os faltan pruebas de esta sala.';SFX.bad();} return; }
+    SFX.tap(); puzzle(id);
+  };
+  sc.onclick=e=>{const b=e.target.closest('.spot'); if(!b) return;
+    if(SC.dark&&!b.classList.contains('lit')&&!b.classList.contains('done')) return;
+    open(b.dataset.id);};
+  view.querySelector('.found').onclick=e=>{const b=e.target.closest('button'); if(b) open(b.dataset.id);};
   $('#lockb').onclick=()=>{SFX.tap();lock();};
+  if(SC.dark){
+    const light=(x,y)=>{const r=sc.getBoundingClientRect(), rad=Math.max(70,Math.min(140,r.width*.12));
+      sc.style.setProperty('--x',(x-r.left)+'px');sc.style.setProperty('--y',(y-r.top)+'px');sc.style.setProperty('--r',rad+'px');
+      let changed=false;
+      sc.querySelectorAll('.spot').forEach(s=>{const q=s.getBoundingClientRect(),cx=q.left+q.width/2,cy=q.top+q.height/2;
+        const near=Math.hypot(cx-x,cy-y)<rad+Math.min(q.width,q.height)/2;
+        s.classList.toggle('lit',near);
+        if(near&&s.dataset.id!=='door'&&!G.seen[s.dataset.id]){G.seen[s.dataset.id]=true;changed=true;}});
+      if(changed){SFX.tap();const keep=[x,y];hall(true);const n=$('#scene');if(n){const ev=n.getBoundingClientRect();n.style.setProperty('--x',(keep[0]-ev.left)+'px');n.style.setProperty('--y',(keep[1]-ev.top)+'px');n.style.setProperty('--r',rad+'px');n.querySelectorAll('.spot').forEach(s=>{const q=s.getBoundingClientRect();s.classList.toggle('lit',Math.hypot(q.left+q.width/2-keep[0],q.top+q.height/2-keep[1])<rad+Math.min(q.width,q.height)/2);});}}
+    };
+    sc.onpointermove=e=>light(e.clientX,e.clientY);
+    sc.onpointerdown=e=>light(e.clientX,e.clientY);
+    sc.querySelectorAll('.spot').forEach(s=>s.onfocus=()=>{const q=s.getBoundingClientRect();light(q.left+q.width/2,q.top+q.height/2);});
+  }
+  if(!noScroll) window.scrollTo({top:0});
+}
+/* ---------- PASILLO DE LÁSERES ---------- */
+function corrSvg(n,off){
+  let beams='';
+  for(let i=0;i<n;i++){const y=60+i*(190/Math.max(1,n-1)), tilt=(i%2?1:-1)*28;
+    beams+='<line class="beam'+(i<off?' off':'')+'" x1="150" y1="'+(y-tilt)+'" x2="750" y2="'+(y+tilt)+'"/>';}
+  return '<div class="corr"><svg viewBox="0 0 900 300" aria-hidden="true"><polygon points="0,0 150,40 150,260 0,300" fill="#122230"/><polygon points="900,0 750,40 750,260 900,300" fill="#122230"/><rect x="150" y="40" width="600" height="220" fill="#0B1620"/><polygon points="0,300 150,260 750,260 900,300" fill="#0F1D29"/>'
+   +'<rect x="400" y="80" width="100" height="180" fill="#152634" stroke="#D2AE57" stroke-width="4"/><text x="450" y="70" text-anchor="middle" fill="#D2AE57" font-family="JetBrains Mono,monospace" font-size="16">SALA DE MERCADOS</text>'+beams+'</svg></div>';
+}
+function corridor(){
+  leave(); hud();
+  const S=G.st['2l'];
+  view.innerHTML='<section class="laser">'+plan()+'<p class="eyebrow" style="margin-top:16px">Pasillo entre la recepción y la sala de mercados</p><h2 style="font-size:clamp(2rem,5vw,3.2rem)">El pasillo de láseres</h2>'
+   +'<p class="task">Al abrir el candado saltan las alarmas: el pasillo se llena de láseres. Para cruzar, acertad '+S.need+' preguntas de verdadero o falso en '+S.secs+' segundos. Cada acierto apaga un láser y cada fallo resta tiempo del reloj general. Si se acaba el tiempo del pasillo, se vuelve a empezar con otras preguntas.</p>'
+   +corrSvg(S.need,0)+'<div class="actions" style="margin-top:14px"><button class="btn" id="go">Empezar a cruzar</button></div></section>';
+  $('#go').onclick=()=>{ctx();laserStart();};
   window.scrollTo({top:0});
+}
+function laserStart(){
+  const S=G.st['2l'];
+  G.lz={running:true,end:Date.now()+S.secs*1000,ok:0,qi:0,deck:shuffle(S.deck),msg:''};
+  SFX.alarm(); laserView();
+}
+function laserView(){
+  const S=G.st['2l'], Z=G.lz, q=Z.deck[Z.qi%Z.deck.length];
+  view.innerHTML='<section class="laser" style="display:grid;gap:12px">'+'<p class="eyebrow">Pasillo de láseres · láseres apagados '+Z.ok+' de '+S.need+'</p>'
+   +corrSvg(S.need,Z.ok)+'<div class="lbar"><i id="lbar"></i></div><p class="eyebrow" id="lt"></p>'
+   +'<div class="lq"><p class="q">'+esc(q.t)+'</p><div class="row"><button class="btn" data-v="1">Verdadero</button><button class="btn ghost" data-v="0">Falso</button></div></div>'
+   +'<p class="msg '+(Z.msgc||'info')+'" id="msg">'+esc(Z.msg||'')+'</p></section>';
+  view.querySelector('.lq .row').onclick=e=>{const b=e.target.closest('button'); if(!b||!G.lz||!G.lz.running) return;
+    const v=b.dataset.v==='1';
+    if(v===q.a){Z.ok++;Z.msg='¡Láser apagado!';Z.msgc='ok';tone(1200,.08,{type:'square',v:.06});
+      if(Z.ok>=S.need){G.lz=null;G.solved['2l']=true;SFX.open();solvedView(ALL.find(x=>x.id==='2l'));return;}}
+    else {SFX.bad();penalty(LEVELS[G.level].pen);Z.msg='Fallo: el láser sigue encendido. −'+LEVELS[G.level].pen+' s.';Z.msgc='bad';}
+    Z.qi++; laserView();};
+  tick();
+}
+function laserFail(){
+  const L=LEVELS[G.level]; G.lz=null; SFX.alarm(); penalty(L.pen);
+  view.innerHTML='<section class="laser" style="display:grid;gap:12px"><p class="eyebrow">Pasillo de láseres</p><h2 style="font-size:clamp(2rem,5vw,3.2rem);color:var(--bad)">¡Os ha detectado un láser!</h2><p class="task">Se acabó el tiempo del pasillo. −'+L.pen+' s del reloj general. Volved a intentarlo: las preguntas cambian.</p>'
+   +corrSvg(G.st['2l'].need,0)+'<div class="actions"><button class="btn" id="go">Volver a cruzar</button></div></section>';
+  $('#go').onclick=laserStart;
+}
+/* ---------- INTERROGATORIO ---------- */
+function talkView(id){
+  const p=ALL.find(x=>x.id===id), S=G.st[id];
+  if(G.cur!==id){leave();G.cur=id;G.enter=Date.now();}
+  hud();
+  const ini=n=>n.split(' ').map(w=>w[0]).join('');
+  view.innerHTML='<section class="pz"><div class="pz-head"><div><p class="eyebrow">Sala '+p.room+' · '+esc(p.kind)+' · '+esc(p.sub)+'</p><h2>'+esc(p.title)+'</h2><p class="task">'+esc(p.task)+'</p></div><button class="btn ghost" id="back">Volver a la sala</button></div>'
+   +'<div class="cast">'+S.cast.map((c,i)=>'<div class="who'+(S.cleared[i]?' ok':'')+'"><div class="top"><span class="ava" style="--c:'+c.c+'">'+ini(c.n)+'</span><div><b>'+esc(c.n)+'</b><small>'+esc(c.r)+'</small></div></div>'
+     +(S.heard[i]?'<p class="bubble">«'+esc(i===S.liar?c.f:c.v)+'»</p>':'')+(S.cleared[i]?'<span class="truth">Dice la verdad</span>':'')
+     +'<div class="row"><button class="btn ghost" data-h="'+i+'">'+(S.heard[i]?'Escuchar otra vez':'Escuchar')+'</button><button class="btn" data-a="'+i+'"'+(S.cleared[i]?' disabled':'')+'>Acusar</button></div></div>').join('')+'</div>'
+   +'<p class="msg '+((G.msg[id]||{}).c||'info')+'" id="msg">'+esc((G.msg[id]||{}).t||'')+'</p>'
+   +'<div class="actions"><button class="btn ghost" id="hint" disabled>Pista</button></div>'
+   +(S.hintShown?'<p class="hintbox"><b>Pista:</b> '+esc(p.hint)+'</p>':'')+'</section>';
+  tick();
+  view.querySelector('.cast').onclick=e=>{const b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.h!==undefined){S.heard[+b.dataset.h]=true;SFX.tap();talkView(id);return;}
+    const i=+b.dataset.a, L=LEVELS[G.level];
+    if(i===S.liar){G.solved[id]=true;G.msg[id]=null;leave();SFX.open();solvedView(p);return;}
+    SFX.bad(); penalty(L.pen);
+    if(L.showWrong){S.cleared[i]=true;G.msg[id]={c:'bad',t:S.cast[i].n+' dice la verdad. −'+L.pen+' s.'};}
+    else G.msg[id]={c:'bad',t:S.cast[i].n+' no es quien miente. −'+L.pen+' s.'};
+    talkView(id);};
+  $('#back').onclick=hall;
+  $('#hint').onclick=()=>hint(p);
 }
 function puzzle(id){
   const p=ALL.find(x=>x.id===id), S=G.st[id];
   if(G.solved[id]){solvedView(p);return;}
+  if(p.type==='laser'){corridor();return;}
+  if(p.type==='talk'){talkView(id);return;}
   if(G.cur!==id){leave();G.cur=id;G.enter=Date.now();}
   hud();
   let body='';
@@ -546,6 +753,7 @@ function hint(p){
   S.hintUsed=true; S.hintShown=true; G.hints++;
   if(L.hintCost) G.pen+=L.hintCost;
   // además de la pista, deja bien colocada una respuesta
+  if(p.type==='talk'){const i=S.cast.findIndex((c,i)=>i!==S.liar&&!S.cleared[i]); if(i>=0) S.cleared[i]=true; G.msg[p.id]={c:'info',t:'Pista usada: ya sabéis de alguien que dice la verdad.'+(L.hintCost?' −'+L.hintCost+' s.':'')}; SFX.tap(); talkView(p.id); return;}
   if(p.type==='pick'){const i=S.groups.findIndex((g,i)=>S.choice[i]!==g.a); if(i>=0){S.choice[i]=S.groups[i].a;S.badg={};}}
   else {
     const it=S.cap?S.order.find(x=>x.a&&S.place[x.k]!==x.a):S.order.find(x=>S.place[x.k]!==x.a);
@@ -557,11 +765,12 @@ function hint(p){
 function solvedView(p){
   hud();
   const R=ROOMS[p.room-1], all=R.puzzles.every(x=>G.solved[x.id]);
+  const back=p.type==='laser'?'Entrar en la sala de mercados':'Volver a la sala';
   const extra=(p.items||[]).filter(it=>it.why&&inLevel(it));
-  const isNum=/\d/.test(p.reward);
-  view.innerHTML='<section class="solved"><p class="eyebrow">Sala '+p.room+' · prueba resuelta</p><h2>'+esc(p.title)+'</h2><p>Encontráis '+(isNum?'un papel con un número':'una ficha con una letra')+':</p><span class="reward">'+p.reward+'</span><p>'+esc(p.why)+'</p>'
+  const what=p.reward==='LLAVE'?'la llave de la caja fuerte del director':/\d/.test(p.reward)?'un papel con un número':'una ficha con una letra';
+  view.innerHTML='<section class="solved"><p class="eyebrow">Sala '+p.room+' · prueba resuelta</p><h2>'+esc(p.title)+'</h2><p>Encontráis '+what+':</p><span class="reward">'+p.reward+'</span><p>'+esc(p.why)+'</p>'
    +(extra.length?'<div class="hintbox"><b>Para recordar:</b> '+extra.map(it=>esc(it.why)).join(' ')+'</div>':'')
-   +'<div class="actions"><button class="btn" id="back">Volver a la sala</button>'+(all?'<button class="btn sea" id="lockb">Ya tenéis las 4. Abrir la cerradura</button>':'')+'</div></section>';
+   +'<div class="actions"><button class="btn" id="back">'+back+'</button>'+(all&&p.type!=='laser'?'<button class="btn sea" id="lockb">Ya lo tenéis todo. Ir a la cerradura</button>':'')+'</div></section>';
   $('#back').onclick=hall; const d=$('#lockb'); if(d) d.onclick=lock;
   window.scrollTo({top:0});
 }
@@ -574,7 +783,7 @@ function lockOpen(){
 function lock(){
   leave(); hud();
   const R=ROOMS[G.room-1];
-  const got=R.puzzles.map(p=>p.reward);
+  const got=R.puzzles.filter(p=>p.reward.length===1).map(p=>p.reward);
   let ui='';
   if(R.lock==='num'){
     ui='<p class="task">Los dígitos de las pruebas 1 a 4 de esta sala, en orden. Tenéis: <b style="font-family:var(--f-mono);color:var(--sea)">'+got.join(' ')+'</b></p>'
@@ -586,12 +795,12 @@ function lock(){
      +'<div class="dials" id="dl">'+G.dial.map((v,i)=>'<div class="dial"><button data-i="'+i+'" data-d="-1" aria-label="Letra anterior">▲</button><span class="face">'+L[v]+'</span><button data-i="'+i+'" data-d="1" aria-label="Letra siguiente">▼</button></div>').join('')+'</div>'
      +'<button class="btn" id="try">Probar la combinación</button>';
   } else {
-    ui='<p class="task">Unid las 4 letras del despacho (<b style="font-family:var(--f-mono);color:var(--sea)">'+got.join(' ')+'</b>) con la palabra de la sala de mercados (<b style="font-family:var(--f-mono);color:var(--sea)">'+WORD2+'</b>). Es un bono emitido en una divisa distinta a la del país donde se vende.</p>'
+    ui='<p class="task">La llave abre la cerradura exterior de la caja fuerte. Para la combinación, unid las 4 letras del despacho (<b style="font-family:var(--f-mono);color:var(--sea)">'+got.join(' ')+'</b>) con la palabra de la sala de mercados (<b style="font-family:var(--f-mono);color:var(--sea)">'+WORD2+'</b>). Es un bono emitido en una divisa distinta a la del país donde se vende.</p>'
      +'<div class="code">'+WORD3.split('').map((c,i)=>'<span class="slot">'+(G.entered[i]||'')+'</span>').join('')+'</div>'
      +'<div class="tiles" id="tl">'+G.tiles.map((t,j)=>'<button class="tile" data-j="'+j+'"'+(G.used&&G.used.includes(j)?' disabled':'')+'>'+t.c+'</button>').join('')+'</div>'
      +'<div class="actions"><button class="btn ghost" id="del">Borrar</button><button class="btn sea" id="try">Abrir la puerta</button></div>';
   }
-  view.innerHTML='<section class="lockv"><div>'+plan()+'<p class="eyebrow" style="margin-top:16px">Sala '+R.n+' · cerradura</p><h2>'+(R.n===3?'La puerta final':'La cerradura de '+esc(R.name.toLowerCase()))+'</h2>'+ui
+  view.innerHTML='<section class="lockv"><div>'+plan()+'<p class="eyebrow" style="margin-top:16px">Sala '+R.n+' · cerradura</p><h2>'+(R.n===3?'La caja fuerte del director':'La cerradura de '+esc(R.name.toLowerCase()))+'</h2>'+ui
    +'<p class="msg" id="msg"></p><button class="btn ghost" id="back">Volver a la sala</button></div><div class="wheel" id="wheel"><div class="hub">'+(R.n===1?'123':R.n===2?'ABC':'$')+'</div></div></section>';
   $('#back').onclick=hall;
   if(R.lock==='num'){
@@ -622,7 +831,7 @@ function end(win){
   const text=name+' '+(win?'escapó':'no escapó')+' del banco offshore (nivel '+LEVELS[G.level].name+') con '+score+' puntos.';
   view.innerHTML='<section class="end"><p class="eyebrow">'+(win?'Puerta abierta':'Tiempo agotado')+'</p>'
    +'<h1 class="'+(win?'win':'lose')+'">'+(win?'¡Habéis escapado!':'Las puertas siguen cerradas')+'</h1>'
-   +'<p class="story" style="margin:0">'+(win?'La palabra EUROBONO desbloquea la puerta del despacho y salís al aire caliente de George Town con el informe de auditoría bajo el brazo.':'La inspección llega antes de que salgáis. Podéis seguir con 5 minutos extra o volver a empezar.')+'</p>'
+   +'<p class="story" style="margin:0">'+(win?'La llave y la palabra EUROBONO abren la caja fuerte del director: dentro está el código de la puerta principal y salís al aire caliente de George Town con el informe de auditoría bajo el brazo.':'La inspección llega antes de que salgáis. Podéis seguir con 5 minutos extra o volver a empezar.')+'</p>'
    +'<ul class="stats"><li><span>Equipo</span><span>'+esc(name)+'</span></li><li><span>Nivel</span><span>'+LEVELS[G.level].name+'</span></li><li><span>Salas superadas</span><span>'+rooms+' / 3</span></li><li><span>Pruebas resueltas</span><span>'+solved+' / '+ALL.length+'</span></li><li><span>Tiempo usado</span><span>'+fmt(used)+'</span></li><li><span>Errores</span><span>'+G.errors+'</span></li><li><span>Pistas</span><span>'+G.hints+'</span></li><li><span>Puntuación</span><span>'+score+'</span></li></ul>'
    +'<div class="actions">'+(win?'':'<button class="btn" id="more">Seguir 5 minutos más</button>')+'<button class="btn '+(win?'':'ghost')+'" id="again">Jugar otra vez</button><button class="btn ghost" id="cp">Copiar resultado</button></div><p class="toast" id="ts" role="status"></p></section>';
   if(win) SFX.win();
