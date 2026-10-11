@@ -214,6 +214,27 @@ p{margin:0}
 .stats span:last-child{font-family:var(--f-mono)}
 .toast{font-family:var(--f-mono);font-size:.8rem;color:var(--ok);min-height:1.2rem}
 .flash{position:fixed;inset:0;pointer-events:none;z-index:30;background:var(--bad);opacity:0}
+.tov{position:fixed;inset:0;z-index:40;background:#000c;display:grid;place-items:center;padding:16px}
+.tbox{background:var(--steel);border:2px solid var(--brass);border-radius:16px;padding:1.4rem;max-width:520px;width:100%;text-align:center;display:flex;flex-direction:column;gap:.6rem;max-height:calc(100vh - 32px);overflow:auto}
+.tbox h3{margin:0;font-family:var(--f-display);font-size:1.9rem;letter-spacing:.02em}
+.tbox p{margin:0}
+.tq{display:flex;flex-direction:column;gap:.45rem;text-align:left}
+.tqq{font-weight:800;text-align:center}
+.tq .opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 22%,var(--steel-2))}
+.tq .opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 22%,var(--steel-2))}
+.tbar{height:8px;border-radius:8px;background:var(--steel-2);overflow:hidden}.tbar i{display:block;height:100%;width:100%;background:var(--brass);transition:width .1s linear}
+.trow{display:flex;gap:.6rem;justify-content:center;flex-wrap:wrap}
+.btn.ghost{background:transparent;color:var(--text);border-color:var(--edge)}
+.tsiren,.tphone{font-size:4rem;line-height:1}
+.tov.alarm{animation:siren .5s steps(2) infinite}
+@keyframes siren{0%{background:#a00c}100%{background:#00ac}}
+.talarm{color:var(--bad)}
+.tov.ring .tphone{animation:shake .25s linear infinite}
+@keyframes shake{0%,100%{transform:rotate(0)}25%{transform:rotate(-14deg)}75%{transform:rotate(14deg)}}
+.tsafe{line-height:1.1}.tsafe.pop{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{0%{transform:scale(.2) rotate(-20deg);opacity:0}100%{transform:scale(1);opacity:1}}
+.tsay{font-style:italic;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.tov.alarm,.tov.ring .tphone,.tsafe.pop{animation:none}}
 .flash.go{animation:fl .5s}
 @keyframes fl{0%{opacity:.35}100%{opacity:0}}
 
@@ -517,7 +538,7 @@ function build(p){
 }
 function newGame(){
   G={level:pick.level,mode:pick.mode,team:(($('#team')||{}).value||'').trim(),t0:Date.now(),extra:0,pen:0,errors:0,hints:0,
-     room:1,opened:{},solved:{},seen:{},lz:null,st:{},msg:{},alarmed:false,over:false,entered:'',dial:[0,0,0,0],tiles:[],cur:null,enter:0};
+     room:1,opened:{},solved:{},seen:{},lz:null,st:{},msg:{},alarmed:false,over:false,entered:'',dial:[0,0,0,0],tiles:[],cur:null,enter:0,tr:{},callAt:0};
   ALL.forEach(p=>{
     const b=build(p);
     G.st[p.id]={...b,order:b.items?shuffle(b.items.map((it,i)=>({...it,k:p.id+'-'+i}))):null,place:{},sel:null,bad:{},choice:{},badg:{},hintUsed:false,hintShown:false,spent:0};
@@ -542,7 +563,8 @@ function tick(){
   if(G.lz&&G.lz.running){const lr=(G.lz.end-Date.now())/1000,S=G.st['2l'],bar=$('#lbar'),lt=$('#lt');
     if(bar) bar.style.width=Math.max(0,lr/S.secs*100)+'%'; if(lt) lt.textContent='Tiempo del pasillo: '+Math.max(0,Math.ceil(lr))+' s';
     if(lr<=0){laserFail();}}
-  if(r<=0){G.over=true;G.lz=null;leave();end(false);}
+  if(G.callAt&&!G.tr.call&&Date.now()>=G.callAt&&!G.cur&&!window.__noTroll&&document.querySelector('.hall')&&!$('#tov')) bossCall();
+  if(r<=0){G.over=true;G.lz=null;leave();trollClose();end(false);}
 }
 function penalty(s){G.pen+=s;G.errors++;const f=$('#flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');tick();}
 function hud(){
@@ -622,6 +644,12 @@ function buildRoom(n){
     const dr=new THREE.Group(); add(dr,BOX(1.3,2.4,.1),mat(0x152634,{metalness:.3}),0,1.2,0); add(dr,BOX(1.42,.08,.12),mat(0xd2ae57),0,2.42,0);
     add(dr,BOX(.3,.26,.08),mat(0xd2ae57,{metalness:.7,roughness:.3}),.35,1.15,.08); const sh=add(dr,new THREE.TorusGeometry(.1,.025,8,20,Math.PI),mat(0xd2ae57,{metalness:.7}),.35,1.28,.08);
     dr.position.set(W/2-.06,0,-1.2); dr.rotation.y=-Math.PI/2; hot(RM,'door',dr,[W/2-.4,2.75,-1.2]);
+    // botón rojo «NO PULSAR»
+    const bt=new THREE.Group(); add(bt,CYL(.22,.26,1,20),mat(0x93a8b8,{metalness:.5,roughness:.4}),0,.5,0); add(bt,CYL(.24,.24,.06,20),mat(0x2e4a60),0,1.03,0);
+    add(bt,new THREE.SphereGeometry(.13,20,12,0,Math.PI*2,0,Math.PI/2),mat(0xe0322f,{emissive:0x7a0d0b,emissiveIntensity:.6,roughness:.3}),0,1.06,0);
+    const np=tex(512,160,(x,w,h)=>{x.fillStyle='#E0322F';x.fillRect(0,0,w,h);x.fillStyle='#fff';x.font='900 86px Manrope, Arial, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('NO PULSAR',w/2,h/2+4);});
+    add(bt,PLN(.44,.14),mat(0xffffff,{map:np}),0,.82,.262);
+    bt.position.set(2.7,0,-1.3); bt.rotation.y=-.35; hot(RM,'xboton',bt,[2.7,1.55,-1.3]);
     RM.views=[{n:'Centro',p:[0,1.6,1.4],yaw:0},{n:'Mostrador',p:[0,1.6,-.3],yaw:0},{n:'Puerta',p:[3,1.6,-.6],yaw:-Math.PI/2}];
   }
   if(n===2){
@@ -704,6 +732,12 @@ function buildRoom(n){
     const cf=new THREE.Group(); add(cf,BOX(1,1.1,.55),mat(0x56616d,{metalness:.7,roughness:.35}),0,0,0); add(cf,BOX(.86,.96,.02),mat(0x3a4652,{metalness:.7}),0,0,.28);
     add(cf,CYL(.2,.2,.06,32),mat(0xd2ae57,{metalness:.8,roughness:.3}),0,.08,.31).rotation.x=Math.PI/2; add(cf,BOX(.05,.3,.05),mat(0xd2ae57,{metalness:.8}),.32,-.15,.31);
     cf.position.set(W/2-.3,1.3,1.4); cf.rotation.y=-Math.PI/2; hot(RM,'door',cf,[W/2-.6,2.25,1.4]);
+    // caja fuerte gigante (de broma, pared oeste)
+    const fk=new THREE.Group(); add(fk,BOX(1.5,2,1),mat(0xb8913f,{metalness:.75,roughness:.3}),0,1,0); add(fk,BOX(1.3,1.8,.03),mat(0x8c6f2a,{metalness:.75,roughness:.35}),0,1,.51);
+    add(fk,CYL(.26,.26,.07,32),mat(0x3a4652,{metalness:.8,roughness:.3}),-.2,1.1,.55).rotation.x=Math.PI/2; add(fk,BOX(.07,.5,.07),mat(0x3a4652,{metalness:.8}),.45,1,.55);
+    const fs=tex(512,128,(x,w,h)=>{x.fillStyle='#1C1A14';x.fillRect(0,0,w,h);x.fillStyle='#D2AE57';x.font='800 58px Manrope, Arial, sans-serif';x.textAlign='center';x.textBaseline='middle';x.fillText('FONDOS SECRETOS',w/2,h/2+3,w-40);});
+    add(fk,PLN(1,.25),mat(0xffffff,{map:fs}),0,1.68,.53);
+    fk.position.set(-W/2+.55,0,1.5); fk.rotation.y=Math.PI/2; hot(RM,'xcaja',fk,[-W/2+.6,2.3,1.5]);
     RM.views=[{n:'Centro',p:[0,1.6,2.8],yaw:0},{n:'Escritorio',p:[1.6,1.6,-1.2],yaw:-.4},{n:'Caja fuerte',p:[2.6,1.6,1.4],yaw:-Math.PI/2}];
   }
   RM.cam=new THREE.PerspectiveCamera(70,16/9,.05,40); RM.cam.rotation.order='YXZ';
@@ -764,9 +798,71 @@ function mount3D(R,el,names,onOpen,onSeen){
   frame();
 }
 
+/* ---------- BROMAS: botón rojo, caja fuerte gigante y llamada del jefe ---------- */
+function say(t){if(!soundOn||!window.speechSynthesis)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='es-ES';u.rate=1.05;u.pitch=.55;speechSynthesis.speak(u);}catch(e){}}
+function trollClose(){const o=$('#tov');if(o)o.remove();clearInterval(G&&G.ring);try{window.speechSynthesis&&speechSynthesis.cancel();}catch(e){}}
+function trollBox(html,cls){trollClose();const o=document.createElement('div');o.id='tov';o.className='tov'+(cls?' '+cls:'');o.innerHTML='<div class="tbox" role="dialog" aria-modal="true">'+html+'</div>';document.body.appendChild(o);return o;}
+function bonus(s){G.extra+=s;tick();}
+function quizBox(o,q,done,secs){
+  const opts=shuffle(q.o.map((t,i)=>({t,ok:i===0})));
+  const box=o.querySelector('.tq');
+  box.innerHTML='<p class="tqq">'+esc(q.q)+'</p>'+(secs?'<div class="tbar"><i id="tbar"></i></div>':'')+opts.map((x,i)=>'<button class="opt" data-i="'+i+'">'+esc(x.t)+'</button>').join('');
+  let over=false,tm=null;
+  const fin=ok=>{if(over)return;over=true;clearInterval(tm);box.querySelectorAll('button').forEach((b,i)=>{b.disabled=true;if(opts[i].ok)b.classList.add('ok');});done(ok);};
+  box.querySelectorAll('button').forEach(b=>b.onclick=()=>{const ok=opts[+b.dataset.i].ok;if(!ok)b.classList.add('bad');fin(ok);});
+  if(secs){const t0=Date.now();tm=setInterval(()=>{const l=secs-(Date.now()-t0)/1000,b=$('#tbar');if(b)b.style.width=Math.max(0,l/secs*100)+'%';if(l<=0)fin(false);},100);}
+}
+function trollButton(){
+  SFX.tap();
+  if(G.tr.boton){const o=trollBox('<p class="eyebrow">Botón rojo</p><h3>¿Otra vez?</h3><p>Sois de los que leen «no pulsar» como una invitación. El banco ya ha tomado nota.</p><button class="btn" id="tok">Vale, vale</button>');o.querySelector('#tok').onclick=trollClose;return;}
+  G.tr.boton=true; SFX.alarm(); setTimeout(()=>SFX.alarm(),900);
+  const o=trollBox('<div class="tsiren">🚨</div><h3 class="talarm">¡ALARMA ACTIVADA!</h3><p>La policía de las Islas Caimán está en camino…</p>','alarm');
+  setTimeout(()=>{ if(!o.isConnected) return; o.classList.remove('alarm');
+    o.querySelector('.tbox').innerHTML='<p class="eyebrow">Botón rojo · simulacro</p><h3>Tranquilos, era un simulacro</h3><p>Pero ya que lo habéis pulsado, demostrad que sois auditores de verdad. Si acertáis, ganáis <b>10 segundos</b>.</p><div class="tq"></div><p class="msg" id="tmsg"></p>';
+    quizBox(o,{q:'¿Quién autoriza el euromercado en cada país?',o:['El Banco Central de cada país','El Fondo Monetario Internacional','Nadie: el euromercado es ilegal']},ok=>{
+      const m=o.querySelector('#tmsg'); if(ok){bonus(10);SFX.open();m.className='msg ok';m.textContent='Correcto: lo autoriza el Banco Central de cada país. +10 s por la cara.';}
+      else {SFX.bad();m.className='msg bad';m.textContent='Pues no: lo autoriza el Banco Central de cada país. Por esta vez no os quitamos tiempo.';}
+      m.insertAdjacentHTML('afterend','<button class="btn" id="tok">Volver a la sala</button>');o.querySelector('#tok').onclick=trollClose;});
+  },1900);
+}
+function trollSafe(){
+  SFX.tap();
+  const steps=[
+    {box:'🧰',t:'La caja fuerte gigante',p:'Pone «FONDOS SECRETOS». Pesa como un banco entero. Se abre sin código… sospechoso.',b:'Abrir la caja gigante'},
+    {box:'🦆',t:'Dentro hay… un pato de goma',p:'Con una nota: «El dinero de verdad está en un paraíso fiscal, listillos». Detrás del pato hay otra caja fuerte, más pequeña.',b:'Abrir la caja pequeña'},
+    {box:'🦆🦆',t:'Otro pato. Y otra caja',p:'Nota: «En el euromercado el dinero nunca está donde lo buscas. Para eso se inventó». Al fondo, una cajita minúscula.',b:'Abrir la cajita'},
+    {box:'🪙',t:'¡Por fin, dinero!',p:'Un céntimo de dólar. Libre de impuestos y retenciones, eso sí, como un buen eurobono. La caja fuerte de verdad sigue en la otra pared.',b:'Guardarse el céntimo y volver'}];
+  let i=0; const o=trollBox('');
+  const draw=()=>{const s=steps[i];o.querySelector('.tbox').innerHTML='<p class="eyebrow">Caja fuerte gigante · '+(i+1)+' de '+steps.length+'</p><div class="tsafe'+(i?' pop':'')+'" style="font-size:'+(i===0?5:i<3?4:3.4)+'rem">'+s.box+'</div><h3>'+esc(s.t)+'</h3><p>'+esc(s.p)+'</p><button class="btn" id="tok">'+esc(s.b)+'</button>';
+    o.querySelector('#tok').onclick=()=>{ if(i===steps.length-1){G.tr.pato=true;trollClose();return;} i++; i===1?SFX.lock():i===steps.length-1?SFX.win():tone(1400,.12,{type:'triangle',v:.12,f2:900}); draw(); };};
+  draw();
+}
+const CALLQ=[
+  {q:'¿Qué es un eurobono?',o:['Un bono a largo plazo que se vende en países distintos al de su moneda','Un bono que solo se puede emitir en euros','Una acción de una empresa europea']},
+  {q:'¿Qué plazo tiene un eurobono?',o:['Largo plazo: más de 5 años, o perpetuo','Menos de un año','Exactamente 30 días']},
+  {q:'¿Quién paga los cupones de una emisión de eurobonos?',o:['El agente del servicio financiero','El comisario del sindicato de bonistas','El inversor']}];
+function bossCall(){
+  if(G.tr.call||G.over) return; G.tr.call=true; let hung=0;
+  const ringing=()=>{const o=trollBox('<div class="tphone">📞</div><p class="eyebrow">Llamada entrante</p><h3>El director (móvil personal)</h3><p>'+(hung?'Vuelve a llamar. Al jefe no se le cuelga.':'Está sonando el teléfono de la sala.')+'</p><div class="trow"><button class="btn sea" id="tyes">Coger</button>'+(hung?'':'<button class="btn ghost" id="tno">Colgar</button>')+'</div>','ring');
+    const rg=()=>{tone(1250,.12,{type:'square',v:.06});tone(1000,.12,{type:'square',v:.06,at:.15});tone(1250,.12,{type:'square',v:.06,at:.3});tone(1000,.12,{type:'square',v:.06,at:.45});};
+    rg(); G.ring=setInterval(rg,1500);
+    o.querySelector('#tyes').onclick=answer; const n=o.querySelector('#tno'); if(n) n.onclick=()=>{hung++;trollClose();SFX.tap();setTimeout(()=>{if(!G.over)ringing();},1200);};};
+  const answer=()=>{clearInterval(G.ring);
+    const q=CALLQ[Math.floor(Math.random()*CALLQ.length)], line='¿Quién anda en mi oficina a estas horas? Si sois empleados del banco, contestadme rápido. '+q.q;
+    const o=trollBox('<div class="tphone">📞</div><p class="eyebrow">El director, al teléfono</p><p class="tsay">«¿Quién anda en mi oficina a estas horas? Si sois empleados del banco, contestadme rápido…»</p><div class="tq"></div><p class="msg" id="tmsg"></p>');
+    say(line);
+    quizBox(o,q,ok=>{ try{window.speechSynthesis&&speechSynthesis.cancel();}catch(e){}
+      const m=o.querySelector('#tmsg');
+      if(ok){SFX.open();say('Ah, vale. Sois de los nuestros. Seguid trabajando.');m.className='msg ok';m.textContent='«Ah, vale. Sois de los nuestros. Seguid trabajando». El director cuelga sin sospechar nada.';}
+      else {SFX.bad();say('¡Intrusos! Os bloqueo el ordenador.');G.pen+=15;const f=$('#flash');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');tick();m.className='msg bad';m.textContent='«¡Intrusos!». El director os bloquea el sistema: −15 s. La respuesta buena está marcada en verde.';}
+      m.insertAdjacentHTML('afterend','<button class="btn" id="tok">Colgar y seguir</button>');o.querySelector('#tok').onclick=trollClose;},12);};
+  ringing();
+}
+function troll(id){ if(id==='xboton') trollButton(); else if(id==='xcaja') trollSafe(); }
+
 /* ---------- PANTALLAS ---------- */
 function intro(){
-  G=null; clearInterval(ticker); hud();
+  if(G) trollClose(); G=null; clearInterval(ticker); hud();
   view.innerHTML='<section class="intro"><div>'
    +'<p class="eyebrow">Escape room · UP 1 El Euromercado</p>'
    +'<h1>Atrapados en el <span>paraíso fiscal</span></h1>'
@@ -802,7 +898,8 @@ function hall(noScroll){
   const list=listHTML();
   const keyInfo=R.n===3?'<span class="pill" style="margin-left:8px">Llave: '+(G.solved['3e']?'sí':'no')+'</span>':'';
   const use3D=HAS3D&&view3d, RM3=use3D?(V3.rooms[R.n]||(V3.rooms[R.n]=buildRoom(R.n))):null;
-  const names=Object.fromEntries(Object.entries(SC.spots).map(([id,c])=>[id,c[4]]));names.door=SC.door[4];
+  const names=Object.fromEntries(Object.entries(SC.spots).map(([id,c])=>[id,c[4]]));names.door=SC.door[4];if(R.n===1)names.xboton='Botón rojo';if(R.n===3)names.xcaja='Caja fuerte gigante';
+  if(R.n===2&&!G.callAt) G.callAt=Date.now()+25000;
   const sceneHTML=use3D
     ?'<div class="scene3d" id="scene"><div class="vbtns">'+RM3.views.map((v,i)=>'<button data-view="'+i+'">'+esc(v.n)+'</button>').join('')+'</div><span class="hint3d">Arrastrad para mirar alrededor · pinchad en los objetos'+(SC.dark?' · la linterna apunta adonde señaláis':'')+'</span></div>'
     :'<div class="scene'+(SC.dark?' dark':'')+'" id="scene">'+SC.svg+spots+'</div>';
@@ -813,6 +910,7 @@ function hall(noScroll){
    +'<div class="lockpanel"><div><p class="eyebrow">'+esc(R.lockText)+'</p><div class="slots" style="margin-top:8px">'+got.map(d=>'<span class="slot">'+d+'</span>').join('')+keyInfo+'</div></div><button class="btn sea" id="lockb"'+(all?'':' disabled')+'>'+(all?'Ir a la cerradura':'Resolved todas las pruebas de la sala')+'</button></div><p class="msg info" id="msg"></p></section>';
   const sc=$('#scene');
   const open=id=>{
+    if(id[0]==='x'){troll(id);return;}
     if(id==='door'){ if(all){SFX.tap();lock();} else {$('#msg').textContent='La cerradura no se abre todavía: os faltan pruebas de esta sala.';SFX.bad();} return; }
     SFX.tap(); puzzle(id);
   };
@@ -1055,7 +1153,7 @@ function lock(){
   window.scrollTo({top:0});
 }
 function end(win){
-  clearInterval(ticker); hud();
+  clearInterval(ticker); trollClose(); hud();
   const r=Math.max(0,remaining()), used=LEVELS[G.level].time+G.extra-r;
   const solved=Object.keys(G.solved).length, rooms=Object.keys(G.opened).length;
   const score=(win?Math.round(r*(G.level==='dificil'?2:1)):0)+solved*50+rooms*100;
