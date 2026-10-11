@@ -8,6 +8,6 @@ Escape room de la **UP 1 · El Euromercado**.
 
 ## Resumen
 - En solitario o en equipos de 3 a 5.
-- Dos niveles: Fácil (25 min, en español, pistas gratis) y Difícil (20 min, parte en inglés, pistas con penalización).
+- Dos niveles, todo en español: Fácil (25 min, menos tarjetas, pistas gratis) y Difícil (20 min, más tarjetas, pistas con penalización).
 - 5 cajas: verdadero o falso de conceptos, mapa de centros offshore, renta fija o variable, productos por sector y emisión del eurobono.
 - Código final: 6 5 2 4 3.

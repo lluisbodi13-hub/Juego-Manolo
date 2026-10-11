@@ -152,14 +152,14 @@ p{margin:0}
 'use strict';
 /* ---------- CONTENIDO (temario UP 1: El Euromercado) ---------- */
 const LEVELS={
-  facil:{name:'Fácil',time:25*60,pen:20,hints:2,hintCost:0,showWrong:true,desc:'25 minutos · todo en español · se marcan las tarjetas mal colocadas · 2 pistas gratis por caja'},
-  dificil:{name:'Difícil',time:20*60,pen:45,hints:1,hintCost:90,showWrong:false,desc:'20 minutos · parte en inglés · solo se dice cuántos errores hay · cada pista cuesta 90 s'}
+  facil:{name:'Fácil',time:25*60,pen:20,hints:2,hintCost:0,showWrong:true,desc:'25 minutos · menos tarjetas · se marcan las tarjetas mal colocadas · 2 pistas gratis por caja'},
+  dificil:{name:'Difícil',time:20*60,pen:45,hints:1,hintCost:90,showWrong:false,desc:'20 minutos · más tarjetas · solo se dice cuántos errores hay · cada pista cuesta 90 s'}
 };
-// lv: 'b' = los dos niveles, 'd' = solo difícil. en = texto en inglés que se usa en el nivel difícil.
+// lv: 'b' = los dos niveles, 'd' = solo en el nivel difícil.
 const PUZZLES=[
  {n:1,title:'El expediente',sub:'Definición, características y conceptos',digit:6,why:'El Euromercado tiene 6 características.',
   task:'Clasifica cada afirmación como verdadera o falsa.',
-  buckets:[{id:'V',t:'Verdadero',en:'True'},{id:'F',t:'Falso',en:'False'}],
+  buckets:[{id:'V',t:'Verdadero'},{id:'F',t:'Falso'}],
   items:[
    {t:'En el Euromercado se opera en divisas distintas a las del país donde está el mercado.',a:'V',lv:'b'},
    {t:'El Euromercado es un mercado minorista para pequeños ahorradores.',a:'F',lv:'b',why:'Es mayorista: gobiernos, instituciones y grandes empresas.'},
@@ -167,24 +167,24 @@ const PUZZLES=[
    {t:'Uno de sus objetivos es concentrar todo el riesgo en un solo país.',a:'F',lv:'b',why:'Busca la distribución del riesgo.'},
    {t:'El mercado de divisas es un mercado no organizado (OTC).',a:'V',lv:'b'},
    {t:'En el mercado secundario los títulos se compran a precio de emisión.',a:'F',lv:'b',why:'Se compran a precio de mercado.'},
-   {t:'The Euromarket is authorised by the Central Bank of each country.',a:'V',lv:'d'},
-   {t:'Solvency means being able to pay only short-term debts.',a:'F',lv:'d',why:'Eso es la liquidez. La solvencia es pagar todas las deudas con todos los activos.'}
+   {t:'El Euromercado está autorizado por el Banco Central de cada país.',a:'V',lv:'d'},
+   {t:'La solvencia es la capacidad de pagar solo las deudas a corto plazo.',a:'F',lv:'d',why:'Eso es la liquidez. La solvencia es pagar todas las deudas con todos los activos.'}
   ],
   hint:'Fíjate en las palabras «minorista», «concentrar» y «precio de emisión»: suelen esconder el error.'},
  {n:2,title:'El mapa offshore',sub:'Áreas geográficas del Euromercado',digit:5,why:'El Euromercado se reparte en 5 áreas geográficas.',
   task:'Lleva cada centro financiero a su área geográfica.',
-  buckets:[{id:'EU',t:'Europa Occidental',en:'Western Europe'},{id:'CA',t:'El Caribe y América Central',en:'Caribbean & Central America'},{id:'OM',t:'Oriente Medio',en:'Middle East'},{id:'LO',t:'Lejano Oriente',en:'Far East'},{id:'US',t:'Estados Unidos',en:'United States'}],
+  buckets:[{id:'EU',t:'Europa Occidental'},{id:'CA',t:'El Caribe y América Central'},{id:'OM',t:'Oriente Medio'},{id:'LO',t:'Lejano Oriente'},{id:'US',t:'Estados Unidos'}],
   items:[
-   {t:'Londres',en:'London',a:'EU',lv:'b'},{t:'Luxemburgo',en:'Luxembourg',a:'EU',lv:'b'},{t:'Zúrich',en:'Zurich',a:'EU',lv:'d'},
-   {t:'Bahamas',a:'CA',lv:'b'},{t:'Islas Caimán',en:'Cayman Islands',a:'CA',lv:'b'},{t:'Panamá',en:'Panama',a:'CA',lv:'d'},
-   {t:'Qatar',a:'OM',lv:'b'},{t:'Emiratos Árabes Unidos',en:'United Arab Emirates',a:'OM',lv:'d'},
-   {t:'Tokio',en:'Tokyo',a:'LO',lv:'b'},{t:'Singapur',en:'Singapore',a:'LO',lv:'d'},{t:'Hong Kong',a:'LO',lv:'d'},
-   {t:'Nueva York',en:'New York',a:'US',lv:'b'}
+   {t:'Londres',a:'EU',lv:'b'},{t:'Luxemburgo',a:'EU',lv:'b'},{t:'Zúrich',a:'EU',lv:'d'},
+   {t:'Bahamas',a:'CA',lv:'b'},{t:'Islas Caimán',a:'CA',lv:'b'},{t:'Panamá',a:'CA',lv:'d'},
+   {t:'Qatar',a:'OM',lv:'b'},{t:'Emiratos Árabes Unidos',a:'OM',lv:'d'},
+   {t:'Tokio',a:'LO',lv:'b'},{t:'Singapur',a:'LO',lv:'d'},{t:'Hong Kong',a:'LO',lv:'d'},
+   {t:'Nueva York',a:'US',lv:'b'}
   ],
   hint:'Zúrich, Ámsterdam y Luxemburgo están en Europa. Bahamas, Caimán y Panamá, en el Caribe y Centroamérica.'},
  {n:3,title:'Fija o variable',sub:'Renta fija frente a renta variable',digit:2,why:'Hay 2 tipos de renta: fija y variable.',
   task:'¿Esta característica es de la renta fija o de la renta variable?',
-  buckets:[{id:'RF',t:'Renta fija (bono)',en:'Fixed income (bond)'},{id:'RV',t:'Renta variable (acción)',en:'Equity (share)'}],
+  buckets:[{id:'RF',t:'Renta fija (bono)'},{id:'RV',t:'Renta variable (acción)'}],
   items:[
    {t:'Sabes de antemano la rentabilidad que vas a obtener',a:'RF',lv:'b'},
    {t:'Cobras un cupón o interés periódico',a:'RF',lv:'b'},
@@ -194,24 +194,24 @@ const PUZZLES=[
    {t:'Puedes cobrar dividendos, pero no son fijos',a:'RV',lv:'b'},
    {t:'No tiene vencimiento: pasas a ser socio de la empresa',a:'RV',lv:'b'},
    {t:'Riesgo alto, perfil de inversor arriesgado',a:'RV',lv:'b'},
-   {t:'Fixed coupon paid every year',a:'RF',lv:'d'},
-   {t:'You become a shareholder',a:'RV',lv:'d'}
+   {t:'Te pagan un cupón fijo cada año',a:'RF',lv:'d'},
+   {t:'Te conviertes en accionista',a:'RV',lv:'d'}
   ],
   hint:'Piensa en un bono: prestas dinero y te lo devuelven con intereses. Con una acción compras un trozo de la empresa.'},
  {n:4,title:'Cada producto a su sector',sub:'Sectores del Euromercado',digit:4,why:'El Euromercado tiene 4 sectores.',
   task:'Coloca cada producto en el sector del Euromercado donde se negocia.',
-  buckets:[{id:'MO',t:'Monetario (corto plazo)',en:'Money market (short term)'},{id:'CP',t:'Capitales (medio y largo plazo)',en:'Capital market (medium & long term)'},{id:'CR',t:'Crédito (eurocréditos)',en:'Credit market (eurocredits)'},{id:'DI',t:'Divisas',en:'Foreign exchange'}],
+  buckets:[{id:'MO',t:'Monetario (corto plazo)'},{id:'CP',t:'Capitales (medio y largo plazo)'},{id:'CR',t:'Crédito (eurocréditos)'},{id:'DI',t:'Divisas'}],
   items:[
-   {t:'Letras del Tesoro',en:'Treasury bills',a:'MO',lv:'b'},
-   {t:'Pagarés de empresa (europapel)',en:'Commercial paper (Euro-CP)',a:'MO',lv:'b'},
+   {t:'Letras del Tesoro',a:'MO',lv:'b'},
+   {t:'Pagarés de empresa (europapel)',a:'MO',lv:'b'},
    {t:'FRA: derivado a corto plazo sobre tipos de interés',a:'MO',lv:'d'},
-   {t:'Eurobono',en:'Eurobond',a:'CP',lv:'b'},
-   {t:'Euroacción',en:'Euro-equity',a:'CP',lv:'b'},
-   {t:'Bono convertible en acciones',en:'Convertible bond',a:'CP',lv:'d'},
+   {t:'Eurobono',a:'CP',lv:'b'},
+   {t:'Euroacción',a:'CP',lv:'b'},
+   {t:'Bono convertible en acciones',a:'CP',lv:'d'},
    {t:'Préstamo bancario a largo plazo a un gobierno, en euromonedas',a:'CR',lv:'b'},
-   {t:'Crédito internacional simple',en:'Simple international loan',a:'CR',lv:'b'},
-   {t:'Cambiar dólares por yenes',en:'Swap US dollars for yen',a:'DI',lv:'b'},
-   {t:'Comprar libras con francos suizos',en:'Buy pounds with Swiss francs',a:'DI',lv:'d'}
+   {t:'Crédito internacional simple',a:'CR',lv:'b'},
+   {t:'Cambiar dólares por yenes',a:'DI',lv:'b'},
+   {t:'Comprar libras con francos suizos',a:'DI',lv:'d'}
   ],
   hint:'Corto plazo (máximo 12-18 meses) = monetario. Bonos y acciones a largo plazo = capitales. Préstamos de bancos = crédito.'},
  {n:5,title:'La emisión del eurobono',sub:'Quién hace qué en el sindicato bancario',digit:3,why:'El sindicato bancario tiene 3 piezas: director principal, aseguradores y bancos de venta.',
@@ -226,12 +226,12 @@ const PUZZLES=[
    {id:'AG',t:'Paga los cupones y presenta los títulos al emisor al amortizarlos.'}
   ],
   items:[
-   {t:'Emisor',en:'Issuer',a:'EM',lv:'b'},
-   {t:'Director principal',en:'Lead manager',a:'LM',lv:'b'},
-   {t:'Bancos aseguradores',en:'Underwriters',a:'UW',lv:'b'},
-   {t:'Bancos de venta',en:'Selling banks',a:'BV',lv:'b'},
-   {t:'Comisario del sindicato de bonistas',en:'Bondholders’ trustee',a:'CO',lv:'b'},
-   {t:'Agente del servicio financiero',en:'Paying agent',a:'AG',lv:'b'}
+   {t:'Emisor',a:'EM',lv:'b'},
+   {t:'Director principal',a:'LM',lv:'b'},
+   {t:'Bancos aseguradores',a:'UW',lv:'b'},
+   {t:'Bancos de venta',a:'BV',lv:'b'},
+   {t:'Comisario del sindicato de bonistas',a:'CO',lv:'b'},
+   {t:'Agente del servicio financiero',a:'AG',lv:'b'}
   ],
   hint:'El que «dirige» diseña la operación. Los que «aseguran» garantizan la colocación. El «agente» es el que paga.'}
 ];
