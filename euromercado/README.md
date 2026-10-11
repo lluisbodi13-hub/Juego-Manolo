@@ -9,7 +9,7 @@ Escape room de la **UP 1 · El Euromercado**. Todo en español.
 
 ## Resumen
 - En solitario o en equipos de 3 a 5.
-- Dos niveles: Fácil (20 min, menos tarjetas, se marcan los errores, pista gratis) y Difícil (15 min, más tarjetas, solo se dice cuántos errores hay, la pista cuesta 60 s).
+- Dos niveles: Fácil (25 min, menos tarjetas, se marcan los errores, pista gratis) y Difícil (20 min, más tarjetas, solo se dice cuántos errores hay, la pista cuesta 60 s).
 - 3 salas en 3D y un pasillo: se mira alrededor arrastrando, se salta entre 3 o 4 puntos de vista con los botones y se pincha en los objetos (en la sala oscura la linterna es un foco que apunta adonde señaláis). Si el ordenador no tiene 3D (WebGL) se muestra automáticamente la versión 2D, y se puede cambiar con el botón «Ver la sala en 2D». Las pruebas son las mismas en las dos versiones:
   1. **La recepción** (definición, características, objetivos, áreas): ordenador, expediente, cuadro del mapa y papelera. Candado de números **6352**.
   2. **El pasillo de láseres**: verdadero o falso a contrarreloj (6 aciertos en 50 s en Fácil, 8 en 40 s en Difícil). Da la letra O.
