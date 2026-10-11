@@ -1,0 +1,785 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>Quién es Quién Financiero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,600;6..96,800&family=Figtree:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+/* Concepto: billete de banco. Papel verde pálido, tinta verde de seguridad, fondos guilloché en el reverso de las fichas, acento dorado. */
+:root{
+  --paper:#EAF0E6; --panel:#F8FAF4; --ink:#0D2A21; --ink-2:#47615A; --line:#C6D4C9;
+  --green:#0F5A44; --on-green:#FFFFFF; --gold:#A87412; --gold-soft:#F2E4BC;
+  --ok:#1B7A47; --ok-soft:#D8EEDF; --bad:#B0342C; --bad-soft:#F6DAD6;
+  --g-int:#1D5E8E; --g-nac:#A33A45; --g-eur:#4A3E9E;
+  --back-a:#0F5A44; --back-b:#3B8C70;
+  --f-display:'Bodoni Moda',Georgia,'Times New Roman',serif;
+  --f-body:'Figtree',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0A1613; --panel:#12241E; --ink:#E7F1EB; --ink-2:#9FB7AC; --line:#26433B;
+    --green:#5FCBA3; --on-green:#06140F; --gold:#E6B24A; --gold-soft:#3A2F14;
+    --ok:#6FD79A; --ok-soft:#173825; --bad:#F08A80; --bad-soft:#40201C;
+    --g-int:#74B4E6; --g-nac:#EA8F98; --g-eur:#ABA0F4;
+    --back-a:#1B4A3B; --back-b:#2F7A61; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0A1613; --panel:#12241E; --ink:#E7F1EB; --ink-2:#9FB7AC; --line:#26433B;
+  --green:#5FCBA3; --on-green:#06140F; --gold:#E6B24A; --gold-soft:#3A2F14;
+  --ok:#6FD79A; --ok-soft:#173825; --bad:#F08A80; --bad-soft:#40201C;
+  --g-int:#74B4E6; --g-nac:#EA8F98; --g-eur:#ABA0F4;
+  --back-a:#1B4A3B; --back-b:#2F7A61; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5}
+.shell{max-width:1180px;margin-inline:auto;padding-inline:16px;padding-block:14px 40px;display:flex;flex-direction:column;gap:18px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+p{margin:0}
+
+/* barra superior */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px;padding-bottom:12px;border-bottom:2px solid var(--ink)}
+.brand{font-family:var(--f-display);font-weight:800;font-size:1.15rem;letter-spacing:.01em}
+.brand small{display:block;font-family:var(--f-mono);font-weight:500;font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+.pips{display:flex;gap:6px;list-style:none;margin:0;padding:0}
+.pips li{font-family:var(--f-mono);font-size:.68rem;min-width:1.9rem;height:1.9rem;display:grid;place-items:center;border:1.5px solid var(--line);border-radius:50%;color:var(--ink-2)}
+.pips li.done{background:var(--green);border-color:var(--green);color:var(--on-green)}
+.pips li.cur{border-color:var(--gold);color:var(--gold);font-weight:600;box-shadow:0 0 0 3px var(--gold-soft)}
+.stats{display:flex;gap:14px;font-family:var(--f-mono);font-size:.85rem;font-variant-numeric:tabular-nums}
+.stats b{font-weight:600;color:var(--gold)}
+
+/* botones */
+.btn{border:2px solid var(--green);background:var(--green);color:var(--on-green);font-weight:700;padding:.7rem 1.3rem;border-radius:999px;transition:transform .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn.ghost{background:transparent;color:var(--green)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+/* intro */
+.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}
+.guil{aspect-ratio:1;max-width:100%;border-radius:50%;border:2px solid var(--ink);
+  background:
+    repeating-radial-gradient(circle at 38% 42%, transparent 0 5px, var(--back-b) 5px 6px),
+    repeating-radial-gradient(circle at 62% 58%, transparent 0 5px, var(--back-a) 5px 6px),
+    var(--panel);
+  display:grid;place-items:center;position:relative}
+.guil span{font-family:var(--f-display);font-weight:800;font-size:clamp(3rem,10vw,6.5rem);background:var(--panel);width:46%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;border:2px solid var(--ink);color:var(--gold)}
+.eyebrow{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-2)}
+.hero h1{font-size:clamp(2.3rem,6vw,4.2rem);font-weight:800;margin-block:6px 14px}
+.hero p.lead{font-size:1.1rem;max-width:52ch;color:var(--ink-2)}
+.steps{list-style:none;margin:22px 0;padding:0;display:grid;gap:10px;max-width:56ch}
+.steps li{display:grid;grid-template-columns:2rem 1fr;gap:10px;align-items:baseline}
+.steps b{font-family:var(--f-mono);color:var(--gold)}
+.route{display:flex;flex-wrap:wrap;gap:8px;margin-block:4px 22px;padding:0;list-style:none}
+.route li{border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;font-size:.85rem;background:var(--panel)}
+.route li b{font-family:var(--f-mono);font-size:.7rem;color:var(--gold);margin-right:6px}
+.best{font-family:var(--f-mono);font-size:.8rem;color:var(--ink-2);margin-top:12px}
+
+/* juego */
+.rhead h2{font-size:1.8rem;font-weight:800}
+.rhead .hint{color:var(--ink-2);margin-top:4px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:22px;align-items:start}
+.board{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+.card{perspective:800px;border:0;background:none;padding:0;text-align:center}
+.card .in{position:relative;display:block;aspect-ratio:3/4;transition:transform .6s cubic-bezier(.3,.7,.2,1);transform-style:preserve-3d}
+.card.down .in{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;overflow:hidden}
+.front{background:var(--panel);border:1.5px solid var(--line);border-top:5px solid var(--gc);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:6px 5px}
+.card:hover:not(.down) .front{border-color:var(--gc)}
+.card.sel .front{box-shadow:0 0 0 3px var(--gold);border-color:var(--gold)}
+.sig{font-family:var(--f-mono);font-weight:600;font-size:.74rem;color:var(--gc);border:2px solid var(--gc);border-radius:999px;min-width:2.9rem;padding:.35rem .5rem;line-height:1}
+.sig.l{font-size:.6rem}
+.nm{font-size:.68rem;line-height:1.15;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto}
+.back{transform:rotateY(180deg);border:1.5px solid var(--ink);
+  background:
+    repeating-radial-gradient(circle at 30% 30%, transparent 0 3px, var(--back-b) 3px 4px),
+    repeating-radial-gradient(circle at 70% 70%, var(--back-a) 0 3px, transparent 3px 6px),
+    var(--back-a)}
+.g-I{--gc:var(--g-int)} .g-N{--gc:var(--g-nac)} .g-E{--gc:var(--g-eur)}
+
+.panel{display:flex;flex-direction:column;gap:12px;position:sticky;top:12px;min-width:0}
+.secret{display:grid;grid-template-columns:4.2rem 1fr;gap:12px;align-items:center;background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:10px}
+.secret .mini{aspect-ratio:3/4;border-radius:8px;border:1.5px solid var(--ink);display:grid;place-items:center;font-family:var(--f-display);font-weight:800;font-size:1.8rem;color:var(--gold);
+  background:repeating-radial-gradient(circle at 30% 30%, var(--back-a) 0 3px, var(--back-b) 3px 4px)}
+.secret .mini i{font-style:normal;background:var(--panel);width:2rem;height:2rem;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--ink)}
+.stat{font-family:var(--f-mono);font-size:.78rem;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px}
+.stat b{color:var(--ink);font-weight:600}
+.guess{background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:12px;padding:12px;display:grid;gap:8px}
+.guess .row{display:flex;gap:8px;flex-wrap:wrap}
+.last{border:1.5px solid var(--line);border-radius:12px;padding:12px;background:var(--panel);min-height:5.4rem}
+.last.yes{border-color:var(--ok);background:var(--ok-soft)}
+.last.no{border-color:var(--bad);background:var(--bad-soft)}
+.verdict{font-family:var(--f-display);font-weight:800;font-size:1.5rem;margin-right:8px}
+.last.yes .verdict{color:var(--ok)} .last.no .verdict{color:var(--bad)}
+.last .q{font-weight:600;font-size:.9rem}
+.last .note{font-size:.85rem;color:var(--ink-2);margin-top:4px}
+.tabs{display:flex;flex-wrap:wrap;gap:6px}
+.tab{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:.3rem .8rem;font-size:.8rem;font-weight:600}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.qs{list-style:none;margin:0;padding:0;display:grid;gap:6px;max-height:19rem;overflow-y:auto;padding-right:2px}
+.qb{width:100%;text-align:left;border:1.5px solid var(--line);background:var(--panel);border-radius:10px;padding:.55rem .75rem;font-size:.9rem;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.qb:hover:not(:disabled){border-color:var(--green)}
+.qb:disabled{cursor:default;color:var(--ink-2)}
+.qb .r{font-family:var(--f-mono);font-weight:600;flex:none}
+.qb.y .r{color:var(--ok)} .qb.n .r{color:var(--bad)}
+
+/* ficha y test */
+.ficha{display:grid;grid-template-columns:200px minmax(0,1fr);gap:28px;align-items:start}
+.ficha .card{pointer-events:none}
+.res{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ok)}
+.ficha h2{font-size:2.1rem;font-weight:800;margin-block:4px 10px}
+.desc{max-width:62ch;font-size:1.05rem}
+.quiz{margin-top:22px;border-top:2px solid var(--ink);padding-top:16px;max-width:62ch}
+.quiz h3{font-size:1.3rem;margin-block:4px 12px}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--panel);border-radius:10px;padding:.65rem .9rem}
+.opt:hover:not(:disabled){border-color:var(--green)}
+.opt:disabled{cursor:default}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.expl{margin-top:12px;color:var(--ink-2);font-size:.95rem}
+.next{margin-top:16px}
+.end{max-width:700px;display:grid;gap:14px}
+.end h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:800}
+.big{font-family:var(--f-mono);font-size:3rem;font-weight:600;color:var(--gold);font-variant-numeric:tabular-nums}
+.sum{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:.95rem}
+.sum li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dashed var(--line);padding-block:4px}
+.sum span:last-child{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+.react{position:fixed;inset:0;display:grid;place-items:center;z-index:20;padding-inline:16px;cursor:pointer;overflow:hidden}
+.react::before{content:"";position:absolute;inset:0;background:var(--panel);opacity:0;pointer-events:none}
+.react.on::before{animation:flash .45s ease-out}
+.react.win{background:repeating-conic-gradient(from 0deg at 50% 50%, color-mix(in srgb,var(--gold) 38%,transparent) 0 10deg, transparent 10deg 20deg)}
+.react.shout,.react.laugh{background:color-mix(in srgb,var(--bad) 30%,color-mix(in srgb,var(--ink) 40%,transparent))}
+.react .box{position:relative;z-index:1;display:grid;gap:14px;justify-items:center;text-align:center;width:min(94vw,56rem);padding:clamp(22px,4vw,44px) clamp(18px,4vw,48px);border-radius:24px;border:4px solid var(--ink);background:var(--panel);box-shadow:0 16px 0 var(--ink),0 40px 90px color-mix(in srgb,var(--ink) 45%,transparent)}
+.react small{font-family:var(--f-mono);font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;padding:.25rem .8rem;border-radius:99px;color:var(--paper);background:var(--ink)}
+.react h2{font-family:var(--f-display);font-weight:800;font-size:clamp(2.4rem,9vw,6.2rem);line-height:.95;letter-spacing:-.01em;text-wrap:balance;margin:0}
+.react p{font-size:clamp(1.15rem,2.8vw,1.9rem);font-weight:600;line-height:1.3;text-wrap:balance;max-width:34ch;margin:0}
+.react em{font-style:normal;font-family:var(--f-mono);font-size:.72rem;color:var(--ink-2)}
+.react .tick{position:absolute;left:0;right:0;overflow:hidden;white-space:nowrap;font-family:var(--f-mono);font-weight:600;font-size:clamp(.85rem,2vw,1.15rem);padding-block:10px;color:var(--paper);background:var(--ink)}
+.react .tick.top{top:env(safe-area-inset-top,0px)} .react .tick.bot{bottom:env(safe-area-inset-bottom,0px)}
+.react .tick div{display:inline-block;animation:tape 14s linear infinite}
+.react .tick.bot div{animation-direction:reverse}
+.react .tick span{padding-inline:2rem}
+.react.win .tick{background:var(--ok)} .react.shout .tick,.react.laugh .tick{background:var(--bad)}
+.react.win .box{border-color:var(--gold);box-shadow:0 16px 0 var(--gold),0 40px 90px color-mix(in srgb,var(--ink) 45%,transparent)} .react.win h2{color:var(--gold)} .react.win small{background:var(--gold)}
+.react.shout .box,.react.laugh .box{border-color:var(--bad);box-shadow:0 16px 0 var(--bad),0 40px 90px color-mix(in srgb,var(--ink) 45%,transparent)} .react.shout h2,.react.laugh h2{color:var(--bad)} .react.shout small,.react.laugh small{background:var(--bad)}
+.react.on .box{animation:jump .7s cubic-bezier(.2,1.5,.35,1) both}
+.react.on.win .box{animation:jump .7s cubic-bezier(.2,1.5,.35,1) both,throb 1.1s .7s ease-in-out infinite}
+.react.on.shout,.react.on.laugh{animation:quake .5s .55s 3}
+.react.on p{animation:slam .45s .4s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes tape{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes flash{0%{opacity:.95}100%{opacity:0}}
+@keyframes jump{0%{transform:scale(.04) rotate(-28deg);opacity:0}45%{transform:scale(1.22) rotate(5deg);opacity:1}62%{transform:scale(.93) rotate(-3deg)}80%{transform:scale(1.05) rotate(1deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes throb{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+@keyframes quake{0%,100%{transform:translate(0,0)}15%{transform:translate(-18px,8px) rotate(-1.2deg)}30%{transform:translate(16px,-10px) rotate(1deg)}45%{transform:translate(-12px,6px)}60%{transform:translate(10px,-6px)}80%{transform:translate(-6px,3px)}}
+@keyframes slam{0%{transform:translateY(60px) scale(.6);opacity:0}100%{transform:none;opacity:1}}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:19}
+.snd{border:1.5px solid var(--line);background:transparent;border-radius:999px;padding:.15rem .7rem;font-family:var(--f-mono);font-size:.75rem}
+.cool{display:grid;gap:6px;font-family:var(--f-mono);font-size:.8rem;color:var(--ink-2)}
+.cool .bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden}
+.cool .bar i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s linear}
+.cool.ready{color:var(--ok)}
+.qs.wait .qb:not(.y):not(.n){opacity:.5}
+@media (prefers-reduced-motion:reduce){.react.on .box,.react.on p,.react.on,.react.on::before,.react .tick div{animation:none}}
+.card[aria-disabled="true"]{cursor:default}
+.how{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--ink-2)}
+.how b{font-family:var(--f-mono);color:var(--gold);margin-right:5px}
+.guess.idle{background:transparent;border-style:dashed;border-color:var(--line);color:var(--ink-2);font-size:.9rem}
+.guess .small{font-size:.8rem}
+.last .out{font-family:var(--f-mono);font-size:.75rem;color:var(--ink);margin-top:6px}
+.tab i{font-style:normal;font-family:var(--f-mono);font-size:.7rem;background:var(--gold-soft);color:var(--ink);border-radius:99px;padding:0 .4rem;margin-left:2px}
+.tab i.zero{background:transparent;color:var(--ink-2)}
+.qhead{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);padding:8px 2px 0}
+.qb.useless{opacity:.45;border-style:dashed}
+
+.clue{margin-top:10px;display:grid;gap:6px;padding:14px 18px;border-radius:14px;border:2px solid var(--gold);background:var(--gold-soft);max-width:60rem}
+.clue small{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.clue p{font-family:var(--f-display);font-weight:800;font-size:clamp(1.3rem,3vw,2rem);line-height:1.15;text-wrap:balance;color:var(--ink)}
+.rhead .hint{margin-top:8px}
+.ptitle{font-family:var(--f-body);font-weight:700;font-size:1rem;margin:4px 0 0}
+.recap{margin-top:18px;max-width:62ch}
+.recap ul{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:4px}
+.recap li{display:grid;grid-template-columns:4.2rem 1fr;gap:10px;align-items:baseline;font-size:.92rem;padding-block:3px;border-bottom:1px dashed var(--line)}
+.recap b{font-family:var(--f-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--gold)}
+.recap b.y{color:var(--ok)} .recap b.n{color:var(--bad)}
+.toast{font-family:var(--f-mono);font-size:.8rem;color:var(--ok);min-height:1.2rem}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .guil{max-width:240px;order:-1}
+  .cols{grid-template-columns:1fr}
+  .panel{position:static}
+  .board{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+  .nm{font-size:.62rem;-webkit-line-clamp:5}
+  .qs{max-height:none}
+  .ficha{grid-template-columns:1fr}
+  .ficha .card{max-width:170px}
+}
+@media (prefers-reduced-motion:reduce){
+  .card .in{transition:none}.btn{transition:none}
+}
+</style>
+
+<div class="shell" lang="es">
+  <header class="top">
+    <div class="brand">Quién es Quién<small>Sistema financiero internacional</small></div>
+    <ol class="pips" id="pips" aria-label="Progreso"></ol>
+    <div class="stats"><span><b id="sc">0</b> pts</span><span id="tm">00:00</span><button class="snd" id="snd" aria-pressed="true">Sonido: sí</button></div>
+  </header>
+  <main id="view"></main>
+  <div class="react" id="react" hidden aria-live="assertive"></div>
+  <canvas id="fx" hidden></canvas>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- DATOS ---------- */
+const CARDS=[
+ {id:'fmi',n:'Fondo Monetario Internacional',s:'FMI',g:'I',d:'Creado en 1944 en Bretton Woods, con sede en Washington. Supervisa las políticas económicas y monetarias de sus miembros, promueve el empleo y el comercio con estabilidad cambiaria y presta a países con desequilibrios en la Balanza de Pagos. Sus recursos son las cuotas de los socios, según su PIB, que también fijan su número de votos. Creó los Derechos Especiales de Giro (DEG).'},
+ {id:'bm',n:'Banco Mundial',s:'BM',g:'I',d:'Organismo de la ONU creado en 1944, con sede en Washington (antes BIRF). Concede créditos a bajo interés, sin ánimo de lucro, a países en vías de desarrollo o que han sufrido catástrofes. Sus objetivos son el crecimiento, las infraestructuras y el sector privado. Para prestar exige ser socio del BM y del FMI y que el proyecto sea prioritario y no dañe el medio ambiente.'},
+ {id:'bid',n:'Banco Interamericano de Desarrollo',s:'BID',g:'I',d:'Banco regional de desarrollo para América. Es una institución sin ánimo de lucro, formada por países de una zona geográfica concreta, que presta dinero y da asistencia técnica (material, humana y tecnológica) a los países prestatarios.'},
+ {id:'berd',n:'Banco Europeo de Reconstrucción y Desarrollo',s:'BERD',g:'I',d:'Banco regional de desarrollo sin ánimo de lucro. Aunque lleva «Europeo» en el nombre, está en el bloque de organismos internacionales y no es una institución de la UE. Se financia con aportaciones de socios y con lo captado en los mercados financieros internacionales.'},
+ {id:'bpi',n:'Banco de Pagos Internacionales',s:'BPI',g:'I',d:'Con sede en Basilea y propiedad de unos 60 bancos centrales, es el banco de los bancos centrales. Está controlado por 6 de ellos, busca la estabilidad monetaria y financiera global, gestiona reservas de divisas y no rinde cuentas ante ningún gobierno.'},
+ {id:'ocde',n:'OCDE',s:'OCDE',g:'I',d:'Organización para la Cooperación y el Desarrollo Económico, con 37 miembros. Su misión es diseñar mejores políticas para una vida mejor, con prosperidad, igualdad, oportunidades y bienestar para todas las personas.'},
+ {id:'basilea',n:'Comité de Supervisión Bancaria de Basilea',s:'BCBS',g:'I',d:'Entidad asesora a nivel mundial en regulación financiera. Sus recomendaciones guían a las autoridades nacionales que supervisan los sistemas financieros y buscan reforzar la banca frente al blanqueo de capitales, el mal gobierno, el control corporativo débil o el riesgo de crédito. El Banco de España es miembro desde 2001.'},
+ {id:'g20',n:'G20',s:'G20',g:'I',d:'Foro de las grandes economías del mundo. Junto al G7 y el G10 se incluye en el grupo de «otros organismos oficiales» del sistema financiero internacional: es un lugar de coordinación política, no una entidad que preste dinero.'},
+ {id:'bde',n:'Banco de España',s:'BdE',g:'N',d:'Regula y supervisa el sector financiero, protege a los usuarios de servicios bancarios, toma medidas correctoras y sanciona. Ejecuta las funciones del BCE y del Eurosistema, gestiona las reservas de divisas y metales preciosos y la Central de Información de Riesgos, supervisa la liquidez, asesora al gobierno y pone en circulación moneda.'},
+ {id:'cnmv',n:'Comisión Nacional del Mercado de Valores',s:'CNMV',g:'N',d:'Controla, supervisa y asesora respecto al funcionamiento del mercado de valores, donde se negocian títulos de renta fija y variable. Distingue el mercado primario (primera colocación de valores) del secundario (valores ya colocados).'},
+ {id:'dgsfp',n:'Dirección General de Seguros y Fondos de Pensiones',s:'DGSFP',g:'N',d:'Supervisa a las empresas aseguradoras y a los planes y fondos de pensiones, el tercer gran bloque del sistema financiero español junto al Banco de España y la CNMV.'},
+ {id:'av',n:'Agencia de Valores',s:'AV',g:'N',d:'Empresa de servicios de inversión con un capital mínimo de 300.000 €. Gestiona las carteras de sus clientes, les asesora y administra sus valores.'},
+ {id:'sgc',n:'Sociedad Gestora de Carteras',s:'SGC',g:'N',d:'Sociedad anónima con capital mínimo de 100.000 €, especializada en la gestión individualizada de carteras de inversión.'},
+ {id:'eafi',n:'Empresa de Asesoramiento Financiero',s:'EAFI',g:'N',d:'Persona física o jurídica que asesora en materia de inversiones. Es la única empresa de servicios de inversión que puede ser una persona física.'},
+ {id:'scr',n:'Sociedad de Capital Riesgo',s:'SCR',g:'N',d:'Sociedad anónima cuyo objeto social es participar temporalmente en el capital de empresas no financieras que no cotizan en Bolsa.'},
+ {id:'iic',n:'Institución de Inversión Colectiva',s:'IIC',g:'N',d:'Intermediario que capta dinero de ahorradores para invertirlo. Gestiona fondos de inversión mobiliaria e inmobiliaria.'},
+ {id:'broker',n:'Broker',s:'Broker',g:'N',d:'Sociedad de valores que actúa como comisionista: ejecuta las órdenes del cliente y no asume el riesgo de la operación.'},
+ {id:'dealer',n:'Dealer',s:'Dealer',g:'N',d:'Sociedad de valores que actúa por cuenta propia y, por tanto, asume el riesgo de la operación.'},
+ {id:'bce',n:'Banco Central Europeo',s:'BCE',g:'E',d:'Con sede en Francfort desde 1998, es el banco de la UEM. Su objetivo es la estabilidad de precios (inflación inferior al 2%) y gestionar el euro. Fija la política económica y monetaria, autoriza la emisión de euros, dirige las operaciones de cambio de divisas y cuida las reservas internacionales del SEBC.'},
+ {id:'sebc',n:'Sistema Europeo de Bancos Centrales',s:'SEBC',g:'E',d:'Reúne a los bancos centrales de todos los estados miembros de la UE más el BCE. Sus objetivos son mantener la estabilidad de precios y apoyar la política económica de la Unión Monetaria.'},
+ {id:'eurosis',n:'Eurosistema',s:'Euro-sistema',g:'E',d:'Subgrupo del SEBC: el BCE y los bancos centrales de los países que usan el euro.'},
+ {id:'bei',n:'Banco Europeo de Inversiones',s:'BEI',g:'E',d:'Propiedad de los países de la UE desde 1958, con sede en Luxemburgo. Impulsa crecimiento y empleo, apoya medidas contra el cambio climático y fomenta las políticas de la UE en otros países. Ofrece préstamos (más de 25 millones €), créditos a través de instituciones financieras y asesoramiento técnico.'},
+ {id:'ecofin',n:'ECOFIN',s:'ECOFIN',g:'E',d:'Consejo de ministros de economía y hacienda de todos los estados miembros, junto a los comisarios competentes en los temas de cada sesión.'},
+ {id:'eurogrupo',n:'Eurogrupo',s:'Euro-grupo',g:'E',d:'Órgano consultivo informal de los ministros de economía y hacienda de la UEM. Se reúne una vez al mes para coordinar las políticas económicas de los países de la zona euro.'}
+];
+const CATS=[['dat','Fechas, sedes y cifras'],['quien','Quién lo forma'],['fun','Funciones'],['val','Mercado de valores']];
+const QS=[
+ {c:'dat',q:'¿Se creó en 1944 con los acuerdos de Bretton Woods?',s:'Se creó en 1944 con los acuerdos de Bretton Woods.',y:'fmi bm',n:'El FMI y el Banco Mundial nacen en 1944.'},
+ {c:'dat',q:'¿Tiene unos 190 países miembros?',s:'Tiene unos 190 países miembros.',y:'fmi',n:'El FMI tiene unos 190 países miembros.'},
+ {c:'dat',q:'¿Tiene 37 países miembros?',s:'Tiene 37 países miembros.',y:'ocde',n:'La OCDE tiene 37 miembros.'},
+ {c:'dat',q:'¿Su nombre o su sede están ligados a la ciudad de Basilea?',s:'Su nombre o su sede están ligados a la ciudad de Basilea.',y:'bpi basilea',n:'El BPI tiene su sede en Basilea y el Comité de Supervisión Bancaria lleva el nombre de la ciudad.'},
+ {c:'dat',q:'¿Es propiedad de unos 60 bancos centrales?',s:'Es propiedad de unos 60 bancos centrales.',y:'bpi',n:'El BPI es propiedad de unos 60 bancos centrales y está controlado por 6 de ellos.'},
+ {c:'dat',q:'¿Es el banco con sede en Francfort creado en 1998?',s:'Tiene su sede en Francfort y se creó en 1998.',y:'bce',n:'El BCE se creó en 1998 y tiene su sede en Francfort.'},
+ {c:'dat',q:'¿Es el banco con sede en Luxemburgo, propiedad de la UE desde 1958?',s:'Tiene su sede en Luxemburgo y es propiedad de la UE desde 1958.',y:'bei',n:'El Banco Europeo de Inversiones tiene su sede en Luxemburgo.'},
+ {c:'dat',q:'¿Su capital mínimo exigido es de 300.000 €?',s:'Se le exige un capital mínimo de 300.000 €.',y:'av',n:'La agencia de valores necesita un capital mínimo de 300.000 €.'},
+ {c:'dat',q:'¿Su capital mínimo exigido es de 100.000 €?',s:'Se le exige un capital mínimo de 100.000 €.',y:'sgc',n:'La sociedad gestora de carteras necesita un capital mínimo de 100.000 €.'},
+ {c:'quien',b:1,q:'¿Es un organismo internacional (ni español ni de la Unión Europea)?',s:'Es un organismo internacional: no es español ni de la Unión Europea.',y:'fmi bm bid berd bpi ocde basilea g20',n:'Son organismos internacionales el FMI, el Banco Mundial, los bancos regionales de desarrollo, el BPI, la OCDE, el Comité de Basilea y el G20.'},
+ {c:'quien',b:1,q:'¿Pertenece al Sistema Monetario Europeo?',s:'Pertenece al Sistema Monetario Europeo.',y:'bce sebc eurosis bei ecofin eurogrupo',n:'El Sistema Monetario Europeo incluye BCE, SEBC (y su Eurosistema), BEI, ECOFIN y Eurogrupo.'},
+ {c:'quien',q:'¿Es un foro de las grandes economías del mundo, como el G7 o el G10?',s:'Es un foro de las grandes economías del mundo, como el G7 o el G10.',y:'g20',n:'El G20 es, como el G7 y el G10, un grupo que reúne a grandes economías.'},
+ {c:'quien',q:'¿Sus países socios son de América?',s:'Sus países socios son de América.',y:'bid',n:'El Banco Interamericano de Desarrollo es el banco regional de desarrollo de América.'},
+ {c:'quien',q:'¿Es un banco de la Unión Europea?',s:'Es un banco de la Unión Europea.',y:'bce bei',n:'Los dos bancos de la UE son el BCE (Francfort) y el BEI (Luxemburgo).'},
+ {c:'fun',q:'¿Es un organismo internacional que no es un banco y no presta dinero?',s:'Es un organismo internacional que no es un banco y no presta dinero.',y:'ocde basilea g20',n:'La OCDE, el Comité de Basilea y el G20 asesoran o coordinan políticas, pero no prestan dinero.'},
+ {c:'quien',b:1,q:'¿Es una entidad del sistema financiero español?',s:'Es una entidad del sistema financiero español.',y:'bde cnmv dgsfp av sgc eafi scr iic broker dealer',n:'El bloque nacional: los tres supervisores y las entidades que dependen de la CNMV.'},
+ {c:'quien',q:'¿Es uno de los tres supervisores españoles: Banco de España, CNMV o DGSFP?',s:'Es uno de los tres supervisores del sistema financiero español.',y:'bde cnmv dgsfp',n:'Banco de España (banca), CNMV (mercado de valores) y DGSFP (seguros y pensiones).'},
+ {c:'quien',q:'¿Es un banco regional de desarrollo formado por países de una zona concreta?',s:'Es un banco regional de desarrollo formado por países de una zona concreta.',y:'bid berd',n:'Son bancos regionales de desarrollo el BID, el Banco Asiático de Desarrollo y el BERD.'},
+ {c:'quien',q:'¿Es un consejo u órgano de ministros de economía y hacienda de la UE?',s:'Es un consejo u órgano de ministros de economía y hacienda de la UE.',y:'ecofin eurogrupo',n:'ECOFIN reúne a los de todos los estados miembros y el Eurogrupo a los de la zona euro.'},
+ {c:'quien',q:'¿Reúne a los ministros de TODOS los estados de la UE, con los comisarios del tema?',s:'Reúne a los ministros de todos los estados de la UE.',y:'ecofin',n:'Así es el ECOFIN. El Eurogrupo solo reúne a los ministros de la UEM.'},
+ {c:'quien',q:'¿Es un sistema formado por bancos centrales nacionales y el BCE?',s:'Es un sistema formado por bancos centrales nacionales y el BCE.',y:'sebc eurosis',n:'El SEBC y su subgrupo, el Eurosistema.'},
+ {c:'quien',q:'¿Incluye a los bancos centrales de todos los países de la UE, usen o no el euro?',s:'Incluye a los bancos centrales de todos los países de la UE, usen o no el euro.',y:'sebc',n:'El SEBC reúne a todos. El Eurosistema, solo a los de la zona euro.'},
+ {c:'fun',q:'¿Presta a países con desequilibrios en su Balanza de Pagos?',s:'Presta a países con desequilibrios en su Balanza de Pagos.',y:'fmi',n:'El FMI exige garantía de devolución y un programa para solucionar el problema.'},
+ {c:'fun',q:'¿Creó los Derechos Especiales de Giro (DEG)?',s:'Creó los Derechos Especiales de Giro (DEG).',y:'fmi',n:'El DEG es un activo de reserva internacional valorado con euro, dólar, libra, yen y renminbi.'},
+ {c:'fun',q:'¿Concede préstamos de infraestructuras, sectoriales, institucionales y de ajuste estructural?',s:'Concede préstamos de infraestructuras, sectoriales, institucionales y de ajuste estructural.',y:'bm',n:'Son los cuatro tipos de préstamo del Banco Mundial.'},
+ {c:'fun',q:'¿Se le llama «el banco de los bancos centrales»?',s:'Se le llama «el banco de los bancos centrales».',y:'bpi',n:'El BPI gestiona reservas de divisas de bancos centrales y no rinde cuentas ante ningún gobierno.'},
+ {c:'fun',q:'¿Recomienda a los supervisores medidas contra el blanqueo de capitales y el riesgo de crédito?',s:'Recomienda a los supervisores medidas contra el blanqueo de capitales y el riesgo de crédito.',y:'basilea',n:'El Comité de Basilea asesora en regulación financiera. El Banco de España es miembro desde 2001.'},
+ {c:'fun',q:'¿Su misión es «diseñar mejores políticas para una vida mejor»?',s:'Su misión es «diseñar mejores políticas para una vida mejor».',y:'ocde',n:'Es la misión de la OCDE.'},
+ {c:'fun',q:'¿Gestiona la Central de Información de Riesgos y pone moneda en circulación en España?',s:'Gestiona la Central de Información de Riesgos y pone moneda en circulación en España.',y:'bde',n:'Son funciones del Banco de España.'},
+ {c:'fun',q:'¿Supervisa a las aseguradoras y a los planes y fondos de pensiones?',s:'Supervisa a las aseguradoras y a los planes y fondos de pensiones.',y:'dgsfp',n:'Es la Dirección General de Seguros y Fondos de Pensiones.'},
+ {c:'fun',q:'¿Fija la política monetaria y autoriza la emisión de euros?',s:'Fija la política monetaria y autoriza la emisión de euros.',y:'bce',n:'El BCE, que además persigue una inflación inferior al 2%.'},
+ {c:'fun',q:'¿Concede préstamos de más de 25 millones € y apoya medidas contra el cambio climático?',s:'Concede préstamos de más de 25 millones € y apoya medidas contra el cambio climático.',y:'bei',n:'Es el BEI, que también impulsa crecimiento y empleo en Europa.'},
+ {c:'fun',q:'¿Se reúne una vez al mes como órgano consultivo informal?',s:'Se reúne una vez al mes como órgano consultivo informal.',y:'eurogrupo',n:'El Eurogrupo coordina las políticas económicas de la zona euro.'},
+ {c:'val',q:'¿Controla, supervisa y asesora sobre el mercado de valores?',s:'Controla, supervisa y asesora sobre el mercado de valores.',y:'cnmv',n:'La CNMV vigila el mercado primario y el secundario.'},
+ {c:'val',q:'¿Depende de la CNMV?',s:'Depende de la CNMV.',y:'av sgc eafi scr iic broker dealer',n:'Dependen de la CNMV las ESI, las instituciones de inversión colectiva y las sociedades de capital riesgo.'},
+ {c:'val',q:'¿Es una empresa de servicios de inversión (ESI)?',s:'Es una empresa de servicios de inversión (ESI).',y:'av sgc eafi broker dealer',n:'Son ESI las sociedades de valores (broker y dealer), las agencias de valores, las gestoras de carteras y las EAFI.'},
+ {c:'val',q:'¿Es una sociedad de valores?',s:'Es una sociedad de valores.',y:'broker dealer',n:'Las sociedades de valores pueden actuar como broker o como dealer.'},
+ {c:'val',q:'¿Opera por cuenta propia y asume el riesgo?',s:'Opera por cuenta propia y asume el riesgo.',y:'dealer',n:'El dealer asume riesgo. El broker es un comisionista y no lo asume.'},
+ {c:'val',q:'¿Puede ser una persona física?',s:'Puede ser una persona física.',y:'eafi',n:'Las EAFI son personas físicas o jurídicas que asesoran en materia de inversiones.'},
+ {c:'val',q:'¿Gestiona fondos de inversión mobiliaria e inmobiliaria con dinero de ahorradores?',s:'Gestiona fondos de inversión mobiliaria e inmobiliaria con dinero de ahorradores.',y:'iic',n:'Son las instituciones de inversión colectiva.'},
+ {c:'val',q:'¿Entra temporalmente en el capital de empresas no financieras que no cotizan en Bolsa?',s:'Entra temporalmente en el capital de empresas no financieras que no cotizan en Bolsa.',y:'scr',n:'Es la sociedad de capital riesgo.'}
+];
+QS.forEach((q,i)=>{q.id=i;q.y=q.y.split(' ');});
+const BY=Object.fromEntries(CARDS.map(c=>[c.id,c]));
+
+/* 8 rondas: cada una saca el secreto de un apartado del temario. La última vale el doble. */
+const ROUNDS=[
+ {"t":"Fondo Monetario Internacional y Banco Mundial","sec":"Temario 1.1 y 1.2","pool":["fmi","bm"],"quiz":[{"q":"¿En qué acuerdo y año se creó el FMI?","o":["Maastricht, 1992","Bretton Woods, 1944","Roma, 1957","Basilea, 1974"],"a":1,"e":"El FMI nace con el Tratado de Bretton Woods en 1944, el mismo año que el Banco Mundial."},{"q":"El DEG del FMI se valora con una cesta de monedas. ¿Cuál de estas NO está en la cesta?","o":["Euro","Dólar","Franco suizo","Renminbi chino"],"a":2,"e":"La cesta incluye euro, dólar, libra esterlina, yen y renminbi chino, las monedas de los países más exportadores."}]},
+ {"t":"Bancos regionales de desarrollo","sec":"Temario 1.3","pool":["bid","berd"],"quiz":[{"q":"Un país con mucha deuda externa necesita aliviar una crisis. ¿Qué préstamo del Banco Mundial le corresponde?","o":["De infraestructuras","Sectorial","Institucional","De ajuste estructural"],"a":3,"e":"Los préstamos de ajuste estructural alivian situaciones de crisis por elevada deuda externa."},{"q":"¿Qué tipo de préstamo del Banco Mundial financia gasoductos o telecomunicaciones?","o":["De proyectos de infraestructuras","Sectorial","Institucional","De ajuste estructural"],"a":0,"e":"Los préstamos de infraestructuras financian obras como gasoductos y telecomunicaciones. Los sectoriales van a agricultura o energía."}]},
+ {"t":"Otros organismos oficiales: BPI, OCDE, Comité de Basilea y G20","sec":"Temario 1.4","pool":["bpi","ocde","basilea","g20"],"quiz":[{"q":"¿Qué organismo se conoce como «el banco de los bancos centrales»?","o":["Banco Central Europeo","Banco de Pagos Internacionales","Banco Mundial","Fondo Monetario Internacional"],"a":1,"e":"El BPI es propiedad de unos 60 bancos centrales y gestiona sus reservas de divisas."},{"q":"¿Desde qué año es miembro del Comité de Basilea el Banco de España?","o":["1944","1998","2001","2010"],"a":2,"e":"El Banco de España es miembro del Comité de Supervisión Bancaria de Basilea desde 2001."}]},
+ {"t":"Supervisores españoles: Banco de España, CNMV y DGSFP","sec":"Temario 2","pool":["bde","cnmv","dgsfp"],"quiz":[{"q":"¿Quién gestiona la Central de Información de Riesgos y supervisa a los bancos en España?","o":["CNMV","Banco de España","DGSFP","Eurogrupo"],"a":1,"e":"El Banco de España regula y supervisa el sector financiero y protege a los usuarios de servicios bancarios."},{"q":"¿Quién supervisa a las empresas aseguradoras y a los fondos de pensiones?","o":["CNMV","Banco de España","DGSFP","Banco Central Europeo"],"a":2,"e":"De la Dirección General de Seguros y Fondos de Pensiones dependen aseguradoras y planes y fondos de pensiones."},{"q":"¿Qué hace la CNMV?","o":["Pone moneda en circulación","Supervisa a las aseguradoras","Controla, supervisa y asesora sobre el mercado de valores","Fija los tipos de interés del euro"],"a":2,"e":"La CNMV vigila el mercado de valores, tanto el primario como el secundario."}]},
+ {"t":"Inversión colectiva, capital riesgo y asesoramiento financiero","sec":"Temario 2 · CNMV","pool":["iic","scr","eafi"],"quiz":[{"q":"¿Qué entidad participa temporalmente en el capital de empresas que no cotizan en Bolsa?","o":["Sociedad de Capital Riesgo","Agencia de Valores","Institución de Inversión Colectiva","EAFI"],"a":0,"e":"Las sociedades de capital riesgo son S.A. cuyo objeto social es esa participación temporal."},{"q":"Una empresa vende por primera vez sus acciones a inversores. ¿En qué mercado lo hace?","o":["Mercado primario","Mercado secundario","Mercado de divisas","Euromercado"],"a":0,"e":"En el mercado primario se colocan los valores por primera vez. En el secundario se intercambian los ya colocados."}]},
+ {"t":"Agencias, gestoras y sociedades de valores","sec":"Temario 2 · CNMV","pool":["av","sgc","broker","dealer"],"quiz":[{"q":"¿Qué diferencia a un dealer de un broker?","o":["El dealer actúa por cuenta propia y asume riesgo; el broker es comisionista","El dealer asesora y el broker gestiona fondos","El dealer es público y el broker es extranjero","No hay diferencia, son sinónimos"],"a":0,"e":"El broker ejecuta órdenes de clientes sin asumir riesgo. El dealer opera con su propio dinero."},{"q":"¿Qué capital mínimo se exige a una Agencia de Valores?","o":["100.000 €","300.000 €","25 millones de €","No se exige capital mínimo"],"a":1,"e":"La agencia de valores necesita 300.000 €. La sociedad gestora de carteras, 100.000 €."}]},
+ {"t":"Banco Central Europeo y sistema de bancos centrales","sec":"Temario 3","pool":["bce","sebc","eurosis"],"quiz":[{"q":"¿Qué inflación persigue el BCE como objetivo de estabilidad de precios?","o":["Entre el 5% y el 7%","Exactamente el 0%","Inferior al 2%","Inferior al 10%"],"a":2,"e":"El BCE mantiene la estabilidad de precios con una inflación inferior al 2% y gestiona el euro."},{"q":"¿Qué es el Eurosistema?","o":["Un subgrupo del SEBC","El consejo de ministros de la UE","Un banco regional de desarrollo","El banco de los bancos centrales"],"a":0,"e":"El Eurosistema es un subgrupo del Sistema Europeo de Bancos Centrales."}]},
+ {"t":"BEI, ECOFIN y Eurogrupo","sec":"Temario 3","pool":["bei","ecofin","eurogrupo"],"quiz":[{"q":"¿Qué diferencia al ECOFIN del Eurogrupo?","o":["El ECOFIN reúne a los ministros de toda la UE y el Eurogrupo solo a los de la zona euro","El ECOFIN es un banco y el Eurogrupo un fondo de inversión","El Eurogrupo se reúne una vez al año y el ECOFIN cada día","No hay ninguna diferencia"],"a":0,"e":"El ECOFIN es el consejo de ministros de economía y hacienda de todos los estados miembros. El Eurogrupo es informal, de la zona euro, y se reúne una vez al mes."},{"q":"¿Quién forma el Eurogrupo?","o":["Los presidentes de los bancos centrales","Los ministros de economía y hacienda de la zona euro","Los 37 miembros de la OCDE","Los 60 propietarios del BPI"],"a":1,"e":"Es un órgano consultivo informal que se reúne una vez al mes."}]}
+];
+
+/* Para que el repaso no repita una pista ya vista: cada pregunta indica qué datos la delatan */
+const QUIZ_AVOID=[
+ ['¿En qué acuerdo y año',/1944|Bretton/],
+ ['El DEG del FMI',/DEG|Derechos Especiales/],
+ ['Un país con mucha deuda',/ajuste estructural|infraestructuras/],
+ ['¿Qué tipo de préstamo del Banco Mundial',/ajuste estructural|infraestructuras/],
+ ['¿Qué organismo se conoce como',/bancos centrales»|60 bancos centrales/],
+ ['¿Desde qué año es miembro',/blanqueo|2001/],
+ ['¿Quién gestiona la Central',/Central de Información/],
+ ['¿Quién supervisa a las empresas aseguradoras',/aseguradoras/],
+ ['¿Qué hace la CNMV',/mercado de valores/],
+ ['¿Qué entidad participa temporalmente',/temporalmente/],
+ ['Una empresa vende por primera vez',/primario/],
+ ['¿Qué diferencia a un dealer',/cuenta propia|comisionista|sociedad de valores/],
+ ['¿Qué capital mínimo',/300\.000|100\.000/],
+ ['¿Qué inflación persigue',/inflación|política monetaria/],
+ ['¿Qué es el Eurosistema',/subgrupo|bancos centrales nacionales|usen o no el euro/],
+ ['¿Qué diferencia al ECOFIN',/ministros|una vez al mes/],
+ ['¿Quién forma el Eurogrupo',/ministros|una vez al mes/]
+];
+function pickQuiz(){
+  const seen=[QS[S.clue].s].concat(S.order.map(id=>QS[id].q+' '+QS[id].n)).join(' ');
+  const clash=qz=>{const m=QUIZ_AVOID.find(([k])=>qz.q.startsWith(k));return m?m[1].test(seen):false;};
+  const fresh=qz=>!S.usedQ.includes(qz.q);
+  let c=ROUNDS[S.r].quiz.filter(q=>fresh(q)&&!clash(q));
+  if(!c.length) c=ROUNDS.flatMap(r=>r.quiz).filter(q=>fresh(q)&&!clash(q));
+  if(!c.length) c=ROUNDS[S.r].quiz.filter(fresh);
+  if(!c.length) c=ROUNDS[S.r].quiz;
+  const qz=c[Math.floor(Math.random()*c.length)]; S.usedQ.push(qz.q); return qz;
+}
+
+/* ---------- ESTADO ---------- */
+const $=s=>document.querySelector(s);
+const view=$('#view');
+const PER_Q=4, PER_WRONG=12;
+let S=null, timer=null, cdTimer=null;
+const BEST_KEY='qeq-financiero-best';
+function getBest(){try{return +localStorage.getItem(BEST_KEY)||0}catch(e){return 0}}
+function setBest(v){try{localStorage.setItem(BEST_KEY,String(v))}catch(e){}}
+function newState(){return {r:0,total:0,t0:Date.now(),log:[],quizOk:0,usedQ:[]};}
+function esc(s){return String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));}
+function fmt(ms){const s=Math.floor(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+function pips(cur){
+  const items=[];
+  for(let i=0;i<ROUNDS.length;i++){
+    const label=i<ROUNDS.length-1?i+1:'F';
+    const cls=i<cur?'done':(i===cur?'cur':'');
+    items.push('<li class="'+cls+'">'+label+'</li>');
+  }
+  $('#pips').innerHTML=items.join('');
+}
+function setScore(){$('#sc').textContent=S?S.total:0;}
+function startTimer(){
+  clearInterval(timer);
+  timer=setInterval(()=>{ if(S) $('#tm').textContent=fmt(Date.now()-S.t0); },1000);
+}
+function cardHtml(c,extra){
+  return '<button class="card g-'+c.g+(extra||'')+'" data-id="'+c.id+'" aria-label="'+esc(c.n)+'"><span class="in">'
+   +'<span class="face front"><span class="sig'+(c.s.length>4?' l':'')+'">'+esc(c.s)+'</span><span class="nm">'+esc(c.n)+'</span></span>'
+   +'<span class="face back"></span></span></button>';
+}
+
+/* ---------- SONIDO Y REACCIONES ---------- */
+const COOLDOWN=15000;
+const SND_KEY='qeq-financiero-sound';
+let soundOn=true; try{soundOn=localStorage.getItem(SND_KEY)!=='off'}catch(e){}
+let AC=null, master=null;
+function ac(){
+  if(!soundOn) return null;
+  try{
+    if(!AC){const C=window.AudioContext||window.webkitAudioContext; if(!C) return null;
+      AC=new C(); const comp=AC.createDynamicsCompressor(); master=AC.createGain(); master.gain.value=.75; master.connect(comp); comp.connect(AC.destination);}
+    if(AC.state==='suspended') AC.resume();
+    return AC;
+  }catch(e){return null;}
+}
+function tone(t,f,d,o){
+  o=o||{}; const a=AC, os=a.createOscillator(), g=a.createGain(), v=o.vol||.18, at=o.at||.012;
+  os.type=o.type||'sine'; os.frequency.setValueAtTime(f,t);
+  if(o.f2) os.frequency.exponentialRampToValueAtTime(o.f2,t+d);
+  if(o.vib){const l=a.createOscillator(), lg=a.createGain(); l.frequency.value=o.vr||6; lg.gain.value=o.vib; l.connect(lg); lg.connect(os.frequency); l.start(t); l.stop(t+d+.05);}
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+at);
+  g.gain.setValueAtTime(v,t+Math.max(at,d*.75)); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  let out=g;
+  if(o.lp){const fl=a.createBiquadFilter(); fl.type='lowpass'; fl.frequency.value=o.lp; os.connect(fl); fl.connect(g);} else os.connect(g);
+  if(o.dist){const w=a.createWaveShaper(); w.curve=curve(); g.connect(w); out=w;}
+  out.connect(master); os.start(t); os.stop(t+d+.05);
+}
+function noise(t,d,o){
+  o=o||{}; const a=AC, len=Math.ceil(a.sampleRate*d), buf=a.createBuffer(1,len,a.sampleRate), ch=buf.getChannelData(0);
+  for(let i=0;i<len;i++) ch[i]=Math.random()*2-1;
+  const src=a.createBufferSource(); src.buffer=buf;
+  const fl=a.createBiquadFilter(); fl.type=o.type||'bandpass'; fl.frequency.setValueAtTime(o.f||1000,t); fl.Q.value=o.q||1;
+  if(o.f2) fl.frequency.exponentialRampToValueAtTime(o.f2,t+d);
+  const g=a.createGain(), v=o.vol||.2, at=o.at||.02;
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(v,t+at); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+  src.connect(fl); fl.connect(g); g.connect(master); src.start(t); src.stop(t+d+.05);
+}
+let CURVE=null;
+function curve(){if(CURVE)return CURVE;const n=1024,c=new Float32Array(n);for(let i=0;i<n;i++){const x=i/(n-1)*2-1;c[i]=Math.tanh(x*5);}return CURVE=c;}
+/* Voz sintética por formantes: una fuente glotal (diente de sierra) filtrada por las resonancias de cada vocal. */
+const VW={a:[800,1150,2900],e:[450,1900,2600],i:[300,2300,3000],o:[480,820,2800],u:[330,720,2500]};
+function vox(t,d,f0,f1,v,o){
+  o=o||{}; const a=AC, F=VW[v], vol=o.vol||.25, at=o.at||.015;
+  const s=a.createOscillator(); s.type='sawtooth';
+  s.frequency.setValueAtTime(f0,t); s.frequency.exponentialRampToValueAtTime(f1||f0,t+d);
+  if(o.vib){const l=a.createOscillator(),lg=a.createGain();l.frequency.value=o.vr||5.5;lg.gain.value=o.vib;l.connect(lg);lg.connect(s.frequency);l.start(t);l.stop(t+d+.05);}
+  const env=a.createGain();
+  env.gain.setValueAtTime(.0001,t); env.gain.exponentialRampToValueAtTime(vol,t+at); env.gain.setValueAtTime(vol,t+Math.max(at,d*.6)); env.gain.exponentialRampToValueAtTime(.0001,t+d);
+  F.forEach((f,i)=>{const bp=a.createBiquadFilter();bp.type='bandpass';bp.frequency.value=f*(o.fs||1);bp.Q.value=5;const gg=a.createGain();gg.gain.value=[4,2.6,1.2][i];s.connect(bp);bp.connect(gg);gg.connect(env);});
+  let out=env;
+  if(o.dist){const w=a.createWaveShaper();w.curve=curve();env.connect(w);out=w;}
+  out.connect(master);
+  if(o.echo){const dl=a.createDelay(1),fb=a.createGain();dl.delayTime.value=o.echo;fb.gain.value=.35;out.connect(dl);dl.connect(fb);fb.connect(dl);dl.connect(master);}
+  s.start(t); s.stop(t+d+.05);
+  if(o.h!==false) noise(t,.05,{f:1700,q:.8,vol:vol*.5,at:.004});
+}
+function laugh(t,n,f0,f1,v,syl,gap,o){for(let i=0;i<n;i++){const f=f0+(f1-f0)*(i/Math.max(1,n-1));vox(t+i*(syl+gap),syl,f*1.08,f*.9,v,o);}return n*(syl+gap);}
+const N={C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,Ab4:415.3,Bb4:466.16,B4:493.88,C5:523.25,E5:659.25,F5:698.46,G5:783.99,A5:880,C6:1046.5,E6:1318.5,G6:1568,C7:2093};
+
+/* Risas (devuelven la duración, para que la voz hable después) */
+const LAUGHS=[
+  t=>{vox(t,.4,125,150,'u',{vol:.3,h:false,echo:.22});return .45+laugh(t+.45,7,180,118,'a',.15,.05,{vol:.32,echo:.22});}, // ¡MUAJAJAJA!
+  t=>laugh(t,10,580,470,'i',.08,.035,{vol:.42,fs:1.15}), // ji-ji-ji aguda
+  t=>{vox(t,.3,340,300,'a',{vol:.38});vox(t+.38,.5,255,185,'a',{vol:.38});return .95;}, // ¡JA-JA! de burla
+  t=>laugh(t,6,125,98,'o',.2,.08,{vol:.36}), // JO-JO-JO grave
+  t=>{const d=laugh(t,13,640,720,'a',.06,.03,{vol:.2,vib:30,vr:18});noise(t+d,.45,{f:3200,f2:4800,q:5,vol:.2});return d+.45;}, // hiena
+  t=>{for(let k=0;k<8;k++){const f=140+Math.random()*230,v='aeo'[k%3],sy=.09+Math.random()*.08,n=7+Math.floor(Math.random()*5);laugh(t+Math.random()*.35,n,f*1.1,f*.85,v,sy,.04,{vol:.09});}noise(t,2,{f:900,q:.5,vol:.08,at:.2});return 2;}, // público partiéndose de risa
+  t=>{const d=laugh(t,8,300,200,'a',.12,.04,{vol:.3});[N.D4,277.18,N.C4,246.94].forEach((f,i)=>tone(t+d+i*.38,f,i<3?.36:1,{type:'sawtooth',lp:1100,vol:.14,vib:i===3?9:0,vr:7}));return d+.6;} // risa + trombón triste
+];
+/* Broncas: grito, sirena, bocinazo… y después la voz grita */
+const SHOUTS=[
+  t=>{vox(t,1.1,300,235,'a',{vol:.32,dist:true,vib:20,vr:9,at:.05});noise(t,1.1,{f:2200,q:.5,vol:.1});return .5;}, // ¡AAARGH!
+  t=>{for(let i=0;i<6;i++) tone(t+i*.24,i%2?770:960,.23,{type:'square',lp:3000,vol:.22});return .6;}, // sirena
+  t=>{[0,.5].forEach(d=>{tone(t+d,110,.42,{type:'sawtooth',vol:.18,dist:true});tone(t+d,117,.42,{type:'sawtooth',vol:.14,dist:true});});return .5;}, // bocinazo MEEEC MEEEC
+  t=>{vox(t,1,270,175,'o',{vol:.32,dist:true,vib:12,at:.04});return .4;}, // ¡NOOOO!
+  t=>{tone(t,130,.32,{f2:40,vol:.6});noise(t,.25,{type:'lowpass',f:500,vol:.4,at:.003});vox(t+.3,.8,320,260,'e',{vol:.3,dist:true,vib:16,vr:8});return .7;} // golpe en la mesa + grito
+];
+/* Celebraciones épicas, siempre con un estadio ovacionando debajo */
+function stadium(t,d){
+  noise(t,d,{f:1100,q:.4,vol:.16,at:.35}); noise(t,d,{f:2600,q:.7,vol:.07,at:.5});
+  for(let i=0;i<90;i++) noise(t+.2+Math.random()*(d-.4),.025,{type:'highpass',f:1700,vol:.22,at:.002});
+  for(let i=0;i<7;i++){const f=260+Math.random()*240;vox(t+Math.random()*(d-1),.7,f,f*1.35,Math.random()<.5?'u':'o',{vol:.07,at:.08});}
+  tone(t+.4,2100,1,{f2:2800,vol:.05,vib:140,vr:13});
+}
+function chord(t,fs,d,o){fs.forEach(f=>tone(t,f,d,o));}
+function choir(t,syl){let x=0;syl.forEach(([v,fs,d])=>{fs.forEach(f=>vox(t+x,d,f,f,v,{vol:.09,vib:5,at:.1,h:v!=='a'}));x+=d;});return x;}
+const EPICS=[
+  t=>{for(let i=0;i<18;i++) tone(t+i*.055,82,.1,{vol:.45});noise(t,1,{type:'lowpass',f:200,vol:.15});[[N.G4,.15],[N.G4,.15],[N.G4,.15]].forEach(([f,d],i)=>chord(t+1+i*.17,[f,f/2],d,{type:'sawtooth',lp:2400,vol:.08}));chord(t+1.55,[N.C5,N.E5,N.G5,N.C6,N.C4],2,{type:'sawtooth',lp:2600,vol:.06,vib:5});noise(t+1.55,2.4,{type:'highpass',f:5000,vol:.18,at:.005});}, // timbales + fanfarria + platillos
+  t=>{choir(t,[['a',[N.C4,N.E4,N.G4,N.C5],.5],['e',[N.F4,N.A4,N.C5,N.F5],.5],['u',[N.E4,N.G4,N.C5,N.G5],.5],['a',[N.C4,N.E4,N.G4,N.C5,N.E5],1.9]]);}, // coro «a-le-lu-yaaa»
+  t=>{for(let k=0;k<5;k++){const s=t+k*.45;tone(s,500,.4,{f2:2200,vol:.05});tone(s+.42,90,.5,{f2:35,vol:.55});noise(s+.42,.6,{type:'lowpass',f:700,vol:.35,at:.004});for(let i=0;i<14;i++) noise(s+.5+Math.random()*.6,.02,{type:'highpass',f:3500,vol:.18,at:.002});}chord(t+.3,[N.C5,N.E5,N.G5],2,{type:'sawtooth',lp:2200,vol:.05,vib:5});}, // fuegos artificiales
+  t=>{const s=[[N.C5,.13],[N.C5,.13],[N.C5,.13],[N.C5,.45],[N.Ab4,.45],[N.Bb4,.45],[N.C5,.2],[0,.12]];let x=0;s.forEach(([f,d])=>{if(f)tone(t+x,f,d*.9,{type:'square',lp:2200,vol:.1});x+=d;});choir(t+x,[['a',[N.C4,N.E4,N.G4,N.C5],1.6]]);}, // jingle de victoria + coro
+  t=>{[0,.34,.68,1.02].forEach((d,i)=>{const L=i<3?.28:1.1;[466,471,233].forEach(f=>tone(t+d,f,L,{type:'sawtooth',lp:3200,vol:.16}));});}, // bocinas de estadio
+  t=>{[N.C5,N.E5,N.G5,N.C6,N.E6,N.G6,N.C7].forEach((f,i)=>tone(t+i*.065,f,.12,{type:'square',lp:5000,vol:.14}));[0,.5,1,1.5].forEach(d=>[1,2.76,5.4].forEach((m,j)=>tone(t+.5+d,N.C5*m,1.2,{vol:.14/(j+1)})));} // subida de nivel + campanas
+];
+
+/* Reacciones: [titular, broma de economía] */
+const WIN_TXT=[
+ ['¡¡HISTÓRICO!!','Tu nota ha subido más que la inflación en los años 70.'],
+ ['¡¡TRIPLE A!!','Las agencias de rating te dan la máxima calificación. Eres más solvente que Alemania.'],
+ ['¡¡PAREN LAS ROTATIVAS!!','El BCE se plantea subir los tipos de interés solo para frenar tu talento.'],
+ ['¡¡QUÉ NIVELAZO!!','Tu cerebro ha salido a Bolsa y ha abierto la sesión con un +300 %.'],
+ ['¡¡ATENCIÓN, MERCADOS!!','El FMI quiere meterte en la cesta del DEG, entre el dólar y el euro.'],
+ ['¡¡MILAGRO ECONÓMICO!!','Tu PIB de conocimiento crece más rápido que el de China en los 2000.'],
+ ['¡¡DIVIDENDO EXTRA!!','Quien invirtió en ti esta mañana ya se ha podido jubilar.'],
+ ['¡¡RÉCORD EN BOLSA!!','La CNMV ha suspendido tu cotización: nadie puede comprar tanto talento.'],
+ ['¡¡BRETTON WOODS 2.0!!','Los países se reúnen para crear un nuevo orden mundial con tu respuesta como patrón oro.'],
+ ['¡¡SUPERÁVIT!!','Tu Balanza de Pagos de neuronas nunca había estado tan equilibrada.'],
+ ['¡¡GENIO FINANCIERO!!','El Banco Mundial va a financiar un proyecto prioritario: una estatua tuya.'],
+ ['¡¡SOSPECHOSO!!','La CNMV investiga si tienes información privilegiada. Spoiler: es que has estudiado.'],
+ ['¡¡EUFORIA EN EL PARQUÉ!!','Los brokers lloran de emoción y hasta los dealers asumen el riesgo de aplaudir.'],
+ ['¡¡RESCATE CANCELADO!!','El FMI venía a prestarte dinero y se ha ido pidiéndote consejo.'],
+ ['¡¡IMPRIMAN BILLETES!!','El BCE autoriza la emisión de un billete de 500 € con tu cara.'],
+ ['¡¡LEYENDA!!','Los 190 países del FMI declaran hoy fiesta nacional en tu honor.']
+];
+const SHOUT_TXT=[
+ ['¡¡QUIEBRA TOTAL!!','¡¿PERO QUÉ HAS HECHO?! ¡Tu respuesta acaba de hundir el IBEX un 40 %!'],
+ ['¡¡BONO BASURA!!','¡Las agencias de rating te han bajado a la C! ¡Ni Grecia en 2012!'],
+ ['¡¡PÁNICO EN LA BOLSA!!','¡Los inversores huyen de ti como de una burbuja inmobiliaria!'],
+ ['¡¡ALERTA ROJA!!','¡Tu prima de riesgo acaba de pasar de los mil puntos básicos!'],
+ ['¡¡INTERVENIDO!!','¡El Banco de España te retira la licencia y te manda a los inspectores!'],
+ ['¡¡NÚMEROS ROJOS!!','¡Tu Balanza de Pagos mental está en déficit! ¡Que alguien llame al FMI!'],
+ ['¡¡CORRALITO!!','¡Te congelamos los puntos hasta que abras el temario!'],
+ ['¡¡HIPERINFLACIÓN!!','¡Tus errores se multiplican más rápido que los precios en la Alemania de 1923!'],
+ ['¡¡NO, NO Y NO!!','¡Eso no lo aprueba ni el ECOFIN en una reunión de urgencia!'],
+ ['¡¡COTIZACIÓN SUSPENDIDA!!','¡La CNMV te ha parado por respuestas temerarias!'],
+ ['¡¡PERO BUENO!!','¡Te has liado más que un dealer que se cree broker!'],
+ ['¡¡QUE ALGUIEN LLAME AL BCE!!','¡Esa respuesta necesita una inyección de liquidez urgente!']
+];
+const LAUGH_TXT=[
+ ['Ja, ja, ja.','Tu respuesta vale menos que una peseta en 2026.'],
+ ['Jajajajá.','Si fueras una moneda, no te meterían en la cesta del DEG ni pagando.'],
+ ['Ja, ja.','El Banco Mundial te ofrece un préstamo de ajuste estructural. Para el cerebro.'],
+ ['Ji, ji, ji.','Tranquilidad: el ridículo no tributa. Si no, ya estarías en la ruina.'],
+ ['Muajajajá.','Tu cartera de conocimientos acaba de entrar en concurso de acreedores.'],
+ ['Ja, ja, ja.','Hasta la hucha de cerdito gestiona mejor el riesgo que tú.'],
+ ['Jo, jo, jo.','Ni con un rescate del FMI se salva esa respuesta.'],
+ ['Ja, ja, ja, ja.','El BPI es el banco de los bancos centrales, no el banco de tus errores.'],
+ ['Jajaja.','Tu respuesta ha cotizado a la baja: de cero a menos cero.'],
+ ['Ja, ja.','El Comité de Basilea te va a poner de ejemplo de riesgo crediticio.'],
+ ['Je, je, je.','Acabas de inventar una crisis nueva: la crisis de tus respuestas.'],
+ ['Ja, ja, ja.','Los mercados han reaccionado a tu fallo: se están partiendo de risa.']
+];
+const TICKER={
+ win:['TU COTIZACIÓN ▲ +999 %','IBEX 35 ▲ +12,4 %','PRIMA DE RIESGO ▼ 0 pb','RATING ▲ AAA','EURO ▲ 1,50 $','FMI ▲ APLAUDE','DIVIDENDOS ▲ RÉCORD'],
+ fail:['TU COTIZACIÓN ▼ −87 %','IBEX 35 ▼ −40 %','PRIMA DE RIESGO ▲ 1.200 pb','RATING ▼ C','CONFIANZA ▼ 0 %','FMI ▼ PREOCUPADO','TUS PUNTOS ▼ EN CAÍDA LIBRE']
+};
+function bag(n){let b=[],last=-1;return ()=>{if(!b.length){b=[...Array(n).keys()].sort(()=>Math.random()-.5);if(b[0]===last)b.push(b.shift());}last=b.shift();return last;};}
+const pick={ep:bag(EPICS.length),la:bag(LAUGHS.length),sh:bag(SHOUTS.length),wt:bag(WIN_TXT.length),st:bag(SHOUT_TXT.length),lt:bag(LAUGH_TXT.length),kind:bag(2)};
+const VOICE={win:{rate:1.08,pitch:1.45},shout:{rate:1.25,pitch:1.3},laugh:{rate:.92,pitch:.75}};
+function say(text,mode,delay){
+  if(!soundOn||!('speechSynthesis' in window)) return;
+  try{
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text.replace(/…/g,'...'));
+    u.lang='es-ES'; u.rate=VOICE[mode].rate; u.pitch=VOICE[mode].pitch; u.volume=1;
+    const vs=speechSynthesis.getVoices(), v=vs.find(x=>/^es[-_]ES/i.test(x.lang))||vs.find(x=>/^es/i.test(x.lang)); if(v) u.voice=v;
+    clearTimeout(say.t); say.t=setTimeout(()=>{try{speechSynthesis.speak(u)}catch(e){}},delay*1000);
+  }catch(e){}
+}
+function react(win){
+  const a=ac(), t=a?a.currentTime+.03:0;
+  let txt, mode, kick, d=.7;
+  if(win){
+    txt=WIN_TXT[pick.wt()]; mode='win'; kick='Última hora mundial';
+    if(a){try{EPICS[pick.ep()](t);stadium(t,3.6);}catch(e){}}
+  } else if(pick.kind()===0){
+    txt=SHOUT_TXT[pick.st()]; mode='shout'; kick='Bronca del banquero';
+    d=.5; if(a){try{d=SHOUTS[pick.sh()](t);}catch(e){}}
+  } else {
+    txt=LAUGH_TXT[pick.lt()]; mode='laugh'; kick='El banquero se ríe de ti';
+    d=1.2; if(a){try{d=LAUGHS[pick.la()](t);}catch(e){}}
+    d+=.1;
+  }
+  say(txt[0]+' '+txt[1],mode,d);
+  const items=TICKER[win?'win':'fail'], strip='<span>'+items.map(esc).join('</span><span>')+'</span>';
+  const tick=cls=>'<div class="tick '+cls+'" aria-hidden="true"><div>'+strip+strip+'</div></div>';
+  const o=$('#react'); o.className='react '+mode;
+  o.innerHTML=tick('top')+'<div class="box"><small>'+esc(kick)+'</small><h2>'+esc(txt[0])+'</h2><p>'+esc(txt[1])+'</p><em>Toca para seguir</em></div>'+tick('bot');
+  o.hidden=false;
+  void o.offsetWidth; o.classList.add('on');
+  clearTimeout(react.t); react.t=setTimeout(()=>{o.hidden=true;},win?5200:4400);
+  if(win) confetti();
+}
+function confetti(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const c=$('#fx'), x=c.getContext('2d'); c.width=innerWidth; c.height=innerHeight; c.hidden=false;
+  const cs=getComputedStyle(document.documentElement), cols=['--gold','--green','--g-int','--g-nac','--g-eur'].map(k=>cs.getPropertyValue(k).trim());
+  const P=[];
+  [[.5,.5,0],[.2,.6,.5],[.8,.6,.9],[.5,.35,1.4]].forEach(([ox,oy,dl])=>{for(let i=0;i<110;i++)P.push({x:c.width*ox,y:c.height*oy,vx:(Math.random()-.5)*18,vy:-Math.random()*16-4,r:Math.random()*6+4,c:cols[Math.floor(Math.random()*cols.length)],a:Math.random()*6,d:dl*1000});});
+  const t0=performance.now();
+  (function f(now){
+    const k=now-t0; x.clearRect(0,0,c.width,c.height);
+    P.forEach(p=>{if(k<p.d)return;p.vy+=.42;p.x+=p.vx;p.y+=p.vy;p.vx*=.99;p.a+=.2;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillStyle=p.c;x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2);x.restore();});
+    if(k<3600) requestAnimationFrame(f); else {x.clearRect(0,0,c.width,c.height); c.hidden=true;}
+  })(t0);
+}
+function paintSound(){const b=$('#snd'); if(b){b.textContent=soundOn?'Sonido: sí':'Sonido: no'; b.setAttribute('aria-pressed',String(soundOn));}}
+
+/* ---------- INTRO ---------- */
+function intro(){
+  S=null; clearInterval(timer); $('#tm').textContent='00:00'; $('#sc').textContent='0'; pips(-1);
+  const best=getBest();
+  view.innerHTML='<section class="hero"><div>'
+   +'<p class="eyebrow">UD 1 · Introducción al sistema financiero internacional</p>'
+   +'<h1>¿Quién es quién? Versión financiera</h1>'
+   +'<p class="lead">Un organismo del sistema financiero se esconde tras una ficha. Tienes 24 sospechosos y un banquero que solo responde sí o no.</p>'
+   +'<ol class="steps">'
+   +'<li><b>1</b><span>Hay 24 organismos en el tablero y uno es el secreto. Cada ronda empieza con una pista sobre él.</span></li>'
+   +'<li><b>2</b><span>Si dudas entre varios, pide otra pista (una cada 15 segundos). Las fichas que no encajan se dan la vuelta solas.</span></li>'
+   +'<li><b>3</b><span>¿Lo tienes? Toca la ficha y confirma. Cada pista extra resta 4 puntos y cada fallo, 12.</span></li>'
+   +'<li><b>4</b><span>Lee la ficha de estudio y responde una pregunta de repaso. Son 8 rondas y la última vale el doble. Sube el volumen.</span></li></ol>'
+   +'<ul class="route"><li><b>R1</b>Ronda 1</li><li><b>R2</b>Ronda 2</li><li><b>R3</b>Ronda 3</li><li><b>R4</b>Ronda 4</li><li><b>R5</b>Ronda 5</li><li><b>R6</b>Ronda 6</li><li><b>R7</b>Ronda 7</li><li><b>F</b>Ronda final ×2</li></ul>'
+   +'<button class="btn" id="go">Empezar la partida</button>'
+   +'<p class="best">Duración aproximada: 25 a 30 minutos.'+(best?' Tu mejor puntuación: '+best+' pts.':'')+'</p>'
+   +'</div><div class="guil" aria-hidden="true"><span>?</span></div></section>';
+  $('#go').onclick=()=>{S=newState();setScore();startTimer();startRound(0);};
+}
+
+/* ---------- RONDA ---------- */
+function usefulCount(q){let y=0;S.alive.forEach(c=>{if(q.y.includes(c))y++;});return y>0&&y<S.alive.size;}
+function startRound(i){
+  const R=ROUNDS[i];
+  const secret=R.pool[Math.floor(Math.random()*R.pool.length)];
+  // Pista inicial: un dato concreto del secreto que comparten de 2 a 10 fichas, para orientar sin resolver
+  let fits=QS.filter(q=>!q.b&&q.y.includes(secret)&&q.y.length>=2&&q.y.length<=10);
+  if(!fits.length) fits=QS.filter(q=>q.y.includes(secret)&&q.y.length>=2&&q.y.length<=10);
+  const clue=(fits.length?fits:QS.filter(q=>q.y.includes(secret)))[Math.floor(Math.random()*(fits.length||1))];
+  Object.assign(S,{r:i,mult:i===ROUNDS.length-1?2:1,secret,clue:clue.id,order:[],alive:new Set(CARDS.map(c=>c.id)),asked:{},last:null,sel:null,rs:100,nq:0,nwrong:0,tab:null,nextAt:0,cooling:false});
+  clearInterval(cdTimer); cdTimer=setInterval(tickCool,200);
+  pips(i); setScore();
+  view.innerHTML='<section class="play"><div class="rhead"><p class="eyebrow">'+(i===ROUNDS.length-1?'Ronda final · ¡los puntos valen el doble!':'Ronda '+(i+1)+' de '+ROUNDS.length)+'</p><div class="clue"><small>Pista inicial</small><p>'+esc(clue.s)+'</p></div><p class="hint">¿Quién es? Si lo sabes, toca su ficha. Si dudas entre varios, pide otra pista.</p></div>'
+   +'<div class="cols"><div><div class="board" id="board">'+CARDS.map(c=>cardHtml(c)).join('')+'</div></div>'
+   +'<aside class="panel"><div class="secret"><div class="mini" aria-hidden="true"><i>?</i></div><div><b>Organismo secreto</b><div class="stat" id="stat"></div></div></div>'
+   +'<ol class="how"><li><b>1</b>Lee la pista inicial</li><li><b>2</b>Si dudas, pide otra pista: se giran las fichas que no encajan</li><li><b>3</b>Toca tu ficha y confirma</li></ol>'
+   +'<div class="guess" id="guess"></div>'
+   +'<div class="last" id="last" aria-live="polite"></div>'
+   +'<h3 class="ptitle">Pide otra pista</h3><div class="cool" id="cool"><span id="coolt"></span><span class="bar"><i id="coolbar"></i></span></div><div class="tabs" id="tabs" role="tablist"></div><ul class="qs" id="qs"></ul></aside></div></section>';
+  $('#board').onclick=e=>{
+    const b=e.target.closest('.card'); if(!b||!S.alive.has(b.dataset.id)) return;
+    S.sel=S.sel===b.dataset.id?null:b.dataset.id; paint();
+  };
+  $('#tabs').onclick=e=>{const b=e.target.closest('.tab'); if(!b) return; S.tab=b.dataset.c; paint();};
+  $('#qs').onclick=e=>{const b=e.target.closest('.qb'); if(!b||b.disabled) return; ask(+b.dataset.q);};
+  $('#guess').onclick=e=>{
+    const b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.a==='no'){S.sel=null;paint();} else if(b.dataset.a==='yes'){guess(S.sel);}
+  };
+  paint();
+  window.scrollTo({top:0});
+}
+function ask(id){
+  const q=QS[id]; if(S.asked[id]!==undefined||Date.now()<S.nextAt) return;
+  S.nextAt=Date.now()+COOLDOWN; S.cooling=true;
+  const ans=q.y.includes(S.secret);
+  S.asked[id]=ans; S.order.push(id); S.nq++; S.rs=Math.max(10,S.rs-PER_Q);
+  let out=0;
+  S.alive.forEach(cid=>{ if(q.y.includes(cid)!==ans){ S.alive.delete(cid); out++; } });
+  if(S.sel&&!S.alive.has(S.sel)) S.sel=null;
+  S.last={q:q.q,ans,note:q.n,out};
+  paint(); tickCool();
+}
+function tickCool(){
+  if(!S||!$('#cool')) return;
+  const rem=S.nextAt-Date.now();
+  if(rem>0){
+    $('#cool').className='cool'; $('#coolt').textContent='Siguiente pista en '+Math.ceil(rem/1000)+' s. Mientras, puedes adivinar.';
+    $('#coolbar').style.width=(100-rem/COOLDOWN*100)+'%';
+  } else {
+    $('#cool').className='cool ready'; $('#coolt').textContent='Ya puedes pedir otra pista'; $('#coolbar').style.width='100%';
+    if(S.cooling){S.cooling=false; paint();}
+  }
+}
+function guess(id){
+  if(!id) return;
+  if(id===S.secret){ S.rs*=S.mult; S.total+=S.rs; setScore(); react(true); finishRound(); return; }
+  S.alive.delete(id); S.nwrong++; S.rs=Math.max(10,S.rs-PER_WRONG); S.sel=null;
+  S.last={wrong:BY[id].n};
+  react(false);
+  paint();
+}
+function paint(){
+  document.querySelectorAll('#board .card').forEach(el=>{
+    const on=S.alive.has(el.dataset.id);
+    el.classList.toggle('down',!on);
+    el.classList.toggle('sel',S.sel===el.dataset.id);
+    el.tabIndex=on?0:-1;
+    el.setAttribute('aria-disabled',String(!on));
+  });
+  paintPanel();
+}
+function paintPanel(){
+  $('#stat').innerHTML='<span>Candidatos: <b>'+S.alive.size+'</b></span><span>Pistas: <b>'+S.nq+'</b></span><span>Ronda: <b>'+S.rs+'</b> pts'+(S.mult>1?' ×2':'')+'</span>';
+  const g=$('#guess');
+  if(S.sel){
+    g.className='guess';
+    g.innerHTML='<b>¿Es «'+esc(BY[S.sel].n)+'»?</b><div class="row"><button class="btn" data-a="yes">Sí, es este</button><button class="btn ghost" data-a="no">Cancelar</button></div><span class="small">Si fallas pierdes '+PER_WRONG+' puntos.</span>';
+  } else if(S.alive.size===1){
+    const only=[...S.alive][0];
+    g.className='guess';
+    g.innerHTML='<b>Solo queda «'+esc(BY[only].n)+'».</b><div class="row"><button class="btn" data-a="yes" id="lastone">¡Es este!</button></div>';
+    $('#lastone').onclick=e=>{e.stopPropagation();guess(only);};
+  } else {
+    g.className='guess idle';
+    g.innerHTML='<span>¿Ya lo sabes? Toca una ficha del tablero para adivinar.</span>';
+  }
+  const L=$('#last');
+  if(!S.last){L.className='last';L.innerHTML='<p class="q">Aún no has pedido más pistas.</p><p class="note">Las pistas de arriba de cada pestaña son las que descartan alguna ficha. Las mejores dejan fuera a la mitad.</p>';}
+  else if(S.last.wrong){L.className='last no';L.innerHTML='<span class="verdict">Fallo</span><span class="q">«'+esc(S.last.wrong)+'» no es el organismo secreto.</span><p class="note">Esa ficha sale del tablero.</p>';}
+  else{L.className='last '+(S.last.ans?'yes':'no');L.innerHTML='<span class="verdict">'+(S.last.ans?'Sí':'No')+'</span><span class="q">'+esc(S.last.q)+'</span><p class="note">'+esc(S.last.note)+'</p><p class="out">'+(S.last.out===1?'Se ha girado 1 ficha.':'Se han girado '+S.last.out+' fichas.')+'</p>';}
+  const cnt={}; CATS.forEach(c=>{cnt[c[0]]=QS.filter(q=>q.c===c[0]&&q.id!==S.clue&&S.asked[q.id]===undefined&&usefulCount(q)).length;});
+  if(!S.tab) S.tab=(CATS.find(c=>cnt[c[0]]>0)||CATS[0])[0];
+  $('#tabs').innerHTML=CATS.map(c=>'<button class="tab" role="tab" data-c="'+c[0]+'" aria-selected="'+(S.tab===c[0])+'">'+c[1]+' <i class="'+(cnt[c[0]]?'':'zero')+'">'+cnt[c[0]]+'</i></button>').join('');
+  const list=QS.filter(q=>q.c===S.tab&&q.id!==S.clue);
+  const asked=list.filter(q=>S.asked[q.id]!==undefined), open=list.filter(q=>S.asked[q.id]===undefined);
+  const good=open.filter(usefulCount), bad=open.filter(q=>!usefulCount(q));
+  const btn=(q,dis,extra)=>{const a=S.asked[q.id];return '<li><button class="qb'+(a===undefined?'':(a?' y':' n'))+(extra||'')+'" data-q="'+q.id+'"'+(dis?' disabled':'')+'><span>'+esc(q.q)+'</span>'+(a===undefined?'':'<span class="r">'+(a?'SÍ':'NO')+'</span>')+'</button></li>';};
+  $('#qs').classList.toggle('wait',S.cooling);
+  $('#qs').innerHTML=(good.length?good.map(q=>btn(q,S.cooling)).join(''):'<li class="qhead">En esta pestaña ya no quedan pistas útiles. Prueba otra.</li>')
+    +(asked.length?'<li class="qhead">Pistas ya pedidas</li>'+asked.map(q=>btn(q,true)).join(''):'')
+    +(bad.length?'<li class="qhead">No descartan a nadie ahora</li>'+bad.map(q=>btn(q,true,' useless')).join(''):'');
+}
+
+/* ---------- FICHA + REPASO ---------- */
+function finishRound(){
+  clearInterval(cdTimer);
+  const R=ROUNDS[S.r], c=BY[S.secret];
+  S.log.push({t:R.t,pts:S.rs,nq:S.nq,wrong:S.nwrong});
+  view.innerHTML='<section class="ficha"><div class="board" style="grid-template-columns:1fr">'+cardHtml(c)+'</div><div>'
+   +'<p class="res">Acertaste · +'+S.rs+' pts'+(S.mult>1?' (doble)':'')+' · '+S.nq+(S.nq===1?' pista extra':' pistas extra')+'</p><h2>'+esc(c.n)+'</h2><p class="eyebrow">Ficha de estudio · '+esc(R.sec)+': '+esc(R.t)+'</p><p class="desc">'+esc(c.d)+'</p>'
+   +'<div class="recap"><p class="eyebrow">Pistas de esta ronda</p><ul><li><b>Inicial</b><span>'+esc(QS[S.clue].s)+'</span></li>'
+   +S.order.map(id=>'<li><b class="'+(S.asked[id]?'y':'n')+'">'+(S.asked[id]?'Sí':'No')+'</b><span>'+esc(QS[id].q)+'</span></li>').join('')+'</ul></div>'
+   +'<div class="quiz" id="quizbox"></div></div></section>';
+  showQuiz(pickQuiz());
+  window.scrollTo({top:0});
+}
+function showQuiz(qz){
+  $('#quizbox').innerHTML='<p class="eyebrow">Pregunta de repaso · +15 pts</p><h3>'+esc(qz.q)+'</h3><div class="opts" id="opts">'
+   +qz.o.map((o,k)=>'<button class="opt" data-k="'+k+'">'+esc(o)+'</button>').join('')+'</div><p class="expl" id="expl" hidden></p><div class="next" id="nx" hidden></div>';
+  $('#opts').onclick=e=>{
+    const b=e.target.closest('.opt'); if(!b||b.disabled) return;
+    answerMC(qz,+b.dataset.k,15,()=>{S.quizOk++;});
+    const lastR=S.r===ROUNDS.length-1, nextFinal=S.r===ROUNDS.length-2;
+    $('#nx').hidden=false;
+    $('#nx').innerHTML='<button class="btn" id="nb">'+(lastR?'Ver mi resultado':nextFinal?'Empezar la ronda final':'Empezar la ronda '+(S.r+2))+'</button>';
+    $('#nb').onclick=()=>{ if(lastR) end(); else startRound(S.r+1); };
+  };
+}
+function answerMC(qz,k,pts,onOk){
+  const ok=k===qz.a;
+  document.querySelectorAll('#opts .opt').forEach((el,i)=>{
+    el.disabled=true;
+    if(i===qz.a) el.classList.add('right'); else if(i===k) el.classList.add('wrong');
+  });
+  if(ok){S.total+=pts;setScore();if(onOk)onOk();}
+  react(ok);
+  const ex=$('#expl'); ex.hidden=false;
+  ex.textContent=(ok?'Correcto. ':'No era esa. ')+qz.e;
+}
+
+/* ---------- FINAL ---------- */
+function rank(p){return p>=820?'Gobernador del Banco Central':p>=660?'Gestor de carteras':p>=460?'Analista junior':'Becario de ventanilla';}
+function end(){
+  clearInterval(timer);
+  const mins=Math.max(1,Math.round((Date.now()-S.t0)/60000));
+  const prev=getBest(); const record=S.total>prev; if(record) setBest(S.total);
+  pips(ROUNDS.length);
+  const txt='Jugué ¿Quién es quién? Versión financiera y saqué '+S.total+' puntos en '+mins+' min. Rango: '+rank(S.total)+'. ¿Me superas?';
+  view.innerHTML='<section class="end"><p class="eyebrow">Partida terminada · '+fmt(Date.now()-S.t0)+'</p><h1>'+rank(S.total)+'</h1>'
+   +'<div class="big">'+S.total+' pts</div>'+(record?'<p class="res">Nuevo récord personal</p>':'')
+   +'<ul class="sum">'+S.log.map((l,i)=>'<li><span>'+(i===ROUNDS.length-1?'Final':'R'+(i+1))+' · '+esc(l.t)+' ('+l.nq+(l.nq===1?' pista, ':' pistas, ')+l.wrong+(l.wrong===1?' fallo)':' fallos)')+'</span><span>+'+l.pts+'</span></li>').join('')
+   +'<li><span>Preguntas de repaso acertadas</span><span>'+S.quizOk+' / '+ROUNDS.length+'</span></li></ul>'
+   +'<div class="row"><button class="btn" id="again">Jugar otra vez</button><button class="btn ghost" id="cp">Copiar mi resultado</button></div><p class="toast" id="ts" role="status"></p>'
+   +'<p style="color:var(--ink-2);font-size:.9rem">Para retar a otra persona, envíale el enlace de este juego junto con tu resultado.</p></section>';
+  $('#again').onclick=intro;
+  $('#cp').onclick=()=>{
+    const done=m=>{$('#ts').textContent=m;};
+    try{
+      navigator.clipboard.writeText(txt).then(()=>done('Resultado copiado.'),()=>done(txt));
+    }catch(e){done(txt);}
+  };
+  window.scrollTo({top:0});
+}
+
+$('#react').onclick=()=>{$('#react').hidden=true;};
+$('#snd').onclick=()=>{soundOn=!soundOn; try{localStorage.setItem(SND_KEY,soundOn?'on':'off')}catch(e){} if(!soundOn){try{speechSynthesis.cancel()}catch(e){}} else ac(); paintSound();};
+paintSound();
+intro();
+})();
+</script>
+
+</body>
+</html>
