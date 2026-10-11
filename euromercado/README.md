@@ -14,7 +14,7 @@ Escape room de la **UP 1 · El Euromercado**. Todo en español.
   1. **La recepción** (definición, características, objetivos, áreas): ordenador, expediente, cuadro del mapa y papelera. Candado de números **6352**.
   2. **El pasillo de láseres**: verdadero o falso a contrarreloj (6 aciertos en 50 s en Fácil, 8 en 40 s en Difícil). Da la letra O.
   3. **La sala de mercados, a oscuras con linterna** (renta fija y variable, liquidez y solvencia, primario y secundario). Candado de letras **BONO**.
-  4. **El despacho del director** (sectores, bonos puros e híbridos, casos, emisión del eurobono) y **la reunión**: un interrogatorio en el que uno de los participantes miente y, al descubrirlo, da la llave. Caja fuerte con la llave y **EUROBONO**.
+  4. **El despacho del director** (sectores, bonos puros e híbridos, casos, emisión del eurobono) y **la reunión**: un interrogatorio en el que uno de los participantes miente y, al descubrirlo, da la llave. Cada persona tiene su cara y se le pincha por separado (en la sala 3D o con anterior/siguiente); en Fácil se apuntan solas sus respuestas y en Difícil hay que recordarlas. Caja fuerte con la llave y **EUROBONO**.
 - Tres bromas que repasan materia:
   - **Botón rojo «NO PULSAR»** (recepción, en 3D): alarma falsa y una pregunta; si se acierta, +10 s.
   - **Caja fuerte gigante «FONDOS SECRETOS»** (despacho, en 3D): cajas una dentro de otra con patos de goma y un céntimo al final. No quita tiempo.
