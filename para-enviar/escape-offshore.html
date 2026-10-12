@@ -247,6 +247,8 @@ body.imm.inhall .hall .msg{position:fixed;left:50%;bottom:86px;transform:transla
 body.imm.inhall .hall .msg:empty{display:none}
 body.imm.inhall .hall .msg:not(:empty){background:#000d;padding:.4rem .8rem;border-radius:10px}
 @media (max-width:700px){body.imm.inhall .hud .pill,body.imm.inhall .hud .mute{display:none}body.imm.inhall .hall .lockpanel{top:58px;bottom:auto;padding:6px 8px}body.imm.inhall .hall .lockpanel .btn{font-size:.72rem;padding:.35rem .55rem;max-width:150px;line-height:1.2}body.imm.inhall .hall .lockpanel .slot{width:1.6rem;height:2.1rem;font-size:1rem}body.imm.inhall .roomtag{top:auto;bottom:100px;font-size:1rem}body.imm.inhall .vbtns{top:auto;bottom:10px;max-width:calc(100% - 140px)}body.imm.inhall .hall .msg{bottom:auto;top:130px}}
+.howline{margin:2px 0 0;color:var(--muted);font-weight:700}
+.lead{margin:4px 0 -4px;font-family:var(--f-display);font-size:1.7rem;color:var(--brass);letter-spacing:.02em}
 .tov{position:fixed;inset:0;z-index:40;background:#000c;display:grid;place-items:center;padding:16px}
 .tbox{background:var(--steel);border:2px solid var(--brass);border-radius:16px;padding:1.4rem;max-width:520px;width:100%;text-align:center;display:flex;flex-direction:column;gap:.6rem;max-height:calc(100vh - 32px);overflow:auto}
 .tbox h3{margin:0;font-family:var(--f-display);font-size:1.9rem;letter-spacing:.02em}
@@ -325,17 +327,18 @@ const ROOMS=[
     distract:['minorista','nacional','Tesoro'],
     hint:'Si es un mercado de gobiernos y grandes empresas, no puede ser «minorista».'},
    {id:'1b',kind:'Verdadero o falso',type:'sort',title:'El expediente',sub:'Objetivos y características',reward:'3',why:'El Euromercado tiene 3 objetivos: diversificar las fuentes de financiación, eludir la jurisdicción y distribuir el riesgo.',
-    task:'Clasifica cada afirmación como verdadera o falsa.',
+    task:'¿Qué afirmaciones son verdaderas y cuáles falsas?',
+    how:'Pulsa una afirmación y después pulsa en «Verdadero» o en «Falso». Cada afirmación completa esta frase: El Euromercado…',lead:'El Euromercado…',
     buckets:[{id:'V',t:'Verdadero'},{id:'F',t:'Falso'}],
     items:[
-     {t:'Uno de sus objetivos es diversificar las fuentes de financiación.',a:'V',lv:'b'},
-     {t:'Uno de sus objetivos es concentrar todo el riesgo en un solo país.',a:'F',lv:'b',why:'Busca distribuir el riesgo.'},
-     {t:'Busca eludir la jurisdicción de un único país.',a:'V',lv:'b'},
-     {t:'Funciona mediante un sistema informático desarrollado.',a:'V',lv:'b'},
-     {t:'Le favorecen una regulación fiscal dura y la inestabilidad política.',a:'F',lv:'b',why:'Necesita regulación favorable, estabilidad política y buenas comunicaciones.'},
-     {t:'Está compuesto por el mercado financiero nacional de cada país.',a:'V',lv:'b'},
-     {t:'Solo pueden participar residentes del país del mercado.',a:'F',lv:'d',why:'Participan residentes y no residentes.'},
-     {t:'Es un mercado para pequeños ahorradores.',a:'F',lv:'d',why:'Es mayorista.'}
+     {t:'…tiene como objetivo diversificar las fuentes de financiación.',a:'V',lv:'b'},
+     {t:'…busca concentrar todo el riesgo en un solo país.',a:'F',lv:'b',why:'Busca distribuir el riesgo.'},
+     {t:'…busca eludir la jurisdicción de un único país.',a:'V',lv:'b'},
+     {t:'…funciona mediante un sistema informático desarrollado.',a:'V',lv:'b'},
+     {t:'…se ve favorecido por una regulación fiscal dura y la inestabilidad política.',a:'F',lv:'b',why:'Necesita regulación favorable, estabilidad política y buenas comunicaciones.'},
+     {t:'…está compuesto por el mercado financiero nacional de cada país.',a:'V',lv:'b'},
+     {t:'…solo admite a residentes del país del mercado.',a:'F',lv:'d',why:'Participan residentes y no residentes.'},
+     {t:'…es un mercado para pequeños ahorradores.',a:'F',lv:'d',why:'Es mayorista.'}
     ],
     hint:'Las frases con «concentrar», «dura» o «inestabilidad» esconden el error: el Euromercado busca lo contrario.'},
    {id:'1c',kind:'Mapa',type:'sort',title:'El mapa offshore',sub:'Áreas geográficas',reward:'5',why:'El Euromercado se reparte en 5 áreas geográficas.',
@@ -1215,9 +1218,9 @@ function puzzle(id){
     const pool='<div class="pool" id="pool">'+S.order.filter(it=>!S.place[it.k]).map(chip).join('')+'</div>';
     if(p.type==='fill') body=pool+'<div class="doc">'+S.parts.map((t,i)=>i%2===0?esc(t):'<span class="gap bucket'+tg+'" data-b="h'+t+'" role="button" tabindex="0"><span class="in">'+inB({id:'h'+t})+'</span></span>').join('')+'</div>';
     else if(p.type==='order') body=pool+'<div class="steps">'+S.buckets.map(b=>'<div class="step bucket'+tg+'" data-b="'+b.id+'" role="button" tabindex="0"><span class="num">'+b.id+'</span><div class="in">'+inB(b)+'</div></div>').join('')+'</div>';
-    else body=pool+'<div class="buckets">'+S.buckets.map(b=>'<div class="bucket'+tg+'" data-b="'+b.id+'" role="button" tabindex="0"><h3>'+esc(b.t)+'</h3><div class="in">'+inB(b)+'</div></div>').join('')+'</div>';
+    else body=(p.lead?'<p class="lead">'+esc(p.lead)+'</p>':'')+pool+'<div class="buckets">'+S.buckets.map(b=>'<div class="bucket'+tg+'" data-b="'+b.id+'" role="button" tabindex="0"><h3>'+esc(b.t)+'</h3><div class="in">'+inB(b)+'</div></div>').join('')+'</div>'+(p.lead?'<p class="howline">👆 Pulsa una afirmación y después pulsa en «Verdadero» o en «Falso».</p>':'');
   }
-  const how=p.type==='pick'?'Toca una opción en cada grupo.':'Toca una tarjeta y después su sitio. Para devolverla, tócala otra vez.';
+  const how=p.how?p.how:p.type==='pick'?'Toca una opción en cada grupo.':'Toca una tarjeta y después su sitio. Para devolverla, tócala otra vez.';
   view.innerHTML='<section class="pz"><div class="pz-head"><div><p class="eyebrow">Sala '+p.room+' · '+esc(p.kind)+' · '+esc(p.sub)+'</p><h2>'+esc(p.title)+'</h2><p class="task">'+esc(p.task)+' '+how+'</p></div>'
    +'<button class="btn ghost" id="back">Volver a la sala</button></div>'+body
    +'<p class="msg '+((G.msg[id]||{}).c||'info')+'" id="msg">'+esc((G.msg[id]||{}).t||'')+'</p>'
